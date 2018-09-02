@@ -1,0 +1,241 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<html lang="br">
+<head>
+    <meta charset="utf-8">
+    <title>Fresh Tomatoes!</title>
+
+    <!-- Bootstrap 3 -->
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css">
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+    <style type="text/css" media="screen">
+        body {
+            padding-top: 70px;
+        }
+
+        //in this part of the code, I was inspired by the following
+        //website: https://www.w3schools.com/howto/howto_css_image_overlay.asp
+        //.middle sets the position of text in the middle of the poster
+    
+        .image {
+            opacity: 1;
+            display: block;
+            width: 100%;
+            height: auto;
+            transition: .5s ease;
+            backface-visibility: hidden;
+        }
+        .middle {
+            transition: .5s ease;
+            opacity: 0;
+            position: absolute;
+            top: 56%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        .text {
+            background-color: rgba (0 0 0 0.5);
+            color: black;
+            font-size: 16px;
+            padding: 16px 0px;
+        }
+
+        #trailer .modal-dialog {
+            margin-top: 100px;
+            width: 640px;
+            height: 480px;
+        }
+        .hanging-close {
+            position: absolute;
+            top: -12px;
+            right: -12px;
+            z-index: 9001;
+        }
+        #trailer-video {
+            width: 100%;
+            height: 100%;
+        }
+        .movie-tile {
+            margin-bottom: 10px;
+            padding-top: 8px;
+        }
+        .movie-tile:hover  .image{
+            width-radius: 0;
+            background-color: #fff;
+            cursor: pointer;
+            opacity: 0.2;
+        }
+        .movie-tile:hover  .middle{
+            opacity: 1;
+        }
+        .scale-media {
+            padding-bottom: 56.25%;
+            position: relative;
+        }
+        .scale-media iframe {
+            border: none;
+            height: 100%;
+            position: absolute;
+            width: 100%;
+            left: 0;
+            top: 0;
+            background-color: white;
+        }
+    </style>
+    <script type="text/javascript" charset="utf-8">
+        // Pause the video when the modal is closed
+        $(document).on('click', '.hanging-close, .modal-backdrop, .modal', function (event) {
+            // Remove the src so the player itself gets removed, as this is the only
+            // reliable way to ensure the video stops playing in IE
+            $("#trailer-video-container").empty();
+        });
+        // Start playing the video whenever the trailer modal is opened
+        $(document).on('click', '.movie-tile', function (event) {
+            var trailerYouTubeId = $(this).attr('data-trailer-youtube-id')
+            var sourceUrl = 'http://www.youtube.com/embed/' + trailerYouTubeId + '?autoplay=1&html5=1';
+            $("#trailer-video-container").empty().append($("<iframe></iframe>", {
+              'id': 'trailer-video',
+              'type': 'text-html',
+              'src': sourceUrl,
+              'frameborder': 0
+            }));
+        });
+        // Animate in the movies when the page loads
+        $(document).ready(function () {
+          $('.movie-tile').hide().first().show("fast", function showNext() {
+            $(this).next("div").show("fast", showNext);
+          });
+        });
+    </script>
+</head>
+
+  <body>
+    <!-- Trailer Video Modal -->
+    <div class="modal" id="trailer">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <a href="#" class="hanging-close" data-dismiss="modal" aria-hidden="true">
+            <img src="https://lh5.ggpht.com/v4-628SilF0HtHuHdu5EzxD7WRqOrrTIDi_MhEG6_qkNtUK5Wg7KPkofp_VJoF7RS2LhxwEFCO1ICHZlc-o_=s0#w=24&h=24"/>
+          </a>
+          <div class="scale-media" id="trailer-video-container">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Page Content -->
+    <div class="container">
+      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="#">Fresh Tomatoes Movie Trailers</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      
+<div class="col-md-3 col-lg-3 movie-tile text-center" data-trailer-youtube-id="OSjbdufL828" data-toggle="modal" data-target="#trailer">
+    <h4>Les Miserables</h4>
+    <img src="https://upload.wikimedia.org/wikipedia/en/b/b0/Les-miserables-movie-poster1.jpg" class="image" width="220" height="342">
+    <div class="middle">
+        <div class="text">"Set in France, Jean Valjean breaks parole after being released and runs from the grip of Inspector Javert. The story reaches resolution against the background of the June Rebellion."</div>
+    </div>
+</div>
+
+<div class="col-md-3 col-lg-3 movie-tile text-center" data-trailer-youtube-id="5PSNL1qE6VY" data-toggle="modal" data-target="#trailer">
+    <h4>Avatar</h4>
+    <img src="https://upload.wikimedia.org/wikipedia/pt/b/b0/Avatar-Teaser-Poster.jpg" class="image" width="220" height="342">
+    <div class="middle">
+        <div class="text">"A story of a marine on an alien planet"</div>
+    </div>
+</div>
+
+<div class="col-md-3 col-lg-3 movie-tile text-center" data-trailer-youtube-id="KYz2wyBy3kc" data-toggle="modal" data-target="#trailer">
+    <h4>Toy Story</h4>
+    <img src="https://ingresso-a.akamaihd.net/img/cinema/cartaz/12264-cartaz.jpg" class="image" width="220" height="342">
+    <div class="middle">
+        <div class="text">"A story of a boy and his toys that come to life"</div>
+    </div>
+</div>
+
+<div class="col-md-3 col-lg-3 movie-tile text-center" data-trailer-youtube-id="2PpgPxjzbkA" data-toggle="modal" data-target="#trailer">
+    <h4>Moulin Rouge</h4>
+    <img src="https://upload.wikimedia.org/wikipedia/pt/8/8b/Moulin_Rouge%21.jpg" class="image" width="220" height="342">
+    <div class="middle">
+        <div class="text">"A poet falls for a beautiful courtesan whom a jealous duke covets."</div>
+    </div>
+</div>
+
+<div class="col-md-3 col-lg-3 movie-tile text-center" data-trailer-youtube-id="3PsUJFEBC74" data-toggle="modal" data-target="#trailer">
+    <h4>School of Rock</h4>
+    <img src="https://upload.wikimedia.org/wikipedia/pt/1/1b/Schoolrockposter.jpg" class="image" width="220" height="342">
+    <div class="middle">
+        <div class="text">"After being kicked out of a rock band, Dewey Finn becomes a substitute teacher of a strict elementary private school, only to try and turn it into a rock band."</div>
+    </div>
+</div>
+
+<div class="col-md-3 col-lg-3 movie-tile text-center" data-trailer-youtube-id="XHk5kCIiGoM" data-toggle="modal" data-target="#trailer">
+    <h4>Star Wars</h4>
+    <img src="https://upload.wikimedia.org/wikipedia/pt/thumb/f/f6/P%C3%B4ster_Star_Wars.jpg/250px-P%C3%B4ster_Star_Wars.jpg" class="image" width="220" height="342">
+    <div class="middle">
+        <div class="text">"Luke Skywalker joins forces with a Jedi Knight, a cocky pilot, a Wookiee and two droids to save the galaxy from the Empire's world-destroying battle station, while also attempting to rescue Princess Leia from the evil Darth Vader."</div>
+    </div>
+</div>
+
+<div class="col-md-3 col-lg-3 movie-tile text-center" data-trailer-youtube-id="N91AL8sAh9o" data-toggle="modal" data-target="#trailer">
+    <h4>The Phantom of the Opera</h4>
+    <img src="https://upload.wikimedia.org/wikipedia/pt/6/65/O_Fantasma_da_Opera_poster.jpg" class="image" width="220" height="342">
+    <div class="middle">
+        <div class="text">"A young soprano becomes the obsession of a disfigured musical genius who lives beneath the Paris Opéra House. He kidnaps the soprano and forces the owners of the play to keep her as the lead role of the play."</div>
+    </div>
+</div>
+
+<div class="col-md-3 col-lg-3 movie-tile text-center" data-trailer-youtube-id="ALUmKa_mpik" data-toggle="modal" data-target="#trailer">
+    <h4>Ratatouille</h4>
+    <img src="https://upload.wikimedia.org/wikipedia/pt/8/82/Ratatouille_p%C3%B4ster.jpg" class="image" width="220" height="342">
+    <div class="middle">
+        <div class="text">"A rat who can cook makes an unusual alliance with a young kitchen worker at a famous restaurant."</div>
+    </div>
+</div>
+
+<div class="col-md-3 col-lg-3 movie-tile text-center" data-trailer-youtube-id="BYRWfS2s2v4" data-toggle="modal" data-target="#trailer">
+    <h4>Midnight in Paris</h4>
+    <img src="https://upload.wikimedia.org/wikipedia/pt/b/be/Meia-noite-em-paris-poster1.jpg" class="image" width="220" height="342">
+    <div class="middle">
+        <div class="text">"While on a trip to Paris with his fiancée's family, a nostalgic screenwriter finds himself mysteriously going back to the 1920s everyday at midnight."</div>
+    </div>
+</div>
+
+<div class="col-md-3 col-lg-3 movie-tile text-center" data-trailer-youtube-id="mfmrPu43DF8" data-toggle="modal" data-target="#trailer">
+    <h4>Hunger Games</h4>
+    <img src="https://upload.wikimedia.org/wikipedia/pt/4/42/HungerGamesPoster.jpg" class="image" width="220" height="342">
+    <div class="middle">
+        <div class="text">"Katniss Everdeen voluntarily takes her younger sister's place in the Hunger Games: a televised competition in which two teenagers from each of the twelve Districts of Panem are chosen at random to fight to the death."</div>
+    </div>
+</div>
+
+<div class="col-md-3 col-lg-3 movie-tile text-center" data-trailer-youtube-id="WR7cc5t7tv8" data-toggle="modal" data-target="#trailer">
+    <h4>A Quiet Place</h4>
+    <img src="https://upload.wikimedia.org/wikipedia/en/a/a0/A_Quiet_Place_film_poster.png" class="image" width="220" height="342">
+    <div class="middle">
+        <div class="text">"In a post-apocalyptic world, a family is forced to live in silence while hiding from monsters with ultra-sensitive hearing."</div>
+    </div>
+</div>
+
+<div class="col-md-3 col-lg-3 movie-tile text-center" data-trailer-youtube-id="6ZfuNTqbHE8" data-toggle="modal" data-target="#trailer">
+    <h4>Avengers: Infinity War</h4>
+    <img src="https://upload.wikimedia.org/wikipedia/pt/thumb/9/90/Avengers_Infinity_War.jpg/250px-Avengers_Infinity_War.jpg" class="image" width="220" height="342">
+    <div class="middle">
+        <div class="text">"The Avengers and their allies must be willing to sacrifice all in an attempt to defeat the powerful Thanos before his blitz of devastation and ruin puts an end to the universe."</div>
+    </div>
+</div>
+
+    </div>
+  </body>
+</html>
