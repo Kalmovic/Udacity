@@ -6,7 +6,7 @@ This version of the project uses Bootstrap, included in the files, and `srcset`,
 ## How to run the program:
 
 
-- Download the files needed. They are available [here](https://github.com/Kalmovic/Udacity/tree/master/movies), just in case you don't have them. _Be sure all the files are inside the same folder_.
+- Download the files needed. They are available [here](https://github.com/Kalmovic/Udacity/tree/master/Portifolio_Project/Bootstrap_site), just in case you don't have them. _Be sure all the files are inside the same folder_.
 - There you will find these folders:
     - **css**, where the css files can be found.
     - **images**, where the the images that the site uses are located.
