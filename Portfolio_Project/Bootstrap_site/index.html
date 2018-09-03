@@ -7,8 +7,6 @@
     <link href="https://fonts.googleapis.com/css?family=Lato:100,300" rel="stylesheet">
     <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css">
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <script type="text/javascript" src="js/jquery.js"></script>
-    <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <link href="css/style.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Joseph's Portfolio</title>
@@ -23,80 +21,88 @@
           <h1 class="my-name">Joseph Torres</h1>
           <h4 class="contact1">Find me here:
             <!-- Action that opens Web Page -->
-            <a onclick="window.open('https://www.linkedin.com/in/josephtorreskal')" href="#" class="fa fa-linkedin"></a>
-            <a onclick="window.open('https://github.com/Kalmovic')" href="#" class="fa fa-github"></a>
+            <a href="https://www.linkedin.com/in/josephtorreskal" target="_blank" class="fa fa-linkedin"></a>
+            <a href="https://github.com/Kalmovic" target="_blank" class="fa fa-github"></a>
             <!-- Envelope button
-            <a onclick="window.open('https://www.linkedin.com/in/joseph-kaltenecker-644446100/')" href="#" class="fa fa-envelope"></a>
+            <a href="#" class="fa fa-envelope"></a>
             -->
           </h4>
         </div>
       </header>
-      <div class="row">
+      <section class="row">
         <div class="col-md-12">
           <hr class="horizontal-line">
         </div>
-      </div>
-      <div class="row">
+      </section>
+      <section class="row">
         <div class="col-md-12">
           <picture>
             <source media="(min-width: 769px)" srcset="images/meta-tags.jpg">
-            <img src="images/html.jpg" width="1140" height="350" class="img-responsive">
+            <img src="images/html.jpg" width="1140" height="350" class="img-responsive" alt="html image">
           </picture>
         </div>
-      </div>
-      <div class="row">
+      </section>
+      <section class="row">
         <div class="col-md-12">
           <h2>Featured Work</h2>
         </div>
-      </div>
+      </section>
       <div class="row text-center">
         <div class="col-md-4">
-          <!-- HTML change the images at certain moments to save users from wasting  unnecessary bandwidth -->
-          <picture class="links_modals">
-            <source media="(min-width: 769px)" srcset="images/web_code.jpg">
-            <source media="(min-width: 465px)" srcset="images/web_code_medium.jpg">
-            <img class="img-responsive" src="images/web_code_small.jpg" data-toggle="modal" data-target="#project1">
-          </picture>
+          <article id="first">
+            <!-- HTML change the images at certain moments to save users from wasting  unnecessary bandwidth -->
+            <picture class="links_modals">
+              <source media="(min-width: 769px)" srcset="images/web_code.jpg">
+              <source media="(min-width: 465px)" srcset="images/web_code_medium.jpg">
+              <img class="img-responsive" src="images/web_code_small.jpg" data-toggle="modal" data-target="#project1" alt="Project illustration">
+            </picture>
+          </article>
           <h3>Movies Traliers Web Site</h3>
-          <p><a href="http://github.com">Link to project</a></p>
+          <p><a class="button" href="http://github.com"  target="_blank">Link to project</a></p>
         </div>
         <div class="col-md-4">
-          <picture class="links_modals">
-            <source media="(min-width: 769px)" srcset="images/html_blue.png">
-            <source media="(min-width: 465px)" srcset="images/html_blue_medium.jpg">
-            <img src="images/html_blue_small.jpg" class="img-responsive" data-toggle="modal" data-target="#project2">
-          </picture>
+          <article id="second">
+            <picture class="links_modals">
+              <source media="(min-width: 769px)" srcset="images/html_blue.png">
+              <source media="(min-width: 465px)" srcset="images/html_blue_medium.jpg">
+              <img src="images/html_blue_small.jpg" class="img-responsive" data-toggle="modal" data-target="#project2" alt="Project illustration">
+            </picture>
+          </article>
           <h3>Working on it</h3>
-          <p><a href="http://github.com">Link to project</a></p>
+          <p><a class="button" href="http://github.com" target="_blank">Link to project</a></p>
         </div>
         <div class="col-md-4">
-          <picture class="links_modals">
-            <source media="(min-width: 769px)" srcset="images/html_blue.png">
-            <source media="(min-width: 465px)" srcset="images/html_blue_medium.jpg">
-            <img src="images/html_blue_small.jpg" class="img-responsive" data-toggle="modal" data-target="#project2">
-          </picture>
+          <article class="third">
+            <picture class="links_modals">
+              <source media="(min-width: 769px)" srcset="images/html_blue.png">
+              <source media="(min-width: 465px)" srcset="images/html_blue_medium.jpg">
+              <img src="images/html_blue_small.jpg" class="img-responsive" data-toggle="modal" data-target="#project2" alt="Project illustration">
+            </picture>
+          </article>
           <h3>Working on it</h3>
-          <p><a href="http://github.com">Link to project</a></p>
+          <p><a class="button" href="http://github.com" target="_blank">Link to project</a></p>
         </div>
       </div>
-      <div class="row">
+      <br>
+      <!--
+      <section class="row">
         <div class="col-md-12">
           <hr class="contact2 horizontal-line">
         </div>
-      </div>
+      </section>
       <footer class="contact2">
         <p>
             Find me here
         </p>
         <p>
-            <a onclick="window.open('https://www.linkedin.com/in/josephtorreskal')" href="#" class="fa fa-linkedin"></a>
-            <a onclick="window.open('https://github.com/Kalmovic')" href="#" class="fa fa-github"></a>
-            <!-- Envelope button
-            <a onclick="window.open('https://www.linkedin.com/in/joseph-kaltenecker-644446100/')" href="#" class="fa fa-envelope"></a>
-          -->
+            <a href="https://www.linkedin.com/in/josephtorreskal" target="_blank" class="fa fa-linkedin"></a>
+            <a href="https://github.com/Kalmovic" target="_blank" class="fa fa-github"></a>
+            Envelope button
+            <a href="#" class="fa fa-envelope"></a>
+
         </p>
       </footer>
-    </div>
+    </div>  -->
     <!-- Modal 1 -->
     <div class="modal fade" id="project1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -107,7 +113,7 @@
                     <h4 class="modal-title" id="myModalLabel">Movies Trailer</h4>
                 </div>
                 <div class="modal-body">
-                    <img class="img-responsive" src="images/movies.gif">
+                    <img class="img-responsive" src="images/movies.gif" alt="Actual project image">
                     This project has the objective of showing a list of movies and, when selected, to show it's trailer. When you have the cursor over the poster of the movie, it shows the storyline of that film.
                 </div>
                 <div class="modal-footer">
@@ -126,7 +132,7 @@
                     <h4 class="modal-title" id="myModalLabel">Work in Progress</h4>
                 <!--
                 <div class="modal-body">
-                    <img class="img-responsive" src="images/loading.png">
+                    <img class="img-responsive" src="images/" alt="Actual project image">
 
                 </div>
                 -->
@@ -147,7 +153,7 @@
                 </div>
                 <!--
                 <div class="modal-body">
-                    <img class="img-responsive" src="images/loading.png">
+                    <img class="img-responsive" src="images/" alt="Actual project image">
 
                 </div>
                 -->
@@ -157,5 +163,7 @@
             </div>
         </div>
     </div>
+  <script type="text/javascript" src="js/jquery.js"></script>
+  <script type="text/javascript" src="js/bootstrap.min.js"></script>
   </body>
 </html>
