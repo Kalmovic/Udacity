@@ -1,0 +1,132 @@
+*{
+    /*border: 1px solid red !important;*/
+}
+
+body{
+    font-family: 'Lato', sans-serif;
+}
+
+.container{
+    margin-top: 15px;
+}
+
+.my-name{
+    font-size: 60px;
+    font-weight: 300;
+    color: #2d3c49;
+}
+
+.horizontal-line{
+    border: 0;
+    margin-bottom: 15px;
+    height: 2px;
+    background-image: -webkit-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+    background-image: -moz-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+    background-image: -ms-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+    background-image: -o-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+}
+
+.contact1{
+    position: relative;
+    top: 15px;
+}
+
+h2{
+    color: #7d97ad;
+}
+
+.links_modals:hover{
+    cursor: pointer;
+}
+
+.fa {
+    display: inline-block;
+    border-radius: 60px;
+    box-shadow: 0px 0px 2px #888;
+    padding: 0.5em 0.6em;
+    text-align: center;
+    margin: 0.4em;
+}
+
+.fa-linkedin {
+    background: rgba(0,0,255,0.3);
+    color: white;
+}
+
+.fa-github {
+    background: rgba(153,153,153,1);
+    color: white;
+}
+
+.fa-envelope{
+    background: rgba(0,153,0,0.3);
+    color: white;
+}
+
+@media screen and (max-width: 768px){
+    .my-name{
+        position: relative;
+        width: 100%;
+        text-align: center;
+        font-size: 30px;
+        padding-right: 10px;
+    }
+
+    .header-logo{
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100px;
+        height: 100px;
+    }
+
+    .horizontal-line{
+        height: 1px;
+    }
+
+    .contact2{
+        max-width: 100%;
+        font-size: 20px;
+        text-align: center;
+        font-weight: normal;
+        margin-bottom: 5px;
+    }
+    .contact1{
+        display: none;
+    }
+    .fa {
+        display: inline-block;
+        border-radius: 50px;
+        box-shadow: 0px 0px 2px #888;
+        padding: 0.9em 1em;
+        text-align: center;
+        margin: 0.4em;
+    }
+    h2{
+        text-align: center;
+    }
+}
+
+@media screen and (min-width: 769px) and (max-width: 991px){
+    header{
+        display: flex;
+    }
+    .identity{
+        position: relative;
+        width: 100%;
+        text-align: right;
+    }
+    .contact2{
+       display: none;
+    }
+    .header-logo{
+        width: 150px;
+        height: 150px;
+    }
+}
+
+@media screen and (min-width: 769px){
+    .contact2{
+       display: none;
+    }
+}
