@@ -33,12 +33,12 @@ class City(Base):
 class Immobile(Base):
     __tablename__ = 'info'
 
-    streetname =Column(String(80), nullable = False)
+    address =Column(String(250), nullable = False)
     id = Column(Integer, primary_key = True)
-    description = Column(String(250))
-    squarefeet = Column(Integer(10))
-    bedrooms = Column(Integer(8))
-    bathrooms = Column(Integer(8))
+    description = Column(String(100), nullable = False)
+    squarefeet = Column(Integer(10) , nullable = False)
+    bedrooms = Column(Integer(8), nullable = False)
+    bathrooms = Column(Integer(8), nullable = False)
     immobile_id = Column(Integer,ForeignKey('immobile.id'))
     immobile = relationship(Immobile)
     user_id = Column(Integer, ForeignKey('user.id'))
