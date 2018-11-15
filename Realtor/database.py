@@ -39,7 +39,7 @@ class Immobile(Base):
     squarefeet = Column(Integer(10) , nullable = False)
     bedrooms = Column(Integer(8), nullable = False)
     bathrooms = Column(Integer(8), nullable = False)
-    immobile_id = Column(Integer,ForeignKey('immobile.id'))
+    immobile_id = Column(Integer,ForeignKey('city.id'))
     immobile = relationship(Immobile)
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
