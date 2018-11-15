@@ -49,11 +49,12 @@ class Immobile(Base):
     def serialize(self):
        """Return object data in easily serializeable format"""
        return {
-           'name'         : self.name,
+           'address'         : self.address,
            'description'         : self.description,
            'id'         : self.id,
-           'price'         : self.price,
-           'course'         : self.course,
+           'squarefeet'         : self.squarefeet,
+           'bedrooms'         : self.bedrooms,
+           'bathrooms'         : self.bathrooms,
        }
 
 
