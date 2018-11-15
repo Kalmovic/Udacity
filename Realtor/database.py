@@ -62,7 +62,7 @@ class City(Base):
        }
 
 class Immobile(Base):
-    __tablename__ = 'info'
+    __tablename__ = 'immobile'
 
     address =Column(String(250), nullable = False)
     id = Column(Integer, primary_key = True)
@@ -70,8 +70,8 @@ class Immobile(Base):
     squarefeet = Column(Integer(10) , nullable = False)
     bedrooms = Column(Integer(8), nullable = False)
     bathrooms = Column(Integer(8), nullable = False)
-    immobile_id = Column(Integer,ForeignKey('city.id'))
-    immobile = relationship(Immobile)
+    city_id = Column(Integer,ForeignKey('city.id'))
+    city = relationship(Immobile)
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
 
