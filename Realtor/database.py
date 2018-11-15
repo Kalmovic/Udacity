@@ -59,7 +59,7 @@ class Immobile(Base):
 
 
 
-engine = create_engine('sqlite:///restaurantmenuwithusers.db')
+engine = create_engine('sqlite:///immobileswithusers.db')
 
 
 Base.metadata.create_all(engine)
