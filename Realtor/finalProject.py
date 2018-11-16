@@ -262,3 +262,23 @@ def getUserID(email):
         return user.id
     except:
         return None
+
+
+#JSON API to view City Information
+@app.route('/city/JSON')
+def cityJSON():
+    cities = session.query(City).all()
+    return jsonify(city=[r.serialize for r in cities])
+
+@app.route('/city/<int:city_id>/immobile/JSON')
+def cityImmobileJSON(city_id):
+    city = session.query(City).filter_by(id=city_id).one()
+    immobiles = session.query(Immobile).filter_by(
+        city_id=city_id).all()
+    return jsonify(CityImmobiles=[i.serialize for i in items])
+
+@app.route('/city/<int:city_id>/immobile/<int:immobile_id>/JSON')
+def ImmobileInfoJSON(city_id, immobile_id):
+    Immobile_Info = session.query(Immobile).filter_by(id=immobile_id).one()
+    return jsonify(Immobile_Info=Immobile_Info.serialize)
+
