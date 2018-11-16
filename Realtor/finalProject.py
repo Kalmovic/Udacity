@@ -282,3 +282,43 @@ def ImmobileInfoJSON(city_id, immobile_id):
     Immobile_Info = session.query(Immobile).filter_by(id=immobile_id).one()
     return jsonify(Immobile_Info=Immobile_Info.serialize)
 
+@app.route('/')
+@app.route('/city/')
+def showCities():
+    return "This page shows all cities"
+
+@app.route('/city/new/', methods=['GET', 'POST'])
+def newCity():
+    return "This page creates a new city"
+
+@app.route('/city/<int:city_id>/edit/', methods=['GET', 'POST'])
+def editCity(city_id):
+    return "This page edit the selected city"
+
+@app.route('/city/<int:city_id>/delete/', methods=['GET', 'POST'])
+def deleteCity(city_id):
+    return "This page deletes the selected city"
+
+@app.route('/city/<int:city_id>/')
+@app.route('/city/<int:city_id>/immobile/')
+def showImmobile(city_id):
+    return "This page show the immobiles of the selected city"
+
+@app.route('/city/<int:city_id>/immobile/new/', methods=['GET', 'POST'])
+def newImmobile(restaurant_id):
+    return "This page creates a new immobile to the specified city"
+
+@app.route('/city/<int:city_id>/immobile/<int:immobile_id>/edit', methods=['GET', 'POST'])
+def editImmobile(restaurant_id, menu_id):
+    return "This page edits a certain immobile of the selected city"
+
+@app.route('/city/<int:city_id>/immobile/<int:immobile_id>/delete', methods=['GET', 'POST'])
+def deleteMenuItem(restaurant_id, menu_id):
+    return "This page deletes a certain immobile of the selected city"
+
+
+
+
+
+
+
