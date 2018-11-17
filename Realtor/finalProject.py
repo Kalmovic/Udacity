@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, jsonify, url_for, flash
 from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import sessionmaker
-from database_setup import Base, Restaurant, MenuItem, User
+from database import Base, City, Immobile, User
 from flask import session as login_session
 
 from flask.ext.httpauth import HTTPBasicAuth
@@ -19,9 +19,9 @@ import requests
 auth = HTTPBasicAuth()
 app = Flask(__name__)
 
-CLIENT_ID = json.loads(
-    open('client_secrets.json', 'r').read())['web']['client_id']
-APPLICATION_NAME = "Immobiles application"
+#CLIENT_ID = json.loads(
+#    open('client_secrets.json', 'r').read())['web']['client_id']
+#APPLICATION_NAME = "Immobiles application"
 
 # Connect to Database and create database session
 engine = create_engine('sqlite:///immobileswithusers.db',connect_args={'check_same_thread': False})
