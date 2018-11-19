@@ -5,6 +5,7 @@ from database import Base, City, Immobile, User
 
 engine = create_engine('sqlite:///immobileswithusers.db')
 
+
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
@@ -13,7 +14,7 @@ session = DBSession()
 
 city1 = City(name = "Rio de Janeiro")
 
-sesison.add(city1)
+session.add(city1)
 session.commit()
 
 immobileDetails1 = Immobile(address = "Street Ituverava, 1033",
@@ -66,12 +67,12 @@ immobileDetails5 = Immobile(address = "Street Franco Zampari, 111",
 session.add(immobileDetails5)
 session.commit()
 
-city2 = City(name = "São Paulo")
+city2 = City(name = "Sao Paulo")
 
-sesison.add(city2)
+session.add(city2)
 session.commit()
 
-immobileDetails1 = Immobile(address = "Street São João Cabral, 48",
+immobileDetails1 = Immobile(address = "Street Sao Joao Cabral, 48",
                            description = "House",
                            squarefeet = "1808 squarefeet",
                            bedrooms = "3 bedrooms",
@@ -81,7 +82,7 @@ immobileDetails1 = Immobile(address = "Street São João Cabral, 48",
 session.add(immobileDetails1)
 session.commit()
 
-immobileDetails2 = Immobile(address = "Street Camburiú, 413",
+immobileDetails2 = Immobile(address = "Street Camburiu, 413",
                            description = "Apartment",
                            squarefeet = "721 squarefeet",
                            bedrooms = "2 bedrooms",
@@ -91,7 +92,7 @@ immobileDetails2 = Immobile(address = "Street Camburiú, 413",
 session.add(immobileDetails2)
 session.commit()
 
-immobileDetails3 = Immobile(address = "Street Dr. João Jorge Sábino, 270",
+immobileDetails3 = Immobile(address = "Street Dr. Joao Jorge Sabino, 270",
                            description = "House",
                            squarefeet = "1216 squarefeet",
                            bedrooms = "4 bedrooms",
@@ -101,7 +102,7 @@ immobileDetails3 = Immobile(address = "Street Dr. João Jorge Sábino, 270",
 session.add(immobileDetails3)
 session.commit()
 
-immobileDetails4 = Immobile(address = "Avenue Escragnolle Dória, 322",
+immobileDetails4 = Immobile(address = "Avenue Escragnolle Doria, 322",
                            description = "House",
                            squarefeet = "1453 squarefeet",
                            bedrooms = "3 bedrooms",
@@ -111,7 +112,7 @@ immobileDetails4 = Immobile(address = "Avenue Escragnolle Dória, 322",
 session.add(immobileDetails4)
 session.commit()
 
-immobileDetails5 = Immobile(address = "Street José Cola Grossi",
+immobileDetails5 = Immobile(address = "Street Jose Cola Grossi",
                            description = "House",
                            squarefeet = "3993 squarefeet",
                            bedrooms = "4 bedrooms",
@@ -123,10 +124,10 @@ session.commit()
 
 city3 = City(name = "Belo Horizonte")
 
-sesison.add(city3)
+session.add(city3)
 session.commit()
 
-immobileDetails1 = Immobile(address = "Street Coronel Emílio Martins, 140",
+immobileDetails1 = Immobile(address = "Street Coronel Emilio Martins, 140",
                            description = "House",
                            squarefeet = "2271 squarefeet",
                            bedrooms = "4 bedrooms",
@@ -136,7 +137,7 @@ immobileDetails1 = Immobile(address = "Street Coronel Emílio Martins, 140",
 session.add(immobileDetails1)
 session.commit()
 
-immobileDetails2 = Immobile(address = "Street Purús",
+immobileDetails2 = Immobile(address = "Street Purus",
                            description = "House",
                            squarefeet = "624 squarefeet",
                            bedrooms = "2 bedrooms",
@@ -156,7 +157,7 @@ immobileDetails3 = Immobile(address = "Street Deputado Gregoriano Canedo, 698",
 session.add(immobileDetails3)
 session.commit()
 
-immobileDetails4 = Immobile(address = "Street Heitor Sócrates Cardoso, 587",
+immobileDetails4 = Immobile(address = "Street Heitor Socrates Cardoso, 587",
                            description = "House",
                            squarefeet = "1937 squarefeet",
                            bedrooms = "3 bedrooms",
@@ -178,7 +179,7 @@ session.commit()
 
 city4 = City(name = "Porto Alegre")
 
-sesison.add(city4)
+session.add(city4)
 session.commit()
 
 immobileDetails1 = Immobile(address = "Street General Rondon, 123",
@@ -231,9 +232,9 @@ immobileDetails5 = Immobile(address = "Avenue Vicente Monteggia, 586",
 session.add(immobileDetails5)
 session.commit()
 
-city5 = City(name = "Vitória")
+city5 = City(name = "Vitoria")
 
-sesison.add(city5)
+session.add(city5)
 session.commit()
 
 immobileDetails1 = Immobile(address = "Avenue Desembargador Alfredo Cabral, 870",
@@ -246,7 +247,7 @@ immobileDetails1 = Immobile(address = "Avenue Desembargador Alfredo Cabral, 870"
 session.add(immobileDetails1)
 session.commit()
 
-immobileDetails2 = Immobile(address = "Street Avenue Antônio Borges, 186",
+immobileDetails2 = Immobile(address = "Street Avenue Antonio Borges, 186",
                            description = "House",
                            squarefeet = "9343 squarefeet",
                            bedrooms = "4 bedrooms",
@@ -288,10 +289,10 @@ session.commit()
 
 city6 = City(name = "Curitiba")
 
-sesison.add(city6)
+session.add(city6)
 session.commit()
 
-immobileDetails1 = Immobile(address = "Street Capitão Tenente Máris de Barros, 313",
+immobileDetails1 = Immobile(address = "Street Capitao Tenente Maris de Barros, 313",
                            description = "Apartment",
                            squarefeet = "753 squarefeet",
                            bedrooms = "3 bedrooms",
@@ -301,7 +302,7 @@ immobileDetails1 = Immobile(address = "Street Capitão Tenente Máris de Barros,
 session.add(immobileDetails1)
 session.commit()
 
-immobileDetails2 = Immobile(address = "Street Rua Antônio Gasparin, 4911",
+immobileDetails2 = Immobile(address = "Street Rua Antonio Gasparin, 4911",
                            description = "Apartment",
                            squarefeet = "1140 squarefeet",
                            bedrooms = "3 bedrooms",
@@ -321,7 +322,7 @@ immobileDetails3 = Immobile(address = "Avenue Rep. Argentina, 2524",
 session.add(immobileDetails3)
 session.commit()
 
-immobileDetails4 = Immobile(address = "Street Dona Alice Tibiriçá, 611",
+immobileDetails4 = Immobile(address = "Street Dona Alice Tibirica, 611",
                            description = "Apartment",
                            squarefeet = "1593 squarefeet",
                            bedrooms = "3 bedrooms",
@@ -341,14 +342,14 @@ immobileDetails5 = Immobile(address = "Street Gago Coutinho, 45",
 session.add(immobileDetails5)
 session.commit()
 
-city7 = City(name = "Florianópolis")
+city7 = City(name = "Florianopolis")
 
-sesison.add(city7)
+session.add(city7)
 session.commit()
 
-immobileDetails1 = Immobile(address = "Servidão Belo Horizonte, 390",
+immobileDetails1 = Immobile(address = "Servidao Belo Horizonte, 390",
                            description = "House",
-                           squarefeet = "‪645 squarefeet",
+                           squarefeet = "645 squarefeet",
                            bedrooms = "2 bedrooms",
                            bathrooms = "1 bathrooms",
                            city = city7)
@@ -366,9 +367,9 @@ immobileDetails2 = Immobile(address = "Street Manoel Pedro Teixeira, 1",
 session.add(immobileDetails2)
 session.commit()
 
-immobileDetails3 = Immobile(address = "Servidão Sotero José de Farias, 429",
+immobileDetails3 = Immobile(address = "Servidao Sotero Jose de Farias, 429",
                            description = "House",
-                           squarefeet = "‪2152 squarefeet",
+                           squarefeet = "2152 squarefeet",
                            bedrooms = "3 bedrooms",
                            bathrooms = "2 bathrooms",
                            city = city7)
@@ -376,7 +377,7 @@ immobileDetails3 = Immobile(address = "Servidão Sotero José de Farias, 429",
 session.add(immobileDetails3)
 session.commit()
 
-immobileDetails4 = Immobile(address = "João José Adriano, 188",
+immobileDetails4 = Immobile(address = "Joao Jose Adriano, 188",
                            description = "House",
                            squarefeet = "2820 squarefeet",
                            bedrooms = "3 bedrooms",
@@ -386,9 +387,9 @@ immobileDetails4 = Immobile(address = "João José Adriano, 188",
 session.add(immobileDetails4)
 session.commit()
 
-immobileDetails5 = Immobile(address = "Servidão Bons Amigos, 300",
+immobileDetails5 = Immobile(address = "Servidao Bons Amigos, 300",
                            description = "House",
-                           squarefeet = "‪1237 squarefeet",
+                           squarefeet = "1237 squarefeet",
                            bedrooms = "2 bedrooms",
                            bathrooms = "2 bathrooms",
                            city = city7)
@@ -398,10 +399,10 @@ session.commit()
 
 city8 = City(name = "Salvador")
 
-sesison.add(city8)
+session.add(city8)
 session.commit()
 
-immobileDetails1 = Immobile(address = "Street Rua das Azaléias, 184",
+immobileDetails1 = Immobile(address = "Street Rua das Azaleias, 184",
                            description = "House",
                            squarefeet = "4413 squarefeet",
                            bedrooms = "4 bedrooms",
@@ -431,7 +432,7 @@ immobileDetails3 = Immobile(address = "Alameda das Samambaias, 620",
 session.add(immobileDetails3)
 session.commit()
 
-immobileDetails4 = Immobile(address = "Street Ramalho Ortigão, 51",
+immobileDetails4 = Immobile(address = "Street Ramalho Ortigao, 51",
                            description = "House",
                            squarefeet = "4305 squarefeet",
                            bedrooms = "4 bedrooms",
@@ -453,7 +454,7 @@ session.commit()
 
 city9 = City(name = "Gramado")
 
-sesison.add(city9)
+session.add(city9)
 session.commit()
 
 immobileDetails1 = Immobile(address = "Street Leopoldo Geier, 174",
@@ -466,7 +467,7 @@ immobileDetails1 = Immobile(address = "Street Leopoldo Geier, 174",
 session.add(immobileDetails1)
 session.commit()
 
-immobileDetails2 = Immobile(address = "Street João Alfredo Schneider, 792",
+immobileDetails2 = Immobile(address = "Street Joao Alfredo Schneider, 792",
                            description = "House",
                            squarefeet = "3552 squarefeet",
                            bedrooms = "6 bedrooms",
@@ -496,7 +497,7 @@ immobileDetails4 = Immobile(address = "Street Nereu Ramos, 333",
 session.add(immobileDetails4)
 session.commit()
 
-immobileDetails5 = Immobile(address = "Street São Marcos, 30",
+immobileDetails5 = Immobile(address = "Street Sao Marcos, 30",
                            description = "House",
                            squarefeet = "1614 squarefeet",
                            bedrooms = "3 bedrooms",
@@ -508,7 +509,7 @@ session.commit()
 
 city10 = City(name = "Recife")
 
-sesison.add(city10)
+session.add(city10)
 session.commit()
 
 immobileDetails1 = Immobile(address = "Street Ipiniras, 118",
@@ -521,7 +522,7 @@ immobileDetails1 = Immobile(address = "Street Ipiniras, 118",
 session.add(immobileDetails1)
 session.commit()
 
-immobileDetails2 = Immobile(address = "Street Capitão Araújo Miranda, 178",
+immobileDetails2 = Immobile(address = "Street Capitao Araujo Miranda, 178",
                            description = "House",
                            squarefeet = "1808 squarefeet",
                            bedrooms = "4 bedrooms",
@@ -531,7 +532,7 @@ immobileDetails2 = Immobile(address = "Street Capitão Araújo Miranda, 178",
 session.add(immobileDetails2)
 session.commit()
 
-immobileDetails3 = Immobile(address = "Street Jáder de Andrade, 125",
+immobileDetails3 = Immobile(address = "Street Jader de Andrade, 125",
                            description = "House",
                            squarefeet = "4305 squarefeet",
                            bedrooms = "4 bedrooms",
@@ -541,7 +542,7 @@ immobileDetails3 = Immobile(address = "Street Jáder de Andrade, 125",
 session.add(immobileDetails3)
 session.commit()
 
-immobileDetails4 = Immobile(address = "Street Ambrósio Machado, 210",
+immobileDetails4 = Immobile(address = "Street Ambrosio Machado, 210",
                            description = "House",
                            squarefeet = "753 squarefeet",
                            bedrooms = "3 bedrooms",
@@ -551,7 +552,7 @@ immobileDetails4 = Immobile(address = "Street Ambrósio Machado, 210",
 session.add(immobileDetails4)
 session.commit()
 
-immobileDetails5 = Immobile(address = "Street Itacajá, 66",
+immobileDetails5 = Immobile(address = "Street Itacaja, 66",
                            description = "House",
                            squarefeet = "4574 squarefeet",
                            bedrooms = "4 bedrooms",
