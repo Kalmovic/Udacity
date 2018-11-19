@@ -67,9 +67,9 @@ class Immobile(Base):
     address =Column(String(250), nullable = False)
     id = Column(Integer, primary_key = True)
     description = Column(String(100), nullable = False)
-    squarefeet = Column(Integer, nullable = False)
-    bedrooms = Column(Integer, nullable = False)
-    bathrooms = Column(Integer, nullable = False)
+    squarefeet = Column(String(20), nullable = False)
+    bedrooms = Column(String(20), nullable = False)
+    bathrooms = Column(String(20), nullable = False)
     city_id = Column(Integer,ForeignKey('city.id'))
     city = relationship(City)
     user_id = Column(Integer, ForeignKey('user.id'))
@@ -90,7 +90,7 @@ class Immobile(Base):
 
 
 
-engine = create_engine('sqlite:///immobileswithusers.db')
+engine = create_engine('sqlite:///restaurantmenuwithusers.db')
 
 
 Base.metadata.create_all(engine)
