@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+<h1>Cities</h1>
+
+<a href="{{url_for('newCity')}}">
+    <button class="btn btn-default" id="new-restaurant">
+        <span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span>Add City
+    </button>
+</a>
+
+{% for city in cities %}
+<a href = "{{url_for('showImmobile', city_id = city.id)}}">
+    <h3>{{city.name}}</h3>
+    <a href='{{url_for('editCity', city_id = city.id) }}'>Edit
+    </a>
+    </br>
+    <a href = '{{url_for('deleteCity', city_id = city.id) }}'>Delete</a>
+    </a>
+{% endfor %}
+</body>
+</html>

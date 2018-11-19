@@ -275,7 +275,7 @@ def cityImmobileJSON(city_id):
     city = session.query(City).filter_by(id=city_id).one()
     immobiles = session.query(Immobile).filter_by(
         city_id=city_id).all()
-    return jsonify(CityImmobiles=[i.serialize for i in items])
+    return jsonify(CityImmobiles=[i.serialize for i in immobiles])
 
 @app.route('/city/<int:city_id>/immobile/<int:immobile_id>/JSON')
 def ImmobileInfoJSON(city_id, immobile_id):
@@ -285,40 +285,114 @@ def ImmobileInfoJSON(city_id, immobile_id):
 @app.route('/')
 @app.route('/city/')
 def showCities():
-    return "This page shows all cities"
+    #cities = session.query(City).order_by(asc(City.name))
+    cities = session.query(City).all()
+    return render_template('admCity.html', cities=cities)
+    #return "This page shows all cities"
 
 @app.route('/city/new/', methods=['GET', 'POST'])
 def newCity():
-    return "This page creates a new city"
+    if request.method == 'POST':
+        newcity = City(name=request.form['name'])
+        session.add(newcity)
+        session.commit()
+        return redirect(url_for('showCities'))
+    else:
+        return render_template('newCity.html')
+    #return "This page creates a new city"
 
 @app.route('/city/<int:city_id>/edit/', methods=['GET', 'POST'])
 def editCity(city_id):
-    return "This page edit the selected city"
+    editedCity = session.query(City).filter_by(id=city_id).one()
+    #if 'username' not in login_session:
+    #    return redirect('/login')
+    #if editedRestaurant.user_id != login_session['user_id']:
+    #    return "<script>function myFunction() {alert('You are not authorized to edit this restaurant. Please create your own restaurant in order to edit.');}</script><body onload='myFunction()'>"
+    if request.method == 'POST':
+        if request.form['name']:
+            editedCity.name = request.form['name']
+            #flash('Restaurant Successfully Edited %s' % editedRestaurant.name)
+            return redirect(url_for('showCities'))
+    else:
+        return render_template('editedcity.html', city=editedCity)
+    #return "This page edit the selected city"
 
 @app.route('/city/<int:city_id>/delete/', methods=['GET', 'POST'])
 def deleteCity(city_id):
-    return "This page deletes the selected city"
+    cityDelete = session.query(City).filter_by(id=city_id).one()
+    if request.method == 'POST':
+        session.delete(cityDelete)
+        session.commit()
+        return redirect(url_for('showCities'))#, city_id=city_id))
+    else:
+        return render_template('deleteCity.html', city=cityDelete)
+    #return "This page deletes the selected city"
 
 @app.route('/city/<int:city_id>/')
 @app.route('/city/<int:city_id>/immobile/')
 def showImmobile(city_id):
-    return "This page show the immobiles of the selected city"
+    city = session.query(City).filter_by(id=city_id).one()
+    imms = session.query(Immobile).filter_by(city_id = city_id)
+    return render_template('immobilesCity.html', city = city, imms = imms)
+    #return "This page show the immobiles of the selected city"
 
 @app.route('/city/<int:city_id>/immobile/new/', methods=['GET', 'POST'])
-def newImmobile(restaurant_id):
-    return "This page creates a new immobile to the specified city"
+def newImmobile(city_id):
+    if request.method == 'POST':
+        newImm = Immobile(address=request.form['address'],
+                          description=request.form['description'],
+                          squarefeet=request.form['squarefeet'],
+                          bedrooms=request.form['bedrooms'],
+                          bathrooms=request.form['bathrooms'],
+                          city_id = city_id)
+        session.add(newImm)
+        session.commit()
+        return redirect(url_for('showImmobile', city_id=city_id))
+    else:
+        return render_template('newimmobile.html', city_id=city_id)
+    #return "This page creates a new immobile to the specified city"
 
 @app.route('/city/<int:city_id>/immobile/<int:immobile_id>/edit', methods=['GET', 'POST'])
-def editImmobile(restaurant_id, menu_id):
-    return "This page edits a certain immobile of the selected city"
+def editImmobile(city_id, immobile_id):
+    editedImmobile = session.query(Immobile).filter_by(id=immobile_id).one()
+    city = session.query(City).filter_by(id=city_id).one()
+    if request.method == 'POST':
+        if request.form['address']:
+            editedItem.name = request.form['address']
+        if request.form['description']:
+            editedItem.description = request.form['description']
+        if request.form['squarefeet']:
+            editedItem.price = request.form['squarefeet']
+        if request.form['bedrooms']:
+            editedItem.course = request.form['bedrooms']
+        if request.form['bathrooms']:
+            editedItem.course = request.form['bathrooms']
+        session.add(editedImmobile)
+        session.commit()
+        return redirect(url_for('showImmobile', city_id=city_id))
+    else:
+        return render_template('editedimmobile.html', city_id=city_id, immobile_id=immobile_id, item=editedImmobile)
+    #return "This page edits a certain immobile of the selected city"
 
 @app.route('/city/<int:city_id>/immobile/<int:immobile_id>/delete', methods=['GET', 'POST'])
-def deleteMenuItem(restaurant_id, menu_id):
-    return "This page deletes a certain immobile of the selected city"
+def deleteImmobile(city_id, immobile_id):
+    #if 'username' not in login_session:
+    #    return redirect('/login')
+    city = session.query(City).filter_by(id=city_id).one()
+    deletedimmobile = session.query(Immobile).filter_by(id=immobile_id).one()
+    #if login_session['user_id'] != restaurant.user_id:
+    #    return "<script>function myFunction() {alert('You are not authorized to delete menu items to this restaurant. Please create your own restaurant in order to delete items.');}</script><body onload='myFunction()'>"
+    if request.method == 'POST':
+        session.delete(deletedimmobile)
+        session.commit()
+        #flash('Menu Item Successfully Deleted')
+        return redirect(url_for('showImmobile', city_id=city_id))
+    else:
+        return render_template('deletedimmobile.html', city_id=city_id, item=deletedimmobile)
+    #return "This page deletes a certain immobile of the selected city"
 
 
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'
     app.debug = True
     app.run(host='0.0.0.0', port=8000)
-
