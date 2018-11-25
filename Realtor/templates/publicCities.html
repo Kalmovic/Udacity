@@ -9,14 +9,32 @@
         <link href="static/bootstrap.min.css" rel="stylesheet">
         <link href="static/style.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
         <title>Realtor Joseph</title>
     </head>
     <body>
         <div class="container">
-            <video autoplay muted loop class="header">
-                <source class="backheader" src="static/house_rooms.mp4" type="video/mp4"></video>
-                <div id="text-intro"><p>Your next home is one click away!</p></div>
+            <div class="carousel slide carousel-fade" data-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="static/headerimage1.jpg" class="img-responsive">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="static/headerimage2.jpg" class="img-responsive">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="static/headerimage3.jpg" class="img-responsive">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="static/headerimage4.jpg" class="img-responsive">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="static/headerimage5.jpg" class="img-responsive">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="static/headerimage6.jpg" class="img-responsive">
+                    </div>
+                </div>
+            </div>
             <br>
             <div class="col-xs-12">
                 <p class="select-city">Select a city:</p>
@@ -44,5 +62,8 @@
                 {% endfor %}
 
         </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
     </body>
 </html>

@@ -1,12 +1,9 @@
-* {
-    border: 1px solid red !important;
-    font-family: 'Lato', sans-serif;
-}
+
 
 body, html{
     background-color: #f5f6fa;
     margin: 0%;
-
+    font-family: 'Lato', sans-serif;
 }
 
 img, video{
@@ -43,7 +40,7 @@ section{
     display:block;
 }
 
-.buttonlogin {
+.buttonlogin {     
     background-color: transparent;
     background-repeat:no-repeat;
     border: transparent;
@@ -51,7 +48,7 @@ section{
     color: #bdc3c7;
     cursor:pointer;
     overflow: hidden;
-    padding: 10px 50px 10px 50px;
+    padding: 10px 50px 10px 50px; 
     outline: none;
     opacity: 0.7;
 }
@@ -100,7 +97,6 @@ p{
 
 .info{
     padding-bottom: 0;
-    width: 50%;
 }
 
 .cities{
