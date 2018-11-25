@@ -3,7 +3,7 @@ from sqlalchemy.orm import sessionmaker
 
 from database import Base, City, Immobile, User
 
-engine = create_engine('sqlite:///immobileswithusers.db')
+engine = create_engine('sqlite:///immobileswithcitiespics.db')
 
 
 Base.metadata.bind = engine

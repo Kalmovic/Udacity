@@ -1,0 +1,16 @@
+{% include "main.html" %}
+
+<div class="row head">
+    <div class="col-md-12 text-right">
+        {%if 'username' not in session %}
+        <a href="{{url_for('showLogin')}}">
+            <button class="buttonlogin">Log in</button>
+        </a>
+        {% endif %}
+        {%if 'username' in session %}
+        <a href="{{url_for('disconnect')}}">
+            <button class="buttonlogoff">Log off</button>
+        </a>
+        {% endif %}
+    </div>
+</div>

@@ -6,7 +6,7 @@ from flask import session as login_session
 
 from flask.ext.httpauth import HTTPBasicAuth
 import json
-
+from flask_bootstrap import Bootstrap
 import random
 import string
 from oauth2client.client import flow_from_clientsecrets
@@ -18,10 +18,11 @@ import requests
 
 auth = HTTPBasicAuth()
 app = Flask(__name__)
+Bootstrap(app)
 
-#CLIENT_ID = json.loads(
-#    open('client_secrets.json', 'r').read())['web']['client_id']
-#APPLICATION_NAME = "Immobiles application"
+CLIENT_ID = json.loads(
+    open('client_secrets.json', 'r').read())['web']['client_id']
+APPLICATION_NAME = "Immobiles application"
 
 # Connect to Database and create database session
 engine = create_engine('sqlite:///immobileswithusers.db',connect_args={'check_same_thread': False})
@@ -240,6 +241,27 @@ def gdisconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
 
+# Disconnect based on provider
+@app.route('/disconnect')
+def disconnect():
+    if 'provider' in login_session:
+        if login_session['provider'] == 'google':
+            gdisconnect()
+            del login_session['gplus_id']
+            del login_session['access_token']
+        if login_session['provider'] == 'facebook':
+            fbdisconnect()
+            del login_session['facebook_id']
+        del login_session['username']
+        del login_session['email']
+        del login_session['picture']
+        del login_session['user_id']
+        del login_session['provider']
+        flash("You have successfully been logged out.")
+        return redirect(url_for('showCities'))
+    else:
+        flash("You were not logged in")
+        return redirect(url_for('showRestaurants'))
 
 # User Helper Functions
 def createUser(login_session):
@@ -287,6 +309,9 @@ def ImmobileInfoJSON(city_id, immobile_id):
 def showCities():
     #cities = session.query(City).order_by(asc(City.name))
     cities = session.query(City).all()
+    if 'username' not in login_session:
+        #return render_template('publicCities.html', cities=cities)
+        return render_template('publicCities.html', cities=cities)
     return render_template('admCity.html', cities=cities)
     #return "This page shows all cities"
 

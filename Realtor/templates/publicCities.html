@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet">
+        <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css">
+        <link href="static/bootstrap.min.css" rel="stylesheet">
+        <link href="static/style.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+        <title>Realtor Joseph</title>
+    </head>
+    <body>
+        <div class="container">
+            <video autoplay muted loop class="header">
+                <source class="backheader" src="static/house_rooms.mp4" type="video/mp4"></video>
+                <div id="text-intro"><p>Your next home is one click away!</p></div>
+            <br>
+            <div class="col-xs-12">
+                <p class="select-city">Select a city:</p>
+                <br>
+            </div>
+
+                {% for city in cities %}
+                <section class="col-md-6 panel">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <picture>
+                                <a href="{{url_for('showImmobile', city_id = city.id)}}">
+                                    <img class="" src="{{url_for('static', filename='immobile.jpg')}}">
+                                </a>
+                            </picture>
+                        </div>
+                        <div class="col-md-3 panel info">
+                            <article>
+                                <h3 class="city-list">{{city.name}}</h3>
+                                <h4>3 houses</h4>
+                            </article>
+                        </div>
+                    </div>
+                </section>
+                {% endfor %}
+
+        </div>
+    </body>
+</html>

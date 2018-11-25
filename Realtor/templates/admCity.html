@@ -1,7 +1,6 @@
-<!DOCTYPE html>
-<html>
-
-<body>
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
 
 <h1>Cities</h1>
 
@@ -20,5 +19,5 @@
     <a href = '{{url_for('deleteCity', city_id = city.id) }}'>Delete</a>
     </a>
 {% endfor %}
-</body>
-</html>
+
+{% endblock %}

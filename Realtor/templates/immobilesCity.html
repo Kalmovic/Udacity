@@ -2,6 +2,8 @@
 
 <body>
 
+<a href="{{url_for('showCities')}}">Show all cities</a>
+
 <h1>{{city.name}}</h1>
 
 <a href="{{url_for('newImmobile', city_id = city.id) }}">Create new immobile</a>
