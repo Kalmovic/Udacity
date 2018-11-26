@@ -64,7 +64,7 @@ class City(Base):
 class Immobile(Base):
     __tablename__ = 'immobile'
 
-    address =Column(String(250), nullable = False)
+    address = Column(String(250), nullable = False)
     id = Column(Integer, primary_key = True)
     description = Column(String(100), nullable = False)
     squarefeet = Column(String(20), nullable = False)
@@ -74,7 +74,6 @@ class Immobile(Base):
     city = relationship(City)
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
-
 
     @property
     def serialize(self):
@@ -90,7 +89,7 @@ class Immobile(Base):
 
 
 
-engine = create_engine('sqlite:///restaurantmenuwithusers.db')
+engine = create_engine('sqlite:///immobilesuser.db')
 
 
 Base.metadata.create_all(engine)

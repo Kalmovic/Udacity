@@ -3,7 +3,10 @@ from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import sessionmaker
 from database import Base, City, Immobile, User
 from flask import session as login_session
+import httplib2
 
+import sys
+import codecs
 from flask.ext.httpauth import HTTPBasicAuth
 import json
 from flask_bootstrap import Bootstrap
@@ -22,15 +25,14 @@ Bootstrap(app)
 
 CLIENT_ID = json.loads(
     open('client_secrets.json', 'r').read())['web']['client_id']
-APPLICATION_NAME = "Immobiles application"
+APPLICATION_NAME = "Realtor City Immobiles"
 
 # Connect to Database and create database session
-engine = create_engine('sqlite:///immobileswithusers.db',connect_args={'check_same_thread': False})
+engine = create_engine('sqlite:///immobilesuser.db',connect_args={'check_same_thread': False})
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
-
 
 # Create anti-forgery state token
 @app.route('/login')
@@ -307,8 +309,8 @@ def ImmobileInfoJSON(city_id, immobile_id):
 @app.route('/')
 @app.route('/city/')
 def showCities():
-    #cities = session.query(City).order_by(asc(City.name))
-    cities = session.query(City).all()
+    cities = session.query(City).order_by(asc(City.name))
+    #cities = session.query(City).all()
     if 'username' not in login_session:
         #return render_template('publicCities.html', cities=cities)
         return render_template('publicCities.html', cities=cities)
@@ -357,9 +359,21 @@ def deleteCity(city_id):
 @app.route('/city/<int:city_id>/immobile/')
 def showImmobile(city_id):
     city = session.query(City).filter_by(id=city_id).one()
-    imms = session.query(Immobile).filter_by(city_id = city_id)
-    return render_template('immobilesCity.html', city = city, imms = imms)
+    imms = session.query(Immobile).filter_by(city_id = city_id).all()
+    if 'username' not in login_session:
+        return render_template('publicImmoCity.html', city = city, immobile = imms)
     #return "This page show the immobiles of the selected city"
+    return render_template('admImmoCity.html', city = city, imms = imms)
+
+@app.route('/city/<int:city_id>/immobile/<int:immobile_id>')
+def showImmobileDetails(city_id, immobile_id):
+    selectedCity = session.query(City).filter_by(id=city_id).one()
+    selectedImmobile = session.query(Immobile).filter_by(id=immobile_id).one()
+    if 'username' not in login_session:
+        #return render_template('publicCities.html', cities=cities)
+        return render_template('publicImmoDetails.html', city=selectedCity, imm=selectedImmobile)
+    return render_template('admImmoDetails.html', city=selectedCity, imm=selectedImmobile)
+    
 
 @app.route('/city/<int:city_id>/immobile/new/', methods=['GET', 'POST'])
 def newImmobile(city_id):
@@ -383,15 +397,15 @@ def editImmobile(city_id, immobile_id):
     city = session.query(City).filter_by(id=city_id).one()
     if request.method == 'POST':
         if request.form['address']:
-            editedItem.name = request.form['address']
+            editedImmobile.name = request.form['address']
         if request.form['description']:
-            editedItem.description = request.form['description']
+            editedImmobile.description = request.form['description']
         if request.form['squarefeet']:
-            editedItem.price = request.form['squarefeet']
+            editedImmobile.price = request.form['squarefeet']
         if request.form['bedrooms']:
-            editedItem.course = request.form['bedrooms']
+            editedImmobile.course = request.form['bedrooms']
         if request.form['bathrooms']:
-            editedItem.course = request.form['bathrooms']
+            editedImmobile.course = request.form['bathrooms']
         session.add(editedImmobile)
         session.commit()
         return redirect(url_for('showImmobile', city_id=city_id))
