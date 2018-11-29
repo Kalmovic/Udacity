@@ -14,28 +14,37 @@
     </head>
     <body>
         <div class="container">
-            <h1 class="text-center">{{city.name}}</h1>
+                <div class="col-md-11 col-md-offset-1 padding-none">
+                        <h1>{{ city.name }}
+                        <figure class="creator">
+                            <img src="{{creator.picture}}">
+                            <figcaption>{{creator.name}}</figcaption>
+                        </figure>
+                        </h1>
+            
+                </div>
             {% for i in immobile %}
-                <section class="col-md-6 text-center">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <picture>
-                                <a href="{{url_for('showImmobileDetails', city_id=city.id, immobile_id = city.id)}}">
-                                    <img class="" src="{{url_for('static', filename='immobile.jpg')}}">
-                                </a>
-                            </picture>
-                        </div>
-                        <div class="col-md-6">
-                            
-                                {{i.address}}<br>
-                                {{i.description}}<br>
-                                {{i.squarefeet}}<br>
-                                {{i.bedrooms}}<br>
-                                {{i.bathrooms}}<br>        
-                        </div>
-                        
+                <div class="row">
+                    <picture class="col-md-4 text-center">
+                        <img height="200" src="{{url_for('static', filename='immobile.jpg')}}">
+                    </picture>
+                    <div class="col-md-4">
+                        {{i.address}}<br>
+                        {{i.description}}<br>
+                        {{i.squarefeet}}<br>
+                        {{i.bedrooms}}<br>
+                        {{i.bathrooms}}<br>
+                        <a href="{{url_for('editImmobile', city_id = city.id, immobile_id = i.id)}}">Edit</a>
+                        <br>
+                        <a href = "{{url_for('deleteImmobile', city_id = city.id, immobile_id = i.id)}}">Delete</a>        
                     </div>
-                </section>
+                    <div class="col-md-4">
+                            <div>
+                                <iframe width="100%" height="200px" src="https://maps.google.com/maps?width=100%&amp;&amp;hl=en&amp;q={{i.address}}&amp;ie=UTF8&amp;t=&amp;z=14&amp;iwloc=B&amp;output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+                            </div>
+                    </div>
+                </div>
+                <br>
             {% endfor %} 
         </div>
     </body>

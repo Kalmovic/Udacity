@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker
 from database import Base, City, Immobile, User
 from flask import session as login_session
 import httplib2
-
+import os
 import sys
 import codecs
 from flask.ext.httpauth import HTTPBasicAuth
@@ -336,6 +336,7 @@ def newCity():
         newcity = City(name=request.form['name'], user_id=login_session['user_id'])
         session.add(newcity)
         session.commit()
+        flash('New City %s Successfully Created' % newCity.name)
         return redirect(url_for('showCities'))
     else:
         return render_template('newCity.html')
@@ -352,7 +353,7 @@ def editCity(city_id):
     if request.method == 'POST':
         if request.form['name']:
             editedCity.name = request.form['name']
-            #flash('Restaurant Successfully Edited %s' % editedRestaurant.name)
+            flash('City Successfully Edited %s' % editedCity.name)
             return redirect(url_for('showCities'))
     else:
         return render_template('editedcity.html', city=editedCity)
@@ -369,6 +370,7 @@ def deleteCity(city_id):
     if request.method == 'POST':
         session.delete(cityDelete)
         session.commit()
+        flash('%s Successfully Deleted' % cityDelete.name)
         return redirect(url_for('showCities'))#, city_id=city_id))
     else:
         return render_template('deleteCity.html', city=cityDelete)
@@ -378,11 +380,12 @@ def deleteCity(city_id):
 @app.route('/city/<int:city_id>/immobile/')
 def showImmobile(city_id):
     city = session.query(City).filter_by(id=city_id).one()
+    creator = getUserInfo(city.user_id)
     imms = session.query(Immobile).filter_by(city_id = city_id).all()
-    if 'username' not in login_session:
-        return render_template('publicImmoCity.html', city = city, immobile = imms)
+    if 'username' not in login_session or creator.id != login_session['user_id']:
+        return render_template('publicImmoCity.html', city = city, immobile = imms, creator=creator)
     else:
-        return render_template('admImmoCity.html', city = city, imms = imms)
+        return render_template('admImmoCity.html', city = city, imms = imms, creator=creator)
 
 @app.route('/city/<int:city_id>/immobile/<int:immobile_id>')
 def showImmobileDetails(city_id, immobile_id):
@@ -411,6 +414,7 @@ def newImmobile(city_id):
                           city_id = city_id)
         session.add(newImm)
         session.commit()
+        flash('New Immobile %s Successfully Created' % (newImm.name))
         return redirect(url_for('showImmobile', city_id=city_id))
     else:
         return render_template('newimmobile.html', city_id=city_id)
@@ -424,20 +428,23 @@ def editImmobile(city_id, immobile_id):
     city = session.query(City).filter_by(id=city_id).one()
     if login_session['user_id'] != city.user_id:
         print "\ncity.user_id: %s\n" % city.user_id
+        return redirect(url_for('showImmobile', city_id=city_id))
         return "<script>function myFunction() {alert('You are not authorized to edit immobiles to this city. Please create your own city in order to edit immobiles.');}</script><body onload='myFunction()'>"
+        
     if request.method == 'POST':
         if request.form['address']:
             editedImmobile.name = request.form['address']
         if request.form['description']:
             editedImmobile.description = request.form['description']
         if request.form['squarefeet']:
-            editedImmobile.price = request.form['squarefeet']
+            editedImmobile.squarefeet = request.form['squarefeet']
         if request.form['bedrooms']:
-            editedImmobile.course = request.form['bedrooms']
+            editedImmobile.bathrooms = request.form['bedrooms']
         if request.form['bathrooms']:
-            editedImmobile.course = request.form['bathrooms']
+            editedImmobile.bedrooms = request.form['bathrooms']
         session.add(editedImmobile)
         session.commit()
+        flash('Immobile Successfully Edited')
         return redirect(url_for('showImmobile', city_id=city_id))
     else:
         return render_template('editedimmobile.html', city_id=city_id, immobile_id=immobile_id, item=editedImmobile)
@@ -454,7 +461,7 @@ def deleteImmobile(city_id, immobile_id):
     if request.method == 'POST':
         session.delete(deletedimmobile)
         session.commit()
-        #flash('Menu Item Successfully Deleted')
+        flash('Menu Item Successfully Deleted')
         return redirect(url_for('showImmobile', city_id=city_id))
     else:
         return render_template('deletedimmobile.html', city_id=city_id, item=deletedimmobile)

@@ -14,33 +14,56 @@
     </head>
     <body>
         <div class="container">
-            <h1 class="text-center">{{city.name}}</h1>
-            <a href="{{url_for('showCities')}}">Show all cities</a>
-            <a href="{{url_for('newImmobile', city_id = city.id) }}">Create new immobile</a>
+                <div class="row padding-none header-city">
+                    <div class="col-md-10">
+                        <h1>{{ city.name }}
+                    </div>
+                    <div class="col-md-2">
+                        <figure class="creator text-center">
+                            <img src="{{creator.picture}}" class="img-circle">
+                            <h5>{{creator.name}}</h5>
+                        </figure>
+                        </h1>
+                    </div>
+                </div>
+                <div class = 'flash'>
+                        {% with messages = get_flashed_messages() %}
+                {% if messages %}
+          
+                  <ul>
+                  {% for message in messages %}
+                      <li> <strong> {{ message }} </strong> </li>
+                  {% endfor %}
+                  </ul>
+                  {% endif %}
+                  {% endwith %}
+                  </div>
+                    <a href="{{url_for('showCities')}}">Show all cities</a>
+                    <a href="{{url_for('newImmobile', city_id = city.id) }}">Create new immobile</a>
 
-            {% for i in imms %}
-            <div class="row">
-                <picture class="col-md-4 text-center">
-                    <img height="200" src="{{url_for('static', filename='immobile.jpg')}}">
-                </picture>
-                <div class="col-md-4">
-                    {{i.address}}<br>
-                    {{i.description}}<br>
-                    {{i.squarefeet}}<br>
-                    {{i.bedrooms}}<br>
-                    {{i.bathrooms}}<br>
-                    <a href="{{url_for('editImmobile', city_id = city.id, immobile_id = i.id)}}">Edit</a>
-                    <br>
-                    <a href = "{{url_for('deleteImmobile', city_id = city.id, immobile_id = i.id)}}">Delete</a>        
-                </div>
-                <div class="col-md-4">
-                        <div>
-                            <iframe width="100%" height="200px" src="https://maps.google.com/maps?width=100%&amp;&amp;hl=en&amp;q={{i.address}}&amp;ie=UTF8&amp;t=&amp;z=14&amp;iwloc=B&amp;output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+                    {% for i in imms %}
+                    <div class="row">
+                        <picture class="col-md-4 text-center">
+                            <img height="200" src="{{url_for('static', filename='immobile.jpg')}}">
+                        </picture>
+                        <div class="col-md-4">
+                            {{i.address}}<br>
+                            {{i.description}}<br>
+                            {{i.squarefeet}}<br>
+                            {{i.bedrooms}}<br>
+                            {{i.bathrooms}}<br>
+                            <a href="{{url_for('editImmobile', city_id = city.id, immobile_id = i.id)}}">Edit</a>
+                            <br>
+                            <a href = "{{url_for('deleteImmobile', city_id = city.id, immobile_id = i.id)}}">Delete</a>        
                         </div>
-                </div>
-            </div>
-            <br>
-            {% endfor %} 
+                        <div class="col-md-4">
+                                <div>
+                                    <iframe width="100%" height="200px" src="https://maps.google.com/maps?width=100%&amp;&amp;hl=en&amp;q={{i.address}}&amp;ie=UTF8&amp;t=&amp;z=14&amp;iwloc=B&amp;output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+                                </div>
+                        </div>
+                    </div>
+                    <br>
+                    {% endfor %} 
         </div>
     </body>
 </html>
