@@ -41,8 +41,9 @@ class User(Base):
         #Invalid Token
         return None
       user_id = data['id']
-      return user_id
-'''
+      return user_id    '''
+
+
 
 class City(Base):
     __tablename__ = 'city'
@@ -58,7 +59,7 @@ class City(Base):
        return {
            'name'         : self.name,
            'id'           : self.id,
-           'user_id'      : self.user_id
+           'user_id'      : self.user_id,
        }
 
 class Immobile(Base):
@@ -85,6 +86,7 @@ class Immobile(Base):
            'squarefeet'         : self.squarefeet,
            'bedrooms'         : self.bedrooms,
            'bathrooms'         : self.bathrooms,
+           'user_id'      : self.user_id,
        }
 
 

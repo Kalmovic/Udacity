@@ -24,7 +24,7 @@ app = Flask(__name__)
 Bootstrap(app)
 
 CLIENT_ID = json.loads(
-    open('client_secrets.json', 'r').read())['web']['client_id']
+    open('g_client_secrets.json', 'r').read())['web']['client_id']
 APPLICATION_NAME = "Realtor City Immobiles"
 
 # Connect to Database and create database session
@@ -33,6 +33,14 @@ Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
+
+@auth.verify_password
+def verify_password(username, password):
+    user = session.query(User).filter_by(username = username).first()
+    if not user or not user.verify_password(password):
+        return False
+    g.user = user
+    return True
 
 # Create anti-forgery state token
 @app.route('/login')
@@ -106,6 +114,7 @@ def fbconnect():
     if not user_id:
         user_id = createUser(login_session)
     login_session['user_id'] = user_id
+    print "User ID: %s" % user_id
 
     #edit later
     output = ''
@@ -142,7 +151,7 @@ def gconnect():
 
     try:
         # Upgrade the authorization code into a credentials object
-        oauth_flow = flow_from_clientsecrets('client_secrets.json', scope='')
+        oauth_flow = flow_from_clientsecrets('g_client_secrets.json', scope='')
         oauth_flow.redirect_uri = 'postmessage'
         credentials = oauth_flow.step2_exchange(code)
     except FlowExchangeError:
@@ -209,6 +218,7 @@ def gconnect():
     if not user_id:
         user_id = createUser(login_session)
     login_session['user_id'] = user_id
+    print "User Google: %s" % user_id
 
     output = ''
     output += '<h1>Welcome, '
@@ -263,9 +273,10 @@ def disconnect():
         return redirect(url_for('showCities'))
     else:
         flash("You were not logged in")
-        return redirect(url_for('showRestaurants'))
+        return redirect(url_for('showCities'))
 
 # User Helper Functions
+@auth.verify_password
 def createUser(login_session):
     newUser = User(name=login_session['username'], email=login_session[
                    'email'], picture=login_session['picture'])
@@ -312,15 +323,17 @@ def showCities():
     cities = session.query(City).order_by(asc(City.name))
     #cities = session.query(City).all()
     if 'username' not in login_session:
-        #return render_template('publicCities.html', cities=cities)
         return render_template('publicCities.html', cities=cities)
-    return render_template('admCity.html', cities=cities)
+    else:
+        return render_template('admCity.html', cities=cities)
     #return "This page shows all cities"
 
 @app.route('/city/new/', methods=['GET', 'POST'])
 def newCity():
+    if 'username' not in login_session:
+        return redirect('/login')
     if request.method == 'POST':
-        newcity = City(name=request.form['name'])
+        newcity = City(name=request.form['name'], user_id=login_session['user_id'])
         session.add(newcity)
         session.commit()
         return redirect(url_for('showCities'))
@@ -331,10 +344,11 @@ def newCity():
 @app.route('/city/<int:city_id>/edit/', methods=['GET', 'POST'])
 def editCity(city_id):
     editedCity = session.query(City).filter_by(id=city_id).one()
-    #if 'username' not in login_session:
-    #    return redirect('/login')
-    #if editedRestaurant.user_id != login_session['user_id']:
-    #    return "<script>function myFunction() {alert('You are not authorized to edit this restaurant. Please create your own restaurant in order to edit.');}</script><body onload='myFunction()'>"
+    if 'username' not in login_session:
+        return redirect('/login')
+    if editedCity.user_id != login_session['user_id']:
+        print "\ncity.user_id: %s\n" % editedCity.user_id
+        return "<script>function myFunction() {alert('You are not authorized to edit this City. Please create your own city in order to edit.');}</script><body onload='myFunction()'>"
     if request.method == 'POST':
         if request.form['name']:
             editedCity.name = request.form['name']
@@ -347,6 +361,11 @@ def editCity(city_id):
 @app.route('/city/<int:city_id>/delete/', methods=['GET', 'POST'])
 def deleteCity(city_id):
     cityDelete = session.query(City).filter_by(id=city_id).one()
+    if 'username' not in login_session:
+        return redirect('/login')
+    if cityDelete.user_id != login_session['user_id']:
+        print "\ncity.user_id: %s\n" % cityDelete.user_id
+        return "<script>function myFunction() {alert('You are not authorized to delete this city. Please create your own city in order to delete.');}</script><body onload='myFunction()'>"
     if request.method == 'POST':
         session.delete(cityDelete)
         session.commit()
@@ -362,8 +381,8 @@ def showImmobile(city_id):
     imms = session.query(Immobile).filter_by(city_id = city_id).all()
     if 'username' not in login_session:
         return render_template('publicImmoCity.html', city = city, immobile = imms)
-    #return "This page show the immobiles of the selected city"
-    return render_template('admImmoCity.html', city = city, imms = imms)
+    else:
+        return render_template('admImmoCity.html', city = city, imms = imms)
 
 @app.route('/city/<int:city_id>/immobile/<int:immobile_id>')
 def showImmobileDetails(city_id, immobile_id):
@@ -372,11 +391,17 @@ def showImmobileDetails(city_id, immobile_id):
     if 'username' not in login_session:
         #return render_template('publicCities.html', cities=cities)
         return render_template('publicImmoDetails.html', city=selectedCity, imm=selectedImmobile)
-    return render_template('admImmoDetails.html', city=selectedCity, imm=selectedImmobile)
+    else:
+        return render_template('admImmoDetails.html', city=selectedCity, imm=selectedImmobile)
     
 
 @app.route('/city/<int:city_id>/immobile/new/', methods=['GET', 'POST'])
 def newImmobile(city_id):
+    if 'username' not in login_session:
+        return redirect('/login')
+    city = session.query(City).filter_by(id=city_id).one()
+    if login_session['user_id'] != city.user_id:
+        return "<script>function myFunction() {alert('You are not authorized to add immobiles to this city. Please create your own city in order to add immobiles.');}</script><body onload='myFunction()'>"
     if request.method == 'POST':
         newImm = Immobile(address=request.form['address'],
                           description=request.form['description'],
@@ -393,8 +418,13 @@ def newImmobile(city_id):
 
 @app.route('/city/<int:city_id>/immobile/<int:immobile_id>/edit', methods=['GET', 'POST'])
 def editImmobile(city_id, immobile_id):
+    if 'username' not in login_session:
+        return redirect('/login')
     editedImmobile = session.query(Immobile).filter_by(id=immobile_id).one()
     city = session.query(City).filter_by(id=city_id).one()
+    if login_session['user_id'] != city.user_id:
+        print "\ncity.user_id: %s\n" % city.user_id
+        return "<script>function myFunction() {alert('You are not authorized to edit immobiles to this city. Please create your own city in order to edit immobiles.');}</script><body onload='myFunction()'>"
     if request.method == 'POST':
         if request.form['address']:
             editedImmobile.name = request.form['address']
@@ -415,12 +445,12 @@ def editImmobile(city_id, immobile_id):
 
 @app.route('/city/<int:city_id>/immobile/<int:immobile_id>/delete', methods=['GET', 'POST'])
 def deleteImmobile(city_id, immobile_id):
-    #if 'username' not in login_session:
-    #    return redirect('/login')
+    if 'username' not in login_session:
+        return redirect('/login')
     city = session.query(City).filter_by(id=city_id).one()
     deletedimmobile = session.query(Immobile).filter_by(id=immobile_id).one()
-    #if login_session['user_id'] != restaurant.user_id:
-    #    return "<script>function myFunction() {alert('You are not authorized to delete menu items to this restaurant. Please create your own restaurant in order to delete items.');}</script><body onload='myFunction()'>"
+    if login_session['user_id'] != city.user_id:
+        return "<script>function myFunction() {alert('You are not authorized to delete immobiles to this city. Please create your own city in order to delete items.');}</script><body onload='myFunction()'>"
     if request.method == 'POST':
         session.delete(deletedimmobile)
         session.commit()

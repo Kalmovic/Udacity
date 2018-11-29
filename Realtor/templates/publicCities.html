@@ -8,10 +8,10 @@
         <link href="https://fonts.googleapis.com/css?family=Comfortaa:400,700" rel="stylesheet">
         <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css">
         <link href="{{ url_for('static', filename='bootstrap.css') }}" rel="stylesheet">
-        <link href="static/bootstrap-grid.css" rel="stylesheet">
+        <link href="{{ url_for('static', filename='bootstrap-grid.css') }}" rel="stylesheet">
         <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <title>Realtor Joseph</title>
+        <title>Public Page</title>
     </head>
     <body>
         <div class="container">
@@ -19,7 +19,7 @@
                 <div class="carousel slide carousel-fade" data-ride="carousel">
                     <div class="carousel-inner backheader">
                         <div class="item active">
-                            <img src="static/headerimage1.jpg" class="img-responsive">
+                            <img src="{{url_for('static', filename='headerimage1.jpg')}}" class="img-responsive">
                             <div class="carousel-caption">
                                 <h1>
                                     Your next living place
@@ -27,7 +27,7 @@
                             </div>
                         </div>
                         <div class="item">
-                            <img src="static/headerimage2.jpg" class="img-responsive">
+                            <img src="{{url_for('static', filename='headerimage2.jpg')}}" class="img-responsive">
                             <div class="carousel-caption">
                                 <h1>
                                     Your next living place
@@ -35,7 +35,7 @@
                             </div>
                         </div>
                         <div class="item">
-                            <img src="static/headerimage3.jpg" class="img-responsive">
+                            <img src="{{url_for('static', filename='headerimage3.jpg')}}" class="img-responsive">
                             <div class="carousel-caption">
                                 <h1>
                                     Your next living place
@@ -43,7 +43,7 @@
                             </div>
                         </div>
                         <div class="item">
-                            <img src="static/headerimage4.jpg" class="img-responsive">
+                            <img src="{{url_for('static', filename='headerimage4.jpg')}}" class="img-responsive">
                             <div class="carousel-caption">
                                 <h1>
                                     Your next living place
@@ -51,7 +51,7 @@
                             </div>
                         </div>
                         <div class="item">
-                            <img src="static/headerimage5.jpg" class="img-responsive">
+                            <img src="{{url_for('static', filename='headerimage5.jpg')}}" class="img-responsive">
                             <div class="carousel-caption">
                                 <h1>
                                     Your next living place
@@ -59,7 +59,7 @@
                             </div>
                         </div>
                         <div class="item">
-                            <img src="static/headerimage6.jpg" class="img-responsive">
+                            <img src="{{url_for('static', filename='headerimage6.jpg')}}" class="img-responsive">
                             <div class="carousel-caption">
                                     <h1>
                                         Your next living place
@@ -72,13 +72,33 @@
                 
             </header>
             <br>
-            <div class="col-12">
-                <p class="select-city">Select a city:</p>
-                <br>
-            </div>
-
+            <div class="row">
+                <div class="col-md-4">
+                    <a href="{{url_for('newCity')}}">
+                            <i class="glyphicon glyphicon-home"></i>Create a new City
+                    </a>
+                        
+                    </div>
+                    <div class="col-md-4">
+                        <h2 class="select-city">Select a city:</h2>
+                        <br>
+                    </div>
+                    <div class="col-md-4 text-right">
+                            {%if 'username' not in session %}
+                            <a href="{{url_for('showLogin')}}" class="feet-login">
+                                <button class="buttonlogin">Log in</button>
+                            </a>
+                            {% endif %}
+                            {%if 'username' in session %}
+                            <a href="{{url_for('disconnect')}}">
+                                <button class="buttonlogin">Log off</button>
+                            </a>
+                            {% endif %}
+                    </div>
+                </div>
+            
             {% for city in cities %}
-
+        
             <section class="col-lg-6 col-xs-12 text-center">
                 <div class="row">
                     <div class="col-md-6">
@@ -95,9 +115,11 @@
                     </div>
                 </div>
             </section>
+            
             {% endfor %}
+            
 
-            <div class="row cities text-center" id="feet">
+            <!--<div class="row cities text-center" id="feet">
                 <div class="text-center">
                         <div class="col-xs-4">
                             <br>
@@ -126,12 +148,19 @@
                             <p class="feet-text">Lorem ipsum</p>
                             <p class="feet-text">Lorem ipsum</p>
                             <p class="feet-text">Lorem ipsum</p>
-                            <a href="#" class="feet-login">
+                            {%if 'username' not in session %}
+                            <a href="{{url_for('showLogin')}}" class="feet-login">
                                 <button class="buttonlogin">Log in</button>
                             </a>
+                            {% endif %}
+                            {%if 'username' in session %}
+                            <a href="{{url_for('disconnect')}}">
+                                <button class="buttonlogin">Log off</button>
+                            </a>
+                            {% endif %}
                         </div>
                 </div>
-            </div>
+            </div>-->
 
         </div>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

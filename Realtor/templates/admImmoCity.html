@@ -10,7 +10,7 @@
         <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <title>Immobiles from {{city.name}}</title>
+        <title>(Adm) Immobiles from {{city.name}}</title>
     </head>
     <body>
         <div class="container">
@@ -29,9 +29,9 @@
                     {{i.squarefeet}}<br>
                     {{i.bedrooms}}<br>
                     {{i.bathrooms}}<br>
-                    <a href='{{url_for('editImmobile', city_id = city.id, immobile_id = i.id) }}'>Edit</a>
-                    </br>
-                    <a href = '{{url_for('deleteImmobile', city_id = city.id, immobile_id = i.id) }}'>Delete</a>        
+                    <a href="{{url_for('editImmobile', city_id = city.id, immobile_id = i.id)}}">Edit</a>
+                    <br>
+                    <a href = "{{url_for('deleteImmobile', city_id = city.id, immobile_id = i.id)}}">Delete</a>        
                 </div>
                 <div class="col-md-4">
                         <div>
