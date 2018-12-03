@@ -22,7 +22,6 @@ This project also covers `images manipulation` (CRUD operations) to display the 
 
 - Make it responsive
 - Better style the website
-- Add CSS style to some html pages like login.html and upload.html
 - Add the CSRF Protection to the website
 
 # Author
