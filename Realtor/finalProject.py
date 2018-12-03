@@ -45,6 +45,9 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
+# The uploading image process was inspired by
+#https://github.com/ibrahimokdadov/upload_file_python/
+# blob/master/src/app_display_multiple_images.py
 
 @app.route('/uploader/<int:city_id>/immobile/<int:immobile_id>',
            methods=['GET'])
