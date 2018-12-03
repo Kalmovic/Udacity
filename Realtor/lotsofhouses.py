@@ -402,7 +402,7 @@ city8 = City(name = "Salvador")
 session.add(city8)
 session.commit()
 
-immobileDetails1 = Immobile(address = "Rua Rua das Azaleias, 184, Salvador",
+immobileDetails1 = Immobile(address = "Rua das Azaleias, 184, Salvador",
                            description = "House",
                            squarefeet = "4413 squarefeet",
                            bedrooms = "4 bedrooms",

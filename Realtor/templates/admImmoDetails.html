@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html> 
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Comfortaa:400,700" rel="stylesheet">
+        <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css">
+        <link href="{{ url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet">
+        <link href="static/bootstrap-grid.css" rel="stylesheet">
+        <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <title>Realtor Joseph</title>
+    </head>
+    <body>
+        <div class="container">
+            <header>
+                <h1>{{imm.address}}</h1>
+                <p>Have a glimpse of this beautiful place</p>
+                <a href="{{url_for('showImmobile', city_id = city.id)}}">
+                    <button class="btn btn-link">
+                        <i class="material-icons">
+                            arrow_back_ios
+                        </i>
+                        
+                    </button>
+                </a>
+            </header>
+            <div class="row">
+                <header class="box">
+                    <div class="carousel slide carousel-fade" data-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="item active">
+                                <img src="{{url_for('static', filename='headerimage1.jpg')}}" class="img-responsive image-size">
+                            </div>
+                            {% for image in image_names %}
+                            <div class="item">
+                                    <img src="{{url_for('send_image', filename=image)}}" class="img-responsive image-size">
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </header>
+            </div>    
+            
+            <a href = "{{url_for('upload_page', city_id = city.id, immobile_id = imm.id)}}">
+                <button class="btn btn-info">
+                    <i class="material-icons">
+                        add_circle_outline
+                    </i>
+                    Upload images
+                </button>
+            </a>
+            <a href = "{{url_for('get_gallery', filename=filename, city_id = city.id, immobile_id = imm.id)}}">
+                <button class="btn btn-info">
+                    <i class="material-icons">
+                        settings
+                    </i>
+                    Manage this immobile's gallery
+                </button>
+            </a>
+            <br>
+            <div class="row">
+                <div class="col-md-9">
+                    <div>
+                        <iframe width="100%" height="200px" src="https://maps.google.com/maps?width=100%&amp;&amp;hl=en&amp;q={{imm.address}}&amp;ie=UTF8&amp;t=&amp;z=14&amp;iwloc=B&amp;output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+                    </div>
+                </div>
+                <div class="col-md-3 info">
+                    <div>
+                        <h4>{{imm.description}}</h4>
+                        <h4>{{imm.squarefeet}}</h4>
+                        <h4>{{imm.bedrooms}}</h4>
+                        <h4>{{imm.bathrooms}}</h4>
+                    </div>
+                </div>
+            </div>
+            
+
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </body>
+</html>

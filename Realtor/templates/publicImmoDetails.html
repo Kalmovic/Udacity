@@ -7,64 +7,59 @@
         <link href="https://fonts.googleapis.com/css?family=Lato:100,300" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Comfortaa:400,700" rel="stylesheet">
         <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css">
-        <link href="{{ url_for('static', filename='bootstrap.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet">
         <link href="static/bootstrap-grid.css" rel="stylesheet">
         <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <title>Realtor Joseph</title>
     </head>
     <body>
         <div class="container">
-            <h1>{{imm.address}}</h1>
-            <div class="col-md-9">
-                <div>
-                    <iframe width="100%" height="200px" src="https://maps.google.com/maps?width=100%&amp;&amp;hl=en&amp;q={{imm.address}}&amp;ie=UTF8&amp;t=&amp;z=14&amp;iwloc=B&amp;output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+            <header>
+                <h1>{{imm.address}}</h1>
+                <p>Have a glimpse of this beautiful place</p>
+                <a href="{{url_for('showImmobile', city_id = city.id)}}">
+                    <button class="btn btn-link">
+                        <i class="material-icons">
+                            arrow_back_ios
+                        </i>
+                        
+                    </button>
+                </a>
+            </header>
+            <div class="row">
+                <header class="box">
+                    <div class="carousel slide carousel-fade" data-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="item active">
+                                <img src="{{url_for('static', filename='headerimage1.jpg')}}" class="img-responsive image-size">
+                            </div>
+                            {% for image in image_names %}
+                            <div class="item">
+                                    <img src="{{url_for('send_image', filename=image)}}" class="img-responsive image-size">
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </header>
+            </div>    
+            <br>
+            <div class="row">
+                <div class="col-md-9">
+                    <div>
+                        <iframe width="100%" height="200px" src="https://maps.google.com/maps?width=100%&amp;&amp;hl=en&amp;q={{imm.address}}&amp;ie=UTF8&amp;t=&amp;z=14&amp;iwloc=B&amp;output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+                    </div>
+                </div>
+                <div class="col-md-3 info">
+                    <div>
+                        <h4>{{imm.description}}</h4>
+                        <h4>{{imm.squarefeet}}</h4>
+                        <h4>{{imm.bedrooms}}</h4>
+                        <h4>{{imm.bathrooms}}</h4>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-3 info">
-                <div>
-                    {{imm.description}}<br>
-                    {{imm.squarefeet}}<br>
-                    {{imm.bedrooms}}<br>
-                    {{imm.bathrooms}}<br>
-                </div>
-            </div>
-        </div>
-        <div class="row cities text-center" id="feet">
-                <div class="text-center">
-                        <div class="col-xs-4">
-                            <br>
-                            <p class="feet-text">Lorem ipsum</p>
-                            <p class="feet-text">Lorem ipsum</p>
-                            <p class="feet-text">Lorem ipsum</p>
-                            <br>
-                            <p class="feet-text">Lorem Ipsum has 
-                                    been the industry's standard dummy text 
-                                    ever since the 1500s.</p>
-                        </div>
-                        <div class="col-xs-4">
-                            <br>
-                            <p class="feet-text">Lorem Ipsum is simply dummy text 
-                                of the printing and typesetting industry. Lorem Ipsum has 
-                                been the industry's standard dummy text ever since the 1500s, 
-                                when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
-                                It has survived not only five centuries
-                            </p>
-                            <br>
-                        </div>
-                        <div class="col-xs-4">
-                            <br>
-                            <p class="feet-text">Lorem ipsum</p>
-                            <p class="feet-text">Lorem ipsum</p>
-                            <p class="feet-text">Lorem ipsum</p>
-                            <p class="feet-text">Lorem ipsum</p>
-                            <p class="feet-text">Lorem ipsum</p>
-                            <a href="#" class="feet-login">
-                                <button class="buttonlogin">Log in</button>
-                            </a>
-                        </div>
-                </div>
-            </div>
+            
 
         </div>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

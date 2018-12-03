@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html> 
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Comfortaa:400,700" rel="stylesheet">
+        <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css">
+        <link href="{{ url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet">
+        <link href="static/bootstrap-grid.css" rel="stylesheet">
+        <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <title>Immobile Galery</title>
+    
+</head>
+<body>
+    <div class="container">
+    <h1>Image Gallery from {{i.address}}</h1>
+    {{image_names}}
+    <hr>
+    
+    <div class="row">
+        {% for image in image_names %}
+        <section class="col-md-4 text-center">
+            <picture>
+                <img src="{{url_for('send_image', filename=image)}}" class="img-responsive image-resize">
+            </picture>
+            <div>
+                <a href = "{{url_for('delete_image', city_id = city.id, immobile_id = i.id, image=image)}}">
+                    <button class="btn btn-danger">
+                        <i class="material-icons">
+                            delete
+                        </i>
+                        Delete image
+                    </button>
+                </a>
+            </div>
+        </section>
+        {% endfor %}
+    </div>
+    <br>
+    <div class="text-center">
+        <a href = "{{url_for('showImmobileDetails', city_id = city.id, immobile_id = i.id)}}">
+            <button class="btn btn-success">
+                <i class="material-icons">
+                    done
+                </i>
+                Done
+            </button>
+        </a>
+    </div>
+    <br>
+    <div class="text-center">
+        <a href = "{{url_for('upload_page', city_id = city.id, immobile_id = i.id)}}">
+            <button class="btn btn-info">
+                <i class="material-icons">
+                    add_circle_outline
+                </i>
+                Upload images
+            </button>
+        </a>
+    </div>
+</div>
+</body>
+</html>

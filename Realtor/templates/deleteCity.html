@@ -1,8 +1,6 @@
 <h2> Are you sure you want to delete {{city.name}}? </h2>
 
 <form action="#" method = 'post'>
-
-
     <a href ="{{url_for('deleteCity', city_id = city.id) }}"
     method = 'post'><button type="submit">Delete</button>
     </a>
@@ -10,6 +8,6 @@
 </form>
 
 
-    <a href = "{{url_for('showCities')}}">
-        <button type="submit">Cancel</button>
-    </a>
+<a href = "{{url_for('showCities')}}">
+    <button type="submit">Cancel</button>
+</a>

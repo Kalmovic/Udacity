@@ -1,7 +1,7 @@
-from flask import Flask, render_template, request, redirect, jsonify, url_for, flash
+from flask import Flask, render_template, request, redirect, jsonify, url_for, flash, send_from_directory
 from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import sessionmaker
-from database import Base, City, Immobile, User
+from database import Base, City, Immobile, User, engine
 from flask import session as login_session
 import httplib2
 import os
@@ -18,29 +18,104 @@ import httplib2
 import json
 from flask import make_response
 import requests
+from werkzeug.utils import secure_filename
+from flask_wtf import FlaskForm
+from flask_wtf.csrf import CSRFProtect
 
 auth = HTTPBasicAuth()
 app = Flask(__name__)
+#csrf = CSRFProtect(app)
+#csrf.init_app(app)
 Bootstrap(app)
+
+UPLOAD_FOLDER = '/images/'
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+APP_ROUTE = os.path.dirname(os.path.abspath(__file__))
 
 CLIENT_ID = json.loads(
     open('g_client_secrets.json', 'r').read())['web']['client_id']
 APPLICATION_NAME = "Realtor City Immobiles"
 
 # Connect to Database and create database session
-engine = create_engine('sqlite:///immobilesuser.db',connect_args={'check_same_thread': False})
+#engine = create_engine('sqlite:///immobilesrealtor.db',connect_args={'check_same_thread': False})
 Base.metadata.bind = engine
-
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
+#app.config['WTF_CSRF_SECRET_KEY'] = 'thesecretkey'
+#app.config['WTF_CSFR_ENABLED'] = True
 
-@auth.verify_password
-def verify_password(username, password):
-    user = session.query(User).filter_by(username = username).first()
-    if not user or not user.verify_password(password):
-        return False
-    g.user = user
-    return True
+@app.route('/uploader/<int:city_id>/immobile/<int:immobile_id>', methods=['GET'])
+def upload_page(city_id, immobile_id):
+    #renders the upload file
+    city = session.query(City).filter_by(id=city_id).one()
+    immobile = session.query(Immobile).filter_by(
+        id=immobile_id).one()
+    return render_template('upload.html', city_id=city, immobile_id=immobile)
+
+@app.route('/uploaded/<int:city_id>/immobile/<int:immobile_id>', methods=['POST'])
+def upload(city_id, immobile_id):
+    city = session.query(City).filter_by(id=city_id).one()
+    immobile = session.query(Immobile).filter_by(
+        id=immobile_id).one()
+    #creates a folder for each immobile    
+    target = os.path.join(APP_ROUTE, 'images/%d' % immobile_id)
+    img_file = 'images/%d' % immobile_id
+    print "\nimg_file: %s\n" % img_file
+    print "target: %s" % target
+    #if the folder does not exist, create
+    if not os.path.isdir(target):
+        os.mkdir(target)
+
+    for file in request.files.getlist("file"):
+        #print "\nfile: %s" % file
+        filename = secure_filename(file.filename)   #return a secure version of the file
+        #print "\nfilename: %s" % filename
+        destination2 = "/".join(['images', filename])
+        file.save(destination2)
+        destination = "/".join([target, filename])
+        #print "\ndestination: %s" % destination
+        file.save(destination)
+        
+        filename = img_file     #changes the value of filename to display correctly
+        #print "\nfilename: %s" % filename
+    return redirect(url_for('get_gallery', filename=filename, city_id=city_id, immobile_id=immobile_id))
+
+@app.route('/upload/<filename>/')
+def send_image(filename):
+    print "\n send_image filename: %s" % filename
+    return send_from_directory('images', filename)
+
+@app.route('/gallery/<int:city_id>/immobile/<int:immobile_id>/<path:filename>/images')
+def get_gallery(city_id, immobile_id, filename):
+    city = session.query(City).filter_by(id=city_id).one()
+    immobile = session.query(Immobile).filter_by(
+        id=immobile_id).one()
+    print "\n get_gallery filename: %s" % filename
+    image_names = os.listdir(filename)  #gets the list of files in the directory
+    return render_template('gallery.html', image_names=image_names, city=city, i=immobile)
+
+@app.route('/galleryToDelete/city/<int:city_id>/immobile/<int:immobile_id>/<image>/delete', methods=['POST','GET'])
+def delete_image(city_id, immobile_id, image):
+    print "img deleted: %s" % image
+    city = session.query(City).filter_by(id=city_id).one()
+    immobile = session.query(Immobile).filter_by(
+        id=immobile_id).one()
+    target = os.path.join(APP_ROUTE, 'images/%d/' % immobile_id + image)    # defines the path of the image to be deleted
+    file = os.path.join(APP_ROUTE, 'images/%d/' % immobile_id)
+    print "target: %s" % target
+    if request.method=='POST':
+        if os.path.exists(target):
+            print "img target: %s" % target
+            os.remove(target)
+            image_names = os.listdir(file)  # gets the updated list from the dir
+            return render_template('gallery.html', image_names=image_names, city=city, i=immobile)
+        else:
+            print("The file does not exist")
+            return "File not found"
+    else:
+        return render_template('deleteImage.html', image=image, city=city, i=immobile)
 
 # Create anti-forgery state token
 @app.route('/login')
@@ -278,8 +353,9 @@ def disconnect():
 # User Helper Functions
 @auth.verify_password
 def createUser(login_session):
-    newUser = User(name=login_session['username'], email=login_session[
-                   'email'], picture=login_session['picture'])
+    newUser = User(name=login_session['username'], 
+                   email=login_session['email'], 
+                   picture=login_session['picture'])
     session.add(newUser)
     session.commit()
     user = session.query(User).filter_by(email=login_session['email']).one()
@@ -336,7 +412,7 @@ def newCity():
         newcity = City(name=request.form['name'], user_id=login_session['user_id'])
         session.add(newcity)
         session.commit()
-        flash('New City %s Successfully Created' % newCity.name)
+        flash('New City %s Successfully Created' % newcity.name)
         return redirect(url_for('showCities'))
     else:
         return render_template('newCity.html')
@@ -354,7 +430,7 @@ def editCity(city_id):
         if request.form['name']:
             editedCity.name = request.form['name']
             flash('City Successfully Edited %s' % editedCity.name)
-            return redirect(url_for('showCities'))
+            return redirect(url_for('showImmobile', city_id=city_id))
     else:
         return render_template('editedcity.html', city=editedCity)
     #return "This page edit the selected city"
@@ -379,23 +455,31 @@ def deleteCity(city_id):
 @app.route('/city/<int:city_id>/')
 @app.route('/city/<int:city_id>/immobile/')
 def showImmobile(city_id):
+    cities = session.query(City).order_by(asc(City.name))
     city = session.query(City).filter_by(id=city_id).one()
     creator = getUserInfo(city.user_id)
     imms = session.query(Immobile).filter_by(city_id = city_id).all()
     if 'username' not in login_session or creator.id != login_session['user_id']:
-        return render_template('publicImmoCity.html', city = city, immobile = imms, creator=creator)
+        return render_template('publicImmoCity.html', city = city, immobile = imms, creator=creator, city_list=cities)
     else:
-        return render_template('admImmoCity.html', city = city, imms = imms, creator=creator)
+        return render_template('admImmoCity.html', city = city, imms = imms, creator=creator, city_list=cities)
 
 @app.route('/city/<int:city_id>/immobile/<int:immobile_id>')
 def showImmobileDetails(city_id, immobile_id):
     selectedCity = session.query(City).filter_by(id=city_id).one()
     selectedImmobile = session.query(Immobile).filter_by(id=immobile_id).one()
+    file = os.path.join(APP_ROUTE, 'images/%d/' % immobile_id)
+    if not os.path.isdir(file):
+        os.mkdir(file)
+    image_names = os.listdir(file)
+    filename = os.path.join('images/', '%d' % immobile_id)
+    
+    print "filename showImmobileDetails: %s" % filename
     if 'username' not in login_session:
         #return render_template('publicCities.html', cities=cities)
-        return render_template('publicImmoDetails.html', city=selectedCity, imm=selectedImmobile)
+        return render_template('publicImmoDetails.html', city=selectedCity, imm=selectedImmobile, image_names=image_names, filename=filename)
     else:
-        return render_template('admImmoDetails.html', city=selectedCity, imm=selectedImmobile)
+        return render_template('admImmoDetails.html', city=selectedCity, imm=selectedImmobile, image_names=image_names, filename=filename)
     
 
 @app.route('/city/<int:city_id>/immobile/new/', methods=['GET', 'POST'])
@@ -414,7 +498,7 @@ def newImmobile(city_id):
                           city_id = city_id)
         session.add(newImm)
         session.commit()
-        flash('New Immobile %s Successfully Created' % (newImm.name))
+        flash('New Immobile Successfully Created')
         return redirect(url_for('showImmobile', city_id=city_id))
     else:
         return render_template('newimmobile.html', city_id=city_id)
@@ -433,15 +517,15 @@ def editImmobile(city_id, immobile_id):
         
     if request.method == 'POST':
         if request.form['address']:
-            editedImmobile.name = request.form['address']
+            editedImmobile.address = request.form['address']
         if request.form['description']:
             editedImmobile.description = request.form['description']
         if request.form['squarefeet']:
             editedImmobile.squarefeet = request.form['squarefeet']
         if request.form['bedrooms']:
-            editedImmobile.bathrooms = request.form['bedrooms']
+            editedImmobile.bedrooms = request.form['bedrooms']
         if request.form['bathrooms']:
-            editedImmobile.bedrooms = request.form['bathrooms']
+            editedImmobile.bathrooms = request.form['bathrooms']
         session.add(editedImmobile)
         session.commit()
         flash('Immobile Successfully Edited')

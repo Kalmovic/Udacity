@@ -10,88 +10,117 @@
         <link href="{{ url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet">
         <link href="static/bootstrap-grid.css" rel="stylesheet">
         <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <title>Adm Realtor</title>
     </head>
     <body>
         <div class="container">
-            <header class="box">
-                <div class="carousel slide carousel-fade" data-ride="carousel">
-                    <div class="carousel-inner backheader">
-                        <div class="item active">
-                            <img src="{{url_for('static', filename='headerimage1.jpg')}}" class="img-responsive">
-                            <div class="carousel-caption">
-                                <h1>
-                                    Your next living place
-                                </h1>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <img src="{{url_for('static', filename='headerimage2.jpg')}}" class="img-responsive">
-                            <div class="carousel-caption">
-                                <h1>
-                                    Your next living place
-                                </h1>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <img src="{{url_for('static', filename='headerimage3.jpg')}}" class="img-responsive">
-                            <div class="carousel-caption">
-                                <h1>
-                                    Your next living place
-                                </h1>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <img src="{{url_for('static', filename='headerimage4.jpg')}}" class="img-responsive">
-                            <div class="carousel-caption">
-                                <h1>
-                                    Your next living place
-                                </h1>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <img src="{{url_for('static', filename='headerimage5.jpg')}}" class="img-responsive">
-                            <div class="carousel-caption">
-                                <h1>
-                                    Your next living place
-                                </h1>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <img src="{{url_for('static', filename='headerimage6.jpg')}}" class="img-responsive">
-                            <div class="carousel-caption">
-                                    <h1>
-                                        Your next living place
-                                    </h1>
-                                </div>
-                        </div>
-                        
+            <aside role="complementary" class="col-md-4">
+                <h2>Cities available:</h2>
+                {% for city in cities %}
+                <div>
+                    <a href="{{url_for('showImmobile', city_id = city.id)}}">
+                        <h3 class="city-list text-left">{{city.name}}</h3>
+                    </a>
                     </div>
-                </div>
+                    {% endfor %}
+            </aside>
+            <div class="col-md-8">
+                <div class="row">
+                    <header class="box">
+                        <div class="carousel slide carousel-fade" data-ride="carousel">
+                            <div class="carousel-inner backheader">
+                                <div class="item active">
+                                    <img src="{{url_for('static', filename='headerimage1.jpg')}}" class="img-responsive">
+                                    <div class="carousel-caption">
+                                        <h1>
+                                            Your next living place
+                                        </h1>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <img src="{{url_for('static', filename='headerimage2.jpg')}}" class="img-responsive">
+                                    <div class="carousel-caption">
+                                        <h1>
+                                            Your next living place
+                                        </h1>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <img src="{{url_for('static', filename='headerimage3.jpg')}}" class="img-responsive">
+                                    <div class="carousel-caption">
+                                        <h1>
+                                            Your next living place
+                                        </h1>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <img src="{{url_for('static', filename='headerimage4.jpg')}}" class="img-responsive">
+                                    <div class="carousel-caption">
+                                        <h1>
+                                            Your next living place
+                                        </h1>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <img src="{{url_for('static', filename='headerimage5.jpg')}}" class="img-responsive">
+                                    <div class="carousel-caption">
+                                        <h1>
+                                            Your next living place
+                                        </h1>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <img src="{{url_for('static', filename='headerimage6.jpg')}}" class="img-responsive">
+                                    <div class="carousel-caption">
+                                            <h1>
+                                                Your next living place
+                                            </h1>
+                                        </div>
+                                </div>
+                                
+                            </div>
+                        </div>
                 
-            </header>
+                    </header>
+                </div>
             <br>
             <div class="row">
                 <div class="col-md-4">
                         <a href="{{url_for('newCity')}}">
-                                <i class="glyphicon glyphicon-home"></i>Create a new City
+                            <button class="btn btn-link">
+                                <i class="material-icons">
+                                    add
+                                </i>
+                                Create new city
+                            </button>
+
                         </a>
                         
                 </div>
                 <div class="col-md-4">
-                    <h2 class="select-city">Select a city:</h2>
+                    <h2 class="select-city">Select any city</h2>
                     <br>
                 </div>
                 <div class="col-md-4 text-right">
                         {%if 'username' not in session %}
                         <a href="{{url_for('showLogin')}}" class="feet-login">
-                            <button class="buttonlogin">Log in</button>
+                            <button class="btn btn-link">
+                                <i class="material-icons">
+                                    person_outline
+                                </i>
+                                Log in
+                            </button>
                         </a>
                         {% endif %}
                         {%if 'username' in session %}
                         <a href="{{url_for('disconnect')}}">
-                            <button class="buttonlogin">Log off</button>
+                            <button class="btn btn-link">
+                                <i class="material-icons">
+                                    person_outline
+                                </i>
+                                Log off
+                            </button>
                         </a>
                         {% endif %}
                 </div>
@@ -108,72 +137,8 @@
               {% endif %}
               {% endwith %}
               </div>
-            {% for city in cities %}
             
-            <section class="col-lg-6 col-xs-12 text-center">
-                <div class="row">
-                    <div class="col-md-4">
-                        <picture>
-                            <a href="{{url_for('showImmobile', city_id = city.id)}}">
-                                <img class="" src="{{url_for('static', filename='immobile.jpg')}}">
-                            </a>
-                        </picture>
-                    </div>
-                    <div class="col-md-8 info">
-                        <div>
-                            <h3 class="city-list">{{city.name}}</h3>
-                            <a href="{{url_for('editCity', city_id = city.id)}}">Edit City</a>
-                            <br>
-                            <a href = "{{url_for('deleteCity', city_id = city.id)}}">Delete City</a>        
-                        </div>
-                    </div>
-                </div>
-            </section>
-            {% endfor %}
-
-            <!--<div class="row cities text-center" id="feet">
-                <div class="text-center">
-                        <div class="col-xs-4">
-                            <br>
-                            <p class="feet-text">Lorem ipsum</p>
-                            <p class="feet-text">Lorem ipsum</p>
-                            <p class="feet-text">Lorem ipsum</p>
-                            <br>
-                            <p class="feet-text">Lorem Ipsum has 
-                                    been the industry's standard dummy text 
-                                    ever since the 1500s.</p>
-                        </div>
-                        <div class="col-xs-4">
-                            <br>
-                            <p class="feet-text">Lorem Ipsum is simply dummy text 
-                                of the printing and typesetting industry. Lorem Ipsum has 
-                                been the industry's standard dummy text ever since the 1500s, 
-                                when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
-                                It has survived not only five centuries
-                            </p>
-                            <br>
-                        </div>
-                        <div class="col-xs-4">
-                            <br>
-                            <p class="feet-text">Lorem ipsum</p>
-                            <p class="feet-text">Lorem ipsum</p>
-                            <p class="feet-text">Lorem ipsum</p>
-                            <p class="feet-text">Lorem ipsum</p>
-                            <p class="feet-text">Lorem ipsum</p>
-                            {%if 'username' not in session %}
-                            <a href="{{url_for('showLogin')}}" class="feet-login">
-                                <button class="buttonlogin">Log in</button>
-                            </a>
-                            {% endif %}
-                            {%if 'username' in session %}
-                            <a href="{{url_for('disconnect')}}">
-                                <button class="buttonlogin">Log off</button>
-                            </a>
-                            {% endif %}
-                        </div>
-                </div>
-            </div>-->
-
+            
         </div>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
