@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect, jsonify, url_for, flash, send_from_directory
+from flask import Flask, render_template, request, redirect, jsonify, url_for
+from flask import flash, send_from_directory
 from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import sessionmaker
 from database import Base, City, Immobile, User, engine
@@ -19,13 +20,14 @@ import json
 from flask import make_response
 import requests
 from werkzeug.utils import secure_filename
-#from flask_wtf import FlaskForm
-#from flask_wtf.csrf import CSRFProtect
+
+# from flask_wtf import FlaskForm
+# from flask_wtf.csrf import CSRFProtect
 
 auth = HTTPBasicAuth()
 app = Flask(__name__)
-#csrf = CSRFProtect(app)
-#csrf.init_app(app)
+# csrf = CSRFProtect(app)
+# csrf.init_app(app)
 Bootstrap(app)
 
 UPLOAD_FOLDER = '/images/'
@@ -39,81 +41,98 @@ CLIENT_ID = json.loads(
 APPLICATION_NAME = "Realtor City Immobiles"
 
 # Connect to Database and create database session
-#engine = create_engine('sqlite:///immobilesrealtor.db',connect_args={'check_same_thread': False})
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
-@app.route('/uploader/<int:city_id>/immobile/<int:immobile_id>', methods=['GET'])
+
+@app.route('/uploader/<int:city_id>/immobile/<int:immobile_id>',
+           methods=['GET'])
 def upload_page(city_id, immobile_id):
-    #renders the upload file
+    # renders the upload page
     city = session.query(City).filter_by(id=city_id).one()
     immobile = session.query(Immobile).filter_by(
         id=immobile_id).one()
     return render_template('upload.html', city_id=city, immobile_id=immobile)
 
-@app.route('/uploaded/<int:city_id>/immobile/<int:immobile_id>', methods=['POST'])
+
+@app.route('/uploaded/<int:city_id>/immobile/<int:immobile_id>',
+           methods=['POST'])
 def upload(city_id, immobile_id):
     city = session.query(City).filter_by(id=city_id).one()
     immobile = session.query(Immobile).filter_by(
         id=immobile_id).one()
-    #creates a folder for each immobile    
+    # creates a folder for each immobile
     target = os.path.join(APP_ROUTE, 'images/%d' % immobile_id)
     img_file = 'images/%d' % immobile_id
     print "\nimg_file: %s\n" % img_file
     print "target: %s" % target
-    #if the folder does not exist, create
+    # if the folder does not exist, create
     if not os.path.isdir(target):
         os.mkdir(target)
 
     for file in request.files.getlist("file"):
-        #print "\nfile: %s" % file
-        filename = secure_filename(file.filename)   #return a secure version of the file
-        #print "\nfilename: %s" % filename
+        # print "\nfile: %s" % file
+        # return a secure version of the file
+        filename = secure_filename(file.filename)
+        # print "\nfilename: %s" % filename
         destination2 = "/".join(['images', filename])
         file.save(destination2)
         destination = "/".join([target, filename])
-        #print "\ndestination: %s" % destination
+        # print "\ndestination: %s" % destination
         file.save(destination)
-        
-        filename = img_file     #changes the value of filename to display correctly
-        #print "\nfilename: %s" % filename
-    return redirect(url_for('get_gallery', filename=filename, city_id=city_id, immobile_id=immobile_id))
+        # changes the value of filename to display correctly
+        filename = img_file
+        # print "\nfilename: %s" % filename
+    return redirect(url_for('get_gallery', filename=filename, city_id=city_id,
+                            immobile_id=immobile_id))
+
 
 @app.route('/upload/<filename>/')
 def send_image(filename):
     print "\n send_image filename: %s" % filename
     return send_from_directory('images', filename)
 
-@app.route('/gallery/<int:city_id>/immobile/<int:immobile_id>/<path:filename>/images')
+
+@app.route('/gallery/<int:city_id>/immobile/<int:immobile_id>' +
+           '/<path:filename>/images')
 def get_gallery(city_id, immobile_id, filename):
     city = session.query(City).filter_by(id=city_id).one()
     immobile = session.query(Immobile).filter_by(
         id=immobile_id).one()
     print "\n get_gallery filename: %s" % filename
-    image_names = os.listdir(filename)  #gets the list of files in the directory
-    return render_template('gallery.html', image_names=image_names, city=city, i=immobile)
+    # gets the list of files in the directory
+    image_names = os.listdir(filename)
+    return render_template('gallery.html', image_names=image_names, city=city,
+                           i=immobile)
 
-@app.route('/galleryToDelete/city/<int:city_id>/immobile/<int:immobile_id>/<image>/delete', methods=['POST','GET'])
+
+@app.route('/galleryToDelete/city/<int:city_id>/immobile/<int:immobile_id>' +
+           '/<image>/delete', methods=['POST', 'GET'])
 def delete_image(city_id, immobile_id, image):
     print "img deleted: %s" % image
     city = session.query(City).filter_by(id=city_id).one()
     immobile = session.query(Immobile).filter_by(
         id=immobile_id).one()
-    target = os.path.join(APP_ROUTE, 'images/%d/' % immobile_id + image)    # defines the path of the image to be deleted
+    # defines the path of the image to be deleted
+    target = os.path.join(APP_ROUTE, 'images/%d/' % immobile_id + image)
     file = os.path.join(APP_ROUTE, 'images/%d/' % immobile_id)
     print "target: %s" % target
-    if request.method=='POST':
+    if request.method == 'POST':
         if os.path.exists(target):
             print "img target: %s" % target
             os.remove(target)
-            image_names = os.listdir(file)  # gets the updated list from the dir
-            return render_template('gallery.html', image_names=image_names, city=city, i=immobile)
+            # gets the updated list from the dir
+            image_names = os.listdir(file)
+            return render_template('gallery.html', image_names=image_names,
+                                   city=city, i=immobile)
         else:
             print("The file does not exist")
             return "File not found"
     else:
-        return render_template('deleteImage.html', image=image, city=city, i=immobile)
+        return render_template('deleteImage.html', image=image, city=city,
+                               i=immobile)
+
 
 # Create anti-forgery state token
 @app.route('/login')
@@ -124,6 +143,7 @@ def showLogin():
     # return "The current session state is %s" % login_session['state']
     return render_template('login.html', STATE=state)
 
+
 @app.route('/fbconnect', methods=['POST'])
 def fbconnect():
     if request.args.get('state') != login_session['state']:
@@ -133,15 +153,13 @@ def fbconnect():
     access_token = request.data
     print "\nAccess token received %s \n" % access_token
 
-
     app_id = json.loads(open('fb_client_secrets.json', 'r').read())[
         'web']['app_id']
     print "App id: %s \n" % app_id
     app_secret = json.loads(
         open('fb_client_secrets.json', 'r').read())['web']['app_secret']
     print "App secret: %s \n" % app_secret
-    url = 'https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=%s&client_secret=%s&fb_exchange_token=%s' % (
-        app_id, app_secret, access_token)
+    url = 'https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=%s&client_secret=%s&fb_exchange_token=%s' % (app_id, app_secret, access_token)
     print "Url: %s \n" % url
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
@@ -150,11 +168,12 @@ def fbconnect():
     # Use token to get user info from API
     userinfo_url = "https://graph.facebook.com/v2.8/me"
     '''
-        Due to the formatting for the result from the server token exchange we have to
-        split the token first on commas and select the first index which gives us the key : value
-        for the server access token then we split it on colons to pull out the actual token value
-        and replace the remaining quotes with nothing so that it can be used directly in the graph
-        api calls
+        Due to the formatting for the result from the server token exchange
+        we have to split the token first on commas and select the first index
+        which gives us the key : value for the server access token then we
+        split it on colons to pull out the actual token value and replace the
+        remaining quotes with nothing so that it can be used directly in the
+        graph api calls
     '''
     token = result.split(',')[0].split(':')[1].replace('"', '')
     print "Token: %s\n" % token
@@ -162,7 +181,7 @@ def fbconnect():
     url = 'https://graph.facebook.com/v2.8/me?access_token=%s&fields=name,id,email' % token
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
-    print "url sent for API access:%s"% url
+    print "url sent for API access:%s" % url
     print "API JSON result: %s" % result
     data = json.loads(result)
     print "Data: %s\n" % data
@@ -189,7 +208,7 @@ def fbconnect():
     login_session['user_id'] = user_id
     print "User ID: %s" % user_id
 
-    #edit later
+    # edit later
     output = ''
     output += '<h1>Welcome, '
     output += login_session['username']
@@ -197,20 +216,22 @@ def fbconnect():
     output += '!</h1>'
     output += '<img src="'
     output += login_session['picture']
-    output += ' " style = "width: 300px; height: 300px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
+    output += ' " style = "width: 300px; height: 300px; border-radius: 150px; -webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
 
     flash("Now logged in as %s" % login_session['username'])
     return output
+
 
 @app.route('/fbdisconnect')
 def fbdisconnect():
     facebook_id = login_session['facebook_id']
     # The access token must me included to successfully logout
     access_token = login_session['access_token']
-    url = 'https://graph.facebook.com/%s/permissions?access_token=%s' % (facebook_id,access_token)
+    url = 'https://graph.facebook.com/%s/permissions?access_token=%s' % (facebook_id, access_token)
     h = httplib2.Http()
     result = h.request(url, 'DELETE')[1]
     return "you have been logged out"
+
 
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
@@ -264,8 +285,8 @@ def gconnect():
     stored_access_token = login_session.get('access_token')
     stored_gplus_id = login_session.get('gplus_id')
     if stored_access_token is not None and gplus_id == stored_gplus_id:
-        response = make_response(json.dumps('Current user is already connected.'),
-                                 200)
+        response = make_response(json.dumps(
+                                'Current user is already connected.'), 200)
         response.headers['Content-Type'] = 'application/json'
         return response
 
@@ -299,10 +320,11 @@ def gconnect():
     output += '!</h1>'
     output += '<img src="'
     output += login_session['picture']
-    output += ' " style = "width: 300px; height: 300px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
+    output += ' "<style = "width: 300px; height: 300px;border-radius: 150px; -webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
     flash("you are now logged in as %s" % login_session['username'])
     print "done!"
     return output
+
 
 # DISCONNECT - Revoke a current user's token and reset their login_session
 @app.route('/gdisconnect')
@@ -322,9 +344,11 @@ def gdisconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
     else:
-        response = make_response(json.dumps('Failed to revoke token for given user.', 400))
+        response = make_response(json.dumps(
+                    'Failed to revoke token for given user.', 400))
         response.headers['Content-Type'] = 'application/json'
         return response
+
 
 # Disconnect based on provider
 @app.route('/disconnect')
@@ -348,11 +372,12 @@ def disconnect():
         flash("You were not logged in")
         return redirect(url_for('showCities'))
 
+
 # User Helper Functions
 @auth.verify_password
 def createUser(login_session):
-    newUser = User(name=login_session['username'], 
-                   email=login_session['email'], 
+    newUser = User(name=login_session['username'],
+                   email=login_session['email'],
                    picture=login_session['picture'])
     session.add(newUser)
     session.commit()
@@ -373,11 +398,12 @@ def getUserID(email):
         return None
 
 
-#JSON API to view City Information
+# JSON API to view City Information
 @app.route('/city/JSON')
 def cityJSON():
     cities = session.query(City).all()
     return jsonify(city=[r.serialize for r in cities])
+
 
 @app.route('/city/<int:city_id>/immobile/JSON')
 def cityImmobileJSON(city_id):
@@ -386,35 +412,40 @@ def cityImmobileJSON(city_id):
         city_id=city_id).all()
     return jsonify(CityImmobiles=[i.serialize for i in immobiles])
 
+
 @app.route('/city/<int:city_id>/immobile/<int:immobile_id>/JSON')
 def ImmobileInfoJSON(city_id, immobile_id):
     Immobile_Info = session.query(Immobile).filter_by(id=immobile_id).one()
     return jsonify(Immobile_Info=Immobile_Info.serialize)
 
+
 @app.route('/')
 @app.route('/city/')
 def showCities():
     cities = session.query(City).order_by(asc(City.name))
-    #cities = session.query(City).all()
+    # cities = session.query(City).all()
     if 'username' not in login_session:
         return render_template('publicCities.html', cities=cities)
     else:
         return render_template('admCity.html', cities=cities)
-    #return "This page shows all cities"
+    # return "This page shows all cities"
+
 
 @app.route('/city/new/', methods=['GET', 'POST'])
 def newCity():
     if 'username' not in login_session:
         return redirect('/login')
     if request.method == 'POST':
-        newcity = City(name=request.form['name'], user_id=login_session['user_id'])
+        newcity = City(name=request.form['name'],
+                       user_id=login_session['user_id'])
         session.add(newcity)
         session.commit()
         flash('New City %s Successfully Created' % newcity.name)
         return redirect(url_for('showCities'))
     else:
         return render_template('newCity.html')
-    #return "This page creates a new city"
+    # return "This page creates a new city"
+
 
 @app.route('/city/<int:city_id>/edit/', methods=['GET', 'POST'])
 def editCity(city_id):
@@ -423,7 +454,7 @@ def editCity(city_id):
         return redirect('/login')
     if editedCity.user_id != login_session['user_id']:
         print "\ncity.user_id: %s\n" % editedCity.user_id
-        return "<script>function myFunction() {alert('You are not authorized to edit this City. Please create your own city in order to edit.');}</script><body onload='myFunction()'>"
+        return "<script> function myFunction(){alert('You are not authorized to edit this City. Please create your own city in order to edit.');}</script> <body onload='myFunction()' > "
     if request.method == 'POST':
         if request.form['name']:
             editedCity.name = request.form['name']
@@ -431,7 +462,8 @@ def editCity(city_id):
             return redirect(url_for('showImmobile', city_id=city_id))
     else:
         return render_template('editedcity.html', city=editedCity)
-    #return "This page edit the selected city"
+    # return "This page edit the selected city"
+
 
 @app.route('/city/<int:city_id>/delete/', methods=['GET', 'POST'])
 def deleteCity(city_id):
@@ -440,15 +472,16 @@ def deleteCity(city_id):
         return redirect('/login')
     if cityDelete.user_id != login_session['user_id']:
         print "\ncity.user_id: %s\n" % cityDelete.user_id
-        return "<script>function myFunction() {alert('You are not authorized to delete this city. Please create your own city in order to delete.');}</script><body onload='myFunction()'>"
+        return "<script>function myFunction(){alert('You are not authorized to delete this city. Please create your own city in order to delete.');} </ script >< body onload = 'myFunction()' >"
     if request.method == 'POST':
         session.delete(cityDelete)
         session.commit()
         flash('%s Successfully Deleted' % cityDelete.name)
-        return redirect(url_for('showCities'))#, city_id=city_id))
+        return redirect(url_for('showCities'))
     else:
         return render_template('deleteCity.html', city=cityDelete)
-    #return "This page deletes the selected city"
+    # return "This page deletes the selected city"
+
 
 @app.route('/city/<int:city_id>/')
 @app.route('/city/<int:city_id>/immobile/')
@@ -456,29 +489,39 @@ def showImmobile(city_id):
     cities = session.query(City).order_by(asc(City.name))
     city = session.query(City).filter_by(id=city_id).one()
     creator = getUserInfo(city.user_id)
-    imms = session.query(Immobile).filter_by(city_id = city_id).all()
+    imms = session.query(Immobile).filter_by(city_id=city_id).all()
     if 'username' not in login_session or creator.id != login_session['user_id']:
-        return render_template('publicImmoCity.html', city = city, immobile = imms, creator=creator, city_list=cities)
+        return render_template('publicImmoCity.html', city=city,
+                               immobile=imms,
+                               creator=creator, city_list=cities)
     else:
-        return render_template('admImmoCity.html', city = city, imms = imms, creator=creator, city_list=cities)
+        return render_template('admImmoCity.html', city=city, imms=imms,
+                               creator=creator, city_list=cities)
+
 
 @app.route('/city/<int:city_id>/immobile/<int:immobile_id>')
 def showImmobileDetails(city_id, immobile_id):
     selectedCity = session.query(City).filter_by(id=city_id).one()
     selectedImmobile = session.query(Immobile).filter_by(id=immobile_id).one()
+    # Creates the image folder automatically when cliking to see the detais
+    # This enables the images to show in the carousel
     file = os.path.join(APP_ROUTE, 'images/%d/' % immobile_id)
     if not os.path.isdir(file):
         os.mkdir(file)
     image_names = os.listdir(file)
     filename = os.path.join('images/', '%d' % immobile_id)
-    
+
     print "filename showImmobileDetails: %s" % filename
     if 'username' not in login_session:
-        #return render_template('publicCities.html', cities=cities)
-        return render_template('publicImmoDetails.html', city=selectedCity, imm=selectedImmobile, image_names=image_names, filename=filename)
+        # return render_template('publicCities.html', cities=cities)
+        return render_template('publicImmoDetails.html', city=selectedCity,
+                               imm=selectedImmobile,
+                               image_names=image_names, filename=filename)
     else:
-        return render_template('admImmoDetails.html', city=selectedCity, imm=selectedImmobile, image_names=image_names, filename=filename)
-    
+        return render_template('admImmoDetails.html', city=selectedCity,
+                               imm=selectedImmobile,
+                               image_names=image_names, filename=filename)
+
 
 @app.route('/city/<int:city_id>/immobile/new/', methods=['GET', 'POST'])
 def newImmobile(city_id):
@@ -493,16 +536,18 @@ def newImmobile(city_id):
                           squarefeet=request.form['squarefeet'],
                           bedrooms=request.form['bedrooms'],
                           bathrooms=request.form['bathrooms'],
-                          city_id = city_id)
+                          city_id=city_id)
         session.add(newImm)
         session.commit()
         flash('New Immobile Successfully Created')
         return redirect(url_for('showImmobile', city_id=city_id))
     else:
         return render_template('newimmobile.html', city_id=city_id)
-    #return "This page creates a new immobile to the specified city"
+    # return "This page creates a new immobile to the specified city"
 
-@app.route('/city/<int:city_id>/immobile/<int:immobile_id>/edit', methods=['GET', 'POST'])
+
+@app.route('/city/<int:city_id>/immobile/<int:immobile_id>/edit',
+           methods=['GET', 'POST'])
 def editImmobile(city_id, immobile_id):
     if 'username' not in login_session:
         return redirect('/login')
@@ -512,7 +557,7 @@ def editImmobile(city_id, immobile_id):
         print "\ncity.user_id: %s\n" % city.user_id
         return redirect(url_for('showImmobile', city_id=city_id))
         return "<script>function myFunction() {alert('You are not authorized to edit immobiles to this city. Please create your own city in order to edit immobiles.');}</script><body onload='myFunction()'>"
-        
+
     if request.method == 'POST':
         if request.form['address']:
             editedImmobile.address = request.form['address']
@@ -529,25 +574,29 @@ def editImmobile(city_id, immobile_id):
         flash('Immobile Successfully Edited')
         return redirect(url_for('showImmobile', city_id=city_id))
     else:
-        return render_template('editedimmobile.html', city_id=city_id, immobile_id=immobile_id, item=editedImmobile)
-    #return "This page edits a certain immobile of the selected city"
+        return render_template('editedimmobile.html', city_id=city_id,
+                               immobile_id=immobile_id, item=editedImmobile)
+    # return "This page edits a certain immobile of the selected city"
 
-@app.route('/city/<int:city_id>/immobile/<int:immobile_id>/delete', methods=['GET', 'POST'])
+
+@app.route('/city/<int:city_id>/immobile/<int:immobile_id>/delete',
+           methods=['GET', 'POST'])
 def deleteImmobile(city_id, immobile_id):
     if 'username' not in login_session:
         return redirect('/login')
     city = session.query(City).filter_by(id=city_id).one()
     deletedimmobile = session.query(Immobile).filter_by(id=immobile_id).one()
     if login_session['user_id'] != city.user_id:
-        return "<script>function myFunction() {alert('You are not authorized to delete immobiles to this city. Please create your own city in order to delete items.');}</script><body onload='myFunction()'>"
+        return "'<script>function myFunction()' +' {alert('You are not authorized todelete immobiles to this city. Please create your own city in order to delete items.');}</script><body onload='myFunction()'>"
     if request.method == 'POST':
         session.delete(deletedimmobile)
         session.commit()
         flash('Menu Item Successfully Deleted')
         return redirect(url_for('showImmobile', city_id=city_id))
     else:
-        return render_template('deletedimmobile.html', city_id=city_id, item=deletedimmobile)
-    #return "This page deletes a certain immobile of the selected city"
+        return render_template('deletedimmobile.html', city_id=city_id,
+                               item=deletedimmobile)
+    # return "This page deletes a certain immobile of the selected city"
 
 
 if __name__ == '__main__':
