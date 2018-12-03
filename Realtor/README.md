@@ -15,7 +15,7 @@ This project also covers `images manipulation` (CRUD operations) to display the 
     - Than, clone the repository from Udacity that contains de VM: git clone http://github.com/<username>/fullstack-nanodegree-vm fullstack
     - Go to the file fullstack, than use the `vagrant up` to execute the VM and later `vagrant ssh` to log into the VM.
     - There, use `cd /vagrant` to access the file that contains the database.
-    - See that the database file is there, you can place the folder `restaurants_menu` into the vagrant file.
+    - See that the database file is there, you can place the folder `Realtor` into the vagrant file.
     - To run the Python file, use `python finalproject.py`
 
 ## Future improvements:
