@@ -19,8 +19,8 @@ import json
 from flask import make_response
 import requests
 from werkzeug.utils import secure_filename
-from flask_wtf import FlaskForm
-from flask_wtf.csrf import CSRFProtect
+#from flask_wtf import FlaskForm
+#from flask_wtf.csrf import CSRFProtect
 
 auth = HTTPBasicAuth()
 app = Flask(__name__)
@@ -43,8 +43,6 @@ APPLICATION_NAME = "Realtor City Immobiles"
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
-#app.config['WTF_CSRF_SECRET_KEY'] = 'thesecretkey'
-#app.config['WTF_CSFR_ENABLED'] = True
 
 @app.route('/uploader/<int:city_id>/immobile/<int:immobile_id>', methods=['GET'])
 def upload_page(city_id, immobile_id):

@@ -1,17 +1,41 @@
+<!DOCTYPE html>
+<html> 
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Comfortaa:400,700" rel="stylesheet">
+        <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css">
+        <link href="{{ url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet">
+        <link href="static/bootstrap-grid.css" rel="stylesheet">
+        <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
 
-<h1>Edit {{city.name}}</h1>
+<body>
+    <h1>Edit {{city.name}}</h1>
 
-<form action="{{ url_for('editCity', city_id = city.id)}}" method = "post">
-    <div class="form-group">
-        <label for="name">Name:</label>
-        <input type ="text" class="form-control" name="name" placeholder ="{{city.name }}">
-        <div class="padding-bottom"></div>
-        <button type="submit" class="btn btn-default" id="submit" type="submit">
-        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>Save</button>
-
-    </div>
-</form>
-<a href = "{{url_for('showCities')}}">
-    <button class="btn btn-default delete">
-    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancel</button>
-</a>
+    <form action="{{ url_for('editCity', city_id = city.id)}}" method = "post">
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type ="text" class="form-control" name="name" placeholder ="{{city.name }}">
+            <div class="padding-bottom"></div>
+            <button type="submit" class="btn btn-info" id="submit" type="submit">
+                    <i class="material-icons">
+                            save_alt
+                    </i>
+                    Save
+            </button>
+        </div>
+    </form>
+    <a href = "{{url_for('showCities')}}">
+        <button class="btn btn-danger">
+            <i class="material-icons">
+                    close
+            </i>
+            Cancel
+        </button>
+    </a>
+</body>
+</html>
