@@ -18,5 +18,11 @@ This project also covers `images manipulation` (CRUD operations) to display the 
     - See that the database file is there, you can place the folder `restaurants_menu` into the vagrant file.
     - To run the Python file, use `python finalproject.py`
 
+## Future improvements:
+
+- Make it responsive
+- Better style the website
+- Add the CSRF Protection to the website
+
 # Author
 - Joseph Torres Kaltenecker
