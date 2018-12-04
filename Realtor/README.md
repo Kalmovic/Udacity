@@ -18,6 +18,9 @@ This project also covers `images manipulation` (CRUD operations) to display the 
     - See that the database file is there, you can place the folder `Realtor` into the vagrant file.
     - To run the Python file, use `python finalproject.py`
 
+- You can access the JSON page by clicking in the `JSON button`
+
+
 ## Future improvements:
 
 - Make it responsive

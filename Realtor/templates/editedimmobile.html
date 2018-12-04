@@ -29,10 +29,21 @@
                     <dd><input type = 'text' name='bathrooms' placeholder = '{{item.bathrooms}}'></dd>
             </dl>
 
-            <input type='submit' value='Edit'>
-
-            <a href = "{{url_for('showImmobile', city_id = city_id)}}"> Cancel </a>
+            <button type="submit" class="btn btn-info" id="submit" type="submit">
+                <i class="material-icons">
+                        save_alt
+                </i>
+                Save
+            </button>
         </form>
+        <a href = "{{url_for('showImmobile', city_id=city_id)}}">
+            <button class="btn btn-danger">
+                <i class="material-icons">
+                        close
+                </i>
+                Cancel
+            </button>
+        </a>
     </body>
 </html>
 

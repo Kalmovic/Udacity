@@ -42,22 +42,21 @@
                         </div>
                     </div>
                 </header>
-            </div>    
-            
-            <a href = "{{url_for('upload_page', city_id = city.id, immobile_id = imm.id)}}">
-                <button class="btn btn-info">
-                    <i class="material-icons">
-                        add_circle_outline
-                    </i>
-                    Upload images
-                </button>
-            </a>
+            </div>
             <a href = "{{url_for('get_gallery', filename=filename, city_id = city.id, immobile_id = imm.id)}}">
                 <button class="btn btn-info">
                     <i class="material-icons">
                         settings
                     </i>
                     Manage this immobile's gallery
+                </button>
+            </a>
+            <a href = "{{url_for('ImmobileInfoJSON', city_id = city.id, immobile_id = imm.id)}}">
+                <button class="btn btn-info">
+                    <i class="material-icons">
+                        location_searching
+                    </i>
+                    JSON
                 </button>
             </a>
             <br>
