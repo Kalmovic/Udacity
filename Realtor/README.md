@@ -10,6 +10,25 @@ This project also covers `images manipulation` (CRUD operations) to display the 
 
 - Python 2.7.9
     - You can find the link to the download [here](https://www.python.org/downloads/release/python-279/). Download the file that best fit for you.
+- Bootstrap 3.3.7
+    - You can find the link to the download [here](http://blog.getbootstrap.com/2016/07/25/bootstrap-3-3-7-released/).
+- Flask 0.9
+    - You can find steps to configuration [here](https://flask-ptbr.readthedocs.io/en/latest/installation.html).
+    - To install Flask-SQLAlchemy 2.3.2 use this command: `pip install Flask-SQLAlchemy`.
+    - To install Flask-HTTPAuth 3.2.4 use this command: `pip install Flask-HTTPAuth`.
+    - To install FJinja2 2.10 use this command: `pip install Jinja2`.
+    - To install html5lib 1.0 use this command: `pip install html5lib`.
+    - To install httplib2 0.12.0 use this command: `pip install httplib2`.
+    - To install itsdangerous 1.1.0 use this command: `pip install itsdangerous`.
+    - To install Jinja2 2.10 use this command: `pip install Jinja2`.
+    - To install requests2 2.16.0 use this command: `pip install requests2`.
+    - To install SQLAlchemy 1.2.14 use this command: `pip install SQLAlchemy`.
+    - To install urllib3 1.24.1 use this command: `pip install urllib3`.
+    - To install Werkzeug 0.14.1 use this command: `pip install Werkzeug`.
+    - To install WTForms 2.2.1 use this command: `pip install WTForms`.
+
+You can use Vagrant instead, "Vagrant provides easy to configure, reproducible, and portable work environments built on top of industry-standard technology and controlled by a single consistent workflow to help maximize the productivity and flexibility of you and your team."
+
 - Vagrant
     - First, download vagrant [here](https://www.vagrantup.com/downloads.html). Download the file that best fit for you.
     - Than, clone the repository from Udacity that contains de VM: git clone http://github.com/<username>/fullstack-nanodegree-vm fullstack
@@ -19,7 +38,18 @@ This project also covers `images manipulation` (CRUD operations) to display the 
     - To run the Python file, use `python finalproject.py`
 
 - You can access the JSON page by clicking in the `JSON button`
+- To see the dependencies of this project, there is the `requirements.txt` file, but if you run this code, you can type this command: `pip install -r requirements.txt` and it will give you the dependencies of the actual project.
 
+- Visualization of the image CRUD operations and galley:
+    - Multiple images can be selected at once
+<img src="static/upload-realtor.png"
+     alt="Markdown Monster icon"/>
+    - Images are then saved into the property gallery
+<img src="static/upload-realtor2.png"
+     alt="Markdown Monster icon"/>
+    - Images added to the carousel
+<img src="static/upload-realtor3.png"
+     alt="Markdown Monster icon"/>
 
 ## Future improvements:
 
