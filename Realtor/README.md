@@ -44,15 +44,18 @@ You can also use Vagrant, a VM that comes with lots of dependencies.
 
 Multiple images can be selected at once:
 
-![alt text](![upload-realtor](https://user-images.githubusercontent.com/42631135/49486659-7dee1200-f826-11e8-9820-f5b3ee45c658.PNG))
+<img src="![upload-realtor](https://user-images.githubusercontent.com/42631135/49486659-7dee1200-f826-11e8-9820-f5b3ee45c658.PNG)"
+     alt="Markdown Monster icon" width="50%"/>
 
 Images are then saved into the property gallery:
 
-![alt text](static/upload-realtor2.png)
+<img src="static/upload-realtor2.png"
+     alt="Markdown Monster icon" width="50%"/>
 
 Images are then added to the carousel:
 
-![alt text](static/upload-realtor3.png)
+<img src="static/upload-realtor3.png"
+     alt="Markdown Monster icon" width="50%"/>
 
 ## Future improvements:
 
