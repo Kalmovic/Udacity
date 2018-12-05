@@ -17,7 +17,6 @@ from oauth2client.client import flow_from_clientsecrets
 from oauth2client.client import FlowExchangeError
 import requests
 from werkzeug.utils import secure_filename
-from flask_apiexceptions import JSONExceptionHandler
 from flask_apiexceptions import (
     JSONExceptionHandler, ApiException, ApiError, api_exception_handler)
 

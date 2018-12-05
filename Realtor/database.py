@@ -5,11 +5,6 @@ from sqlalchemy import create_engine
 from passlib.apps import custom_app_context as pwd_context
 import random
 import string
-from itsdangerous import(
-    TimedJSONWebSignatureSerializer as Serializer,
-    BadSignature,
-    SignatureExpired)
-import os
 
 Base = declarative_base()
 # This secret key will be used to create and verify your tokens
