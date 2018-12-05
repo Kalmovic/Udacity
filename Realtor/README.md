@@ -6,7 +6,7 @@ _______________________
 This Project has the objective of showing the list of items (cities) and it's subitems(immobiles or properties), beeing able to do all CRUD (Create, Read, Update, Delete) operations to the items and subtiems of the respective creator when loged in.
 This project also covers `images manipulation` (CRUD operations) to display the subitems respective uploaded images.
 
--- You are able to login with Facebook or Goole Login, create, read, update or delete items and subitems. If you are not the creator of an item, you can still create a subitem, but not edit or delete that item. You cannot manage the images files of a subitem when you are not the creator.
+- You are able to login with Facebook or Goole Login, create, read, update or delete items and subitems. If you are not the creator of an item, you can still create a subitem, but not edit or delete that item. You cannot manage the images files of a subitem when you are not the creator.
 
 ## Prerequisites:
 
