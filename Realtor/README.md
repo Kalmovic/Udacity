@@ -6,6 +6,8 @@ _______________________
 This Project has the objective of showing the list of items (cities) and it's subitems(immobiles or properties), beeing able to do all CRUD (Create, Read, Update, Delete) operations to the items and subtiems of the respective creator when loged in.
 This project also covers `images manipulation` (CRUD operations) to display the subitems respective uploaded images.
 
+- You are able to login with Facebook or Goole Login, create, read, update or delete items and subitems. If you are not the creator of an item, you can still create a subitem, but not edit or delete that item. You cannot manage the images files of a subitem when you are not the creator.
+
 ## Prerequisites:
 
 - Python 2.7.9
@@ -31,18 +33,15 @@ You can also use Vagrant, a VM that comes with lots of dependencies.
 
 Multiple images can be selected at once:
 
-<img src="static/upload-realtor.png"
-     alt="Markdown Monster icon" width="50%"/>
+![upload-realtor](https://user-images.githubusercontent.com/42631135/49486659-7dee1200-f826-11e8-9820-f5b3ee45c658.PNG)
 
 Images are then saved into the property gallery:
 
-<img src="static/upload-realtor2.png"
-     alt="Markdown Monster icon" width="50%"/>
+![upload-realtor2](https://user-images.githubusercontent.com/42631135/49486780-f48b0f80-f826-11e8-9d7d-dd116494a970.PNG)
 
 Images are then added to the carousel:
 
-<img src="static/upload-realtor3.png"
-     alt="Markdown Monster icon" width="50%"/>
+![upload-realtor3](https://user-images.githubusercontent.com/42631135/49486810-0cfb2a00-f827-11e8-904c-bcf2ee2dab7f.PNG)
 
 ## Future improvements:
 
