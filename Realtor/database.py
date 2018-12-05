@@ -74,7 +74,7 @@ class Immobile(Base):
         }
 
 
-engine = create_engine('sqlite:///immobilesrealtors.db',
+engine = create_engine('sqlite:///itemcatalog.db',
                        connect_args={'check_same_thread': False})
 
 

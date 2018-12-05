@@ -37,6 +37,14 @@
                     <div class="row">
                         <div class="col-md-10">
                             <h1>{{ city.name }}</h1>
+                            <a href = "{{url_for('cityImmobileJSON', city_id = city.id)}}">
+                                <button class="btn btn-info">
+                                    <i class="material-icons">
+                                        location_searching
+                                    </i>
+                                    JSON
+                                </button>
+                            </a> 
                         </div>
                         <div class="col-md-2">
                             <figure class="creator">

@@ -8,7 +8,7 @@ import httplib2
 import os
 import sys
 import codecs
-from flask.ext.httpauth import HTTPBasicAuth
+from flask_httpauth import HTTPBasicAuth
 import json
 from flask_bootstrap import Bootstrap
 import random
@@ -17,6 +17,9 @@ from oauth2client.client import flow_from_clientsecrets
 from oauth2client.client import FlowExchangeError
 import requests
 from werkzeug.utils import secure_filename
+from flask_apiexceptions import JSONExceptionHandler
+from flask_apiexceptions import (
+    JSONExceptionHandler, ApiException, ApiError, api_exception_handler)
 
 # from flask_wtf import FlaskForm
 # from flask_wtf.csrf import CSRFProtect
@@ -26,6 +29,8 @@ app = Flask(__name__)
 # csrf = CSRFProtect(app)
 # csrf.init_app(app)
 Bootstrap(app)
+exception_handler = JSONExceptionHandler()
+exception_handler.init_app(app)
 
 UPLOAD_FOLDER = '/images/'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
@@ -102,8 +107,6 @@ def get_gallery(city_id, immobile_id, filename):
     immobile = session.query(Immobile).filter_by(
         id=immobile_id).one()
     if login_session['user_id'] != immobile.user_id:
-        print "\ncity.user_id: %s\n" % city.user_id
-        print "login_session['user_id']: %s" % login_session['user_id']
         return "'<script> function myFunction(){alert('You are not authorized to manage this immobile's gallery.');}</script><body onload='myFunction()'>"
     else:
         print "\n get_gallery filename: %s" % filename
@@ -429,11 +432,11 @@ def ImmobileInfoJSON(city_id, immobile_id):
     Immobile_Info = session.query(Immobile).filter_by(id=immobile_id).one()
     return jsonify(Immobile_Info=Immobile_Info.serialize)
 
-
 @app.route('/')
 @app.route('/city/')
 def showCities():
     cities = session.query(City).order_by(asc(City.name))
+
     # cities = session.query(City).all()
     if 'username' not in login_session:
         return render_template('publicCities.html', cities=cities)
@@ -494,12 +497,18 @@ def deleteCity(city_id):
         return render_template('deleteCity.html', city=cityDelete)
     # return "This page deletes the selected city"
 
-
+class MissingResourceError(ApiException):
+    status_code = 404
+    message = "No such resource exists."
+    code = 'not-found'
+    
 @app.route('/city/<int:city_id>/')
 @app.route('/city/<int:city_id>/immobile/')
 def showImmobile(city_id):
     cities = session.query(City).order_by(asc(City.name))
-    city = session.query(City).filter_by(id=city_id).one()
+    city = session.query(City).filter_by(id=city_id).one_or_none()
+    if city is None:
+            raise MissingResourceError()
     creator = getUserInfo(city.user_id)
     imms = session.query(Immobile).filter_by(city_id=city_id).all()
     # or creator.id != login_session['user_id']:
@@ -515,7 +524,9 @@ def showImmobile(city_id):
 @app.route('/city/<int:city_id>/immobile/<int:immobile_id>')
 def showImmobileDetails(city_id, immobile_id):
     selectedCity = session.query(City).filter_by(id=city_id).one()
-    selectedImmobile = session.query(Immobile).filter_by(id=immobile_id).one()
+    selectedImmobile = session.query(Immobile).filter_by(id=immobile_id).one_or_none()
+    if selectedImmobile is None:
+            raise MissingResourceError()
     # Creates the image folder automatically when cliking to see the detais
     # This enables the images to show in the carousel
     file = os.path.join(APP_ROUTE, 'images/%d/' % immobile_id)
@@ -602,7 +613,7 @@ def deleteImmobile(city_id, immobile_id):
     city = session.query(City).filter_by(id=city_id).one()
     deletedimmobile = session.query(Immobile).filter_by(id=immobile_id).one()
     if login_session['user_id'] != deletedimmobile.user_id:
-        return "'<script> function myFunction(){alert('You are not authorized todelete immobiles to this city. Please create your own city in order to delete items.');}</script><body onload='myFunction()'>"
+        return "'<script> function myFunction(){alert('You are not authorized to delete immobiles to this city. Please create your own city in order to delete items.');}</script><body onload='myFunction()'>"
     if request.method == 'POST':
         session.delete(deletedimmobile)
         session.commit()

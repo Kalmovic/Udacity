@@ -12,8 +12,8 @@ This project also covers `images manipulation` (CRUD operations) to display the 
     - You can find the link to the download [here](https://www.python.org/downloads/release/python-279/). Download the file that best fit for you.
 - Bootstrap 3.3.7
     - You can find the link to the download [here](http://blog.getbootstrap.com/2016/07/25/bootstrap-3-3-7-released/).
-- Flask 0.9
-    - You can find steps to configuration [here](https://flask-ptbr.readthedocs.io/en/latest/installation.html).
+- Flask and dependencies:
+    - You can find steps to configuration of Flask 0.9 [here](https://flask-ptbr.readthedocs.io/en/latest/installation.html).
     - To install Flask-SQLAlchemy 2.3.2 use this command: `pip install Flask-SQLAlchemy`.
     - To install Flask-HTTPAuth 3.2.4 use this command: `pip install Flask-HTTPAuth`.
     - To install FJinja2 2.10 use this command: `pip install Jinja2`.
@@ -27,7 +27,7 @@ This project also covers `images manipulation` (CRUD operations) to display the 
     - To install Werkzeug 0.14.1 use this command: `pip install Werkzeug`.
     - To install WTForms 2.2.1 use this command: `pip install WTForms`.
 
-You can use Vagrant instead, "Vagrant provides easy to configure, reproducible, and portable work environments built on top of industry-standard technology and controlled by a single consistent workflow to help maximize the productivity and flexibility of you and your team."
+You can also use Vagrant, a VM that comes with lots of dependencies.
 
 - Vagrant
     - First, download vagrant [here](https://www.vagrantup.com/downloads.html). Download the file that best fit for you.
@@ -40,22 +40,30 @@ You can use Vagrant instead, "Vagrant provides easy to configure, reproducible, 
 - You can access the JSON page by clicking in the `JSON button`
 - To see the dependencies of this project, there is the `requirements.txt` file, but if you run this code, you can type this command: `pip install -r requirements.txt` and it will give you the dependencies of the actual project.
 
-- Visualization of the image CRUD operations and galley:
-    - Multiple images can be selected at once
+## Visualization of the image CRUD operations and gallery:
+
+Multiple images can be selected at once:
+
 <img src="static/upload-realtor.png"
-     alt="Markdown Monster icon"/>
-    - Images are then saved into the property gallery
+     alt="Markdown Monster icon" width="50%"/>
+
+Images are then saved into the property gallery:
+
 <img src="static/upload-realtor2.png"
-     alt="Markdown Monster icon"/>
-    - Images added to the carousel
+     alt="Markdown Monster icon" width="50%"/>
+
+Images are then added to the carousel:
+
 <img src="static/upload-realtor3.png"
-     alt="Markdown Monster icon"/>
+     alt="Markdown Monster icon" width="50%"/>
 
 ## Future improvements:
 
+- Restructure the code using blueprints to better code visuals
 - Make it responsive
 - Better style the website
 - Add the CSRF Protection to the website
+- Add treatment erros like one_or_none()
 
 # Author
 - Joseph Torres Kaltenecker
