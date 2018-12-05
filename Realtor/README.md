@@ -44,8 +44,7 @@ You can also use Vagrant, a VM that comes with lots of dependencies.
 
 Multiple images can be selected at once:
 
-<img src="![upload-realtor](https://user-images.githubusercontent.com/42631135/49486659-7dee1200-f826-11e8-9820-f5b3ee45c658.PNG)"
-     alt="Markdown Monster icon" width="50%"/>
+![upload-realtor](https://user-images.githubusercontent.com/42631135/49486659-7dee1200-f826-11e8-9820-f5b3ee45c658.PNG)
 
 Images are then saved into the property gallery:
 
