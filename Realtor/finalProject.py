@@ -107,7 +107,7 @@ def get_gallery(city_id, immobile_id, filename):
     immobile = session.query(Immobile).filter_by(
         id=immobile_id).one()
     if login_session['user_id'] != immobile.user_id:
-        return "'<script> function myFunction(){alert('You are not authorized to manage this immobile's gallery.');}</script><body onload='myFunction()'>"
+        return "You are not authorized to manage this immobile's gallery."
     else:
         print "\n get_gallery filename: %s" % filename
         # gets the list of files in the directory
@@ -171,8 +171,7 @@ def fbconnect():
     app_secret = json.loads(
         open('fb_client_secrets.json', 'r').read())['web']['app_secret']
     print "App secret: %s \n" % app_secret
-    url = 'https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=%s&client_secret=%s&fb_exchange_token=%s' % (
-        app_id, app_secret, access_token)
+    url = "https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=%s&client_secret=%s&fb_exchange_token=%s" % (app_id, app_secret, access_token)  # noqa
     print "Url: %s \n" % url
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
@@ -191,7 +190,7 @@ def fbconnect():
     token = result.split(',')[0].split(':')[1].replace('"', '')
     print "Token: %s\n" % token
 
-    url = 'https://graph.facebook.com/v2.8/me?access_token=%s&fields=name,id,email' % token
+    url = "https://graph.facebook.com/v2.8/me?access_token=%s&fields=name,id,email" % token  # noqa
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
     print "url sent for API access:%s" % url
@@ -207,7 +206,7 @@ def fbconnect():
     login_session['access_token'] = token
 
     # Get user picture
-    url = 'https://graph.facebook.com/v2.8/me/picture?access_token=%s&redirect=0&height=200&width=200' % token
+    url = "https://graph.facebook.com/v2.8/me/picture?access_token=%s&redirect=0&height=200&width=200" % token  # noqa
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
     data = json.loads(result)
@@ -229,7 +228,7 @@ def fbconnect():
     output += '!</h1>'
     output += '<img src="'
     output += login_session['picture']
-    output += ' " style = "width: 300px; height: 300px; border-radius: 150px; -webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
+    output += '" style = "width: 300px; height: 300px; border-radius: 150px;">'
 
     flash("Now logged in as %s" % login_session['username'])
     return output
@@ -334,7 +333,7 @@ def gconnect():
     output += '!</h1>'
     output += '<img src="'
     output += login_session['picture']
-    output += ' "<style = "width: 300px; height: 300px;border-radius: 150px; -webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
+    output += ' "<style = "width: 300px; height: 300px;border-radius: 150px;">'
     flash("you are now logged in as %s" % login_session['username'])
     print "done!"
     return output
@@ -432,6 +431,7 @@ def ImmobileInfoJSON(city_id, immobile_id):
     Immobile_Info = session.query(Immobile).filter_by(id=immobile_id).one()
     return jsonify(Immobile_Info=Immobile_Info.serialize)
 
+
 @app.route('/')
 @app.route('/city/')
 def showCities():
@@ -468,7 +468,7 @@ def editCity(city_id):
         return redirect('/login')
     if editedCity.user_id != login_session['user_id']:
         print "\ncity.user_id: %s\n" % editedCity.user_id
-        return "<script> function myFunction(){alert('You are not authorized to edit this City. Please create your own city in order to edit.');}</script> <body onload='myFunction()' > "
+        return "You are not authorized to edit this City."
     if request.method == 'POST':
         if request.form['name']:
             editedCity.name = request.form['name']
@@ -487,7 +487,7 @@ def deleteCity(city_id):
     if cityDelete.user_id != login_session['user_id']:
         print "\ncity.user_id: %s\n" % cityDelete.user_id
         print "login_session['user_id'] %s" % login_session['user_id']
-        return "<script> function myFunction(){alert('You are not authorized to delete this City. Please create your own city in order to delete.');}</script> <body onload='myFunction()' > "
+        return "You are not authorized to delete this City."
     if request.method == 'POST':
         session.delete(cityDelete)
         session.commit()
@@ -497,11 +497,13 @@ def deleteCity(city_id):
         return render_template('deleteCity.html', city=cityDelete)
     # return "This page deletes the selected city"
 
+
 class MissingResourceError(ApiException):
     status_code = 404
     message = "No such resource exists."
     code = 'not-found'
-    
+
+
 @app.route('/city/<int:city_id>/')
 @app.route('/city/<int:city_id>/immobile/')
 def showImmobile(city_id):
@@ -524,7 +526,8 @@ def showImmobile(city_id):
 @app.route('/city/<int:city_id>/immobile/<int:immobile_id>')
 def showImmobileDetails(city_id, immobile_id):
     selectedCity = session.query(City).filter_by(id=city_id).one()
-    selectedImmobile = session.query(Immobile).filter_by(id=immobile_id).one_or_none()
+    selectedImmobile = session.query(Immobile).filter_by(
+        id=immobile_id).one_or_none()
     if selectedImmobile is None:
             raise MissingResourceError()
     # Creates the image folder automatically when cliking to see the detais
@@ -583,7 +586,7 @@ def editImmobile(city_id, immobile_id):
     if login_session['user_id'] != editedImmobile.user_id:
         print "\neditedImmobile.user_id: %s\n" % editedImmobile.user_id
         print "login_session['user_id']: %s" % login_session['user_id']
-        return "'<script> function myFunction(){alert('You are not authorized to create immobiles to this city. Please create your own city in order to edit immobiles.');}</script><body onload='myFunction()'>"
+        return "You are not authorized to edit this Immobile."
     if request.method == 'POST':
         if request.form['address']:
             editedImmobile.address = request.form['address']
@@ -613,7 +616,7 @@ def deleteImmobile(city_id, immobile_id):
     city = session.query(City).filter_by(id=city_id).one()
     deletedimmobile = session.query(Immobile).filter_by(id=immobile_id).one()
     if login_session['user_id'] != deletedimmobile.user_id:
-        return "'<script> function myFunction(){alert('You are not authorized to delete immobiles to this city. Please create your own city in order to delete items.');}</script><body onload='myFunction()'>"
+        return "You are not authorized to delete this Immobile."
     if request.method == 'POST':
         session.delete(deletedimmobile)
         session.commit()

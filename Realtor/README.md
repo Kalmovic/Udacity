@@ -12,20 +12,8 @@ This project also covers `images manipulation` (CRUD operations) to display the 
     - You can find the link to the download [here](https://www.python.org/downloads/release/python-279/). Download the file that best fit for you.
 - Bootstrap 3.3.7
     - You can find the link to the download [here](http://blog.getbootstrap.com/2016/07/25/bootstrap-3-3-7-released/).
-- Flask and dependencies:
-    - You can find steps to configuration of Flask 0.9 [here](https://flask-ptbr.readthedocs.io/en/latest/installation.html).
-    - To install Flask-SQLAlchemy 2.3.2 use this command: `pip install Flask-SQLAlchemy`.
-    - To install Flask-HTTPAuth 3.2.4 use this command: `pip install Flask-HTTPAuth`.
-    - To install FJinja2 2.10 use this command: `pip install Jinja2`.
-    - To install html5lib 1.0 use this command: `pip install html5lib`.
-    - To install httplib2 0.12.0 use this command: `pip install httplib2`.
-    - To install itsdangerous 1.1.0 use this command: `pip install itsdangerous`.
-    - To install Jinja2 2.10 use this command: `pip install Jinja2`.
-    - To install requests2 2.16.0 use this command: `pip install requests2`.
-    - To install SQLAlchemy 1.2.14 use this command: `pip install SQLAlchemy`.
-    - To install urllib3 1.24.1 use this command: `pip install urllib3`.
-    - To install Werkzeug 0.14.1 use this command: `pip install Werkzeug`.
-    - To install WTForms 2.2.1 use this command: `pip install WTForms`.
+- To see all dependencies of this project, there is the `requirements.txt` file. 
+    You can type this command: `pip install -r requirements.txt` and install the dependencies of the actual project.
 
 You can also use Vagrant, a VM that comes with lots of dependencies.
 
@@ -38,21 +26,23 @@ You can also use Vagrant, a VM that comes with lots of dependencies.
     - To run the Python file, use `python finalproject.py`
 
 - You can access the JSON page by clicking in the `JSON button`
-- To see the dependencies of this project, there is the `requirements.txt` file, but if you run this code, you can type this command: `pip install -r requirements.txt` and it will give you the dependencies of the actual project.
 
 ## Visualization of the image CRUD operations and gallery:
 
 Multiple images can be selected at once:
 
-![alt text](static/upload-realtor.png)
+<img src="static/upload-realtor.png"
+     alt="Markdown Monster icon" width="50%"/>
 
 Images are then saved into the property gallery:
 
-![alt text](static/upload-realtor2.png)
+<img src="static/upload-realtor2.png"
+     alt="Markdown Monster icon" width="50%"/>
 
 Images are then added to the carousel:
 
-![alt text](static/upload-realtor3.png)
+<img src="static/upload-realtor3.png"
+     alt="Markdown Monster icon" width="50%"/>
 
 ## Future improvements:
 
