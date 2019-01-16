@@ -23,7 +23,7 @@ for (var i = 0; i < cats.length; i++){
         return function() {
             $selectedCat.text(cattextCopy.nodeValue);
             $clicks.text(parseInt(cat.count));
-            imgcat.setAttribute("src", this.cat.image);
+            imgcat.setAttribute("src", cat.image);
             document.img.appendChild(imgcat);
             //alert(cattextCopy.nodeValue);
         };
