@@ -1,6 +1,7 @@
 
 var model = {
     currCat: null,
+    adminActive: false,
     cats: [
         {
             name: 'Fluffy',
@@ -32,9 +33,11 @@ var model = {
 
 var octupus = {
     init: function(){
-        //model.currCat = null;
+        model.currCat = model.cats[0];
         catListView.init();
         catView.init();
+        adminView.init();
+        adminView.hide();
     },
 
     getCurrentCat: function(){
@@ -52,6 +55,31 @@ var octupus = {
     incrementCounter: function(){
         model.currCat.count++;
         catView.render();
+        adminView.render();
+    },
+    
+    displayAdmin: function(){
+        if (model.adminActive === false){
+            model.adminActive = true;
+            adminView.show();
+        }
+        else if (model.adminActive === true){
+            model.adminActive = false;
+            adminView.hide();
+        }
+    },
+
+    changeCat: function(){
+        model.currCat.name = adminCatName.value;
+        model.currCat.image = adminImg.value;
+        model.currCat.count = adminClicks.value;
+        catView.render();
+        catListView.render();
+        adminView.hide();
+    },
+
+    cancelAdmin: function(){
+        adminView.hide();
     }
     
 };
@@ -78,7 +106,8 @@ var catView = {
 
 var catListView = {
     init: function(){
-        this.catlist = document.getElementById('cat-list');  
+        this.catlist = document.getElementById('cat-list');
+        this.form = document.getElementById('form');  
         this.render();
     },
 
@@ -98,6 +127,47 @@ var catListView = {
             })(cat));
             this.catlist.appendChild(elem);
         }
+    }
+};
+
+var adminView = {
+    init: function(){
+        this.adminCatName = document.getElementById('adminCatName');
+        this.adminImg = document.getElementById('adminImg');
+        this.adminClicks = document.getElementById('adminClicks');
+        this.cancel = document.getElementById('cancel');
+        this.change = document.getElementById('change');
+        this.showAdmin = document.getElementById('showAdmin');
+        var adminArea = document.getElementById('adminArea');
+
+        this.showAdmin.addEventListener('click',function(){
+            octupus.displayAdmin();
+        });
+
+        this.change.addEventListener('click', function(){
+            octupus.changeCat();
+        });
+
+        this.cancel.addEventListener('click', function(){
+            octupus.cancelAdmin();
+        });
+
+        this.render();
+    },
+
+    render: function(){
+        var currCat = octupus.getCurrentCat();
+        this.adminCatName.value = currCat.name;
+        this.adminImg.value = currCat.image;
+        this.adminClicks.value = currCat.count;
+    },
+
+    show: function(){
+        adminArea.style.display = 'block';
+    },
+
+    hide: function(){
+        adminArea.style.display = 'none';
     }
 };
 

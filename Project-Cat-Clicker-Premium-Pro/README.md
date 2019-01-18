@@ -15,3 +15,7 @@ Click the image to increment one number.
 - Download the folder "Cat-Clicker-Premium"
 - Don't move any file or folder
 - Just click the file *index.html* to open the page.
+
+### To Do:
+
+- Add CSS
