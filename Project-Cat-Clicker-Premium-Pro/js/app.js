@@ -50,6 +50,7 @@ var octupus = {
 
     setCurrentCat: function(cat){
         model.currCat = cat;
+        adminView.render();
     },
 
     incrementCounter: function(){
@@ -119,9 +120,9 @@ var catListView = {
             var elem = document.createElement('li');
             elem.textContent = cat.name;
 
-            elem.addEventListener('click',(function(catCopy){
+            elem.addEventListener('click',(function(cat){
                 return function(){
-                    octupus.setCurrentCat(catCopy);
+                    octupus.setCurrentCat(cat);
                     catView.render();
                 };
             })(cat));
