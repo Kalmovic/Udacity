@@ -1,4 +1,4 @@
-# Project Cat Clicker Premium - Udacity
+# Project Cat Clicker Premium Pro - Udacity
 ### Full Stack Web Development ND
 _______________________
 ## About
