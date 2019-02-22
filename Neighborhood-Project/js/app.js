@@ -153,12 +153,21 @@ var createMarker = function(data){
     // Create an onclick event to open an infowindow at each marker.
     that.marker.addListener('click', function(){
         setInfoWindow(that, largeInfowindow);
-    });
-
-    that.marker.addListener('click', function() {
         map.setZoom(15);
         map.setCenter(that.marker.getPosition());
+        var cityCircle = new google.maps.Circle({
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0.35,
+            map: map,
+            center: that.marker.getPosition(),
+            radius: 500
+          });
     });
+    
+    
 };
 
 
