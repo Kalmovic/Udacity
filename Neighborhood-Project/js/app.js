@@ -145,7 +145,7 @@ var createMarker = function(data){
     // Create a marker per location, and put into markers array.
     that.marker = new google.maps.Marker({
         map: map,
-        position: new google.maps.LatLng(data.lat, data.lng),
+        position: new google.maps.LatLng(data.location.lat, data.location.lng),
         title: that.title,
         icon: icon,
         animation: google.maps.Animation.DROP
@@ -153,6 +153,11 @@ var createMarker = function(data){
     // Create an onclick event to open an infowindow at each marker.
     that.marker.addListener('click', function(){
         setInfoWindow(that, largeInfowindow);
+    });
+
+    that.marker.addListener('click', function() {
+        map.setZoom(15);
+        map.setCenter(that.marker.getPosition());
     });
 };
 
@@ -179,6 +184,8 @@ var setInfoWindow = function (marker, infowindow){
 var ViewModel = function(){
     //Makes sure 'self' always refers to ViewModel
     var self = this;
+
+    this.markers = ko.observableArray();
     //Constructor creates a new map - only center and zoom are required
     map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: -22.971711, lng: -43.314694},
@@ -187,11 +194,9 @@ var ViewModel = function(){
         mapTypeControl: false
     });
 
-    this.markers = ko.observableArray();
-
     places.forEach(function(data){
-        var addLoco = new createMarker(data);
-        self.markers.push(addLoco);
+        var addPlace = new createMarker(data);
+        self.markers.push(addPlace);
     });
 };
 
