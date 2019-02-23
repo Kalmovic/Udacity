@@ -151,21 +151,30 @@ var createMarker = function(data){
         animation: google.maps.Animation.DROP
     });
     // Create an onclick event to open an infowindow at each marker.
-    that.marker.addListener('click', function(){
+    
+    
+    
+    
+    /*that.marker.addListener('click', function(){
         setInfoWindow(that, largeInfowindow);
         map.setZoom(15);
         map.setCenter(that.marker.getPosition());
         var cityCircle = new google.maps.Circle({
-            strokeColor: '#FF0000',
-            strokeOpacity: 0.8,
+            strokeColor: '#bc1888',
+            strokeOpacity: 0.5,
             strokeWeight: 2,
-            fillColor: '#FF0000',
-            fillOpacity: 0.35,
+            fillColor: '#bc1888',
+            fillOpacity: 0.001,
             map: map,
             center: that.marker.getPosition(),
-            radius: 500
-          });
-    });
+            radius: 1000 // 1km
+        });
+        if (that.marker.getAnimation() !== null){
+            that.marker.setAnimation(null);
+        } else {
+            that.marker.setAnimation(google.maps.Animation.BOUNCE);
+        }
+    });*/
     
     
 };
