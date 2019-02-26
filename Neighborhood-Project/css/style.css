@@ -14,6 +14,11 @@ body {
     right: 0px;
 }
 
+#menu {
+    display: relative;
+    padding-left: 32px;
+}
+
 .options-box {
     background: #fff;
     border: 1px solid #999;
@@ -30,51 +35,55 @@ body {
     height: 200px;
 }
 
-#menu{
-    z-index: 1;
-    position: relative;
-
-}
-
 .sidenav {
     height: 100%;
     width: 0;
-    position: relative;
+    position: fixed;
     z-index: 100;
     top: 0;
     left: 0;
-    background: -moz-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); 
-    background: -webkit-linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%); 
-    background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%); 
+    background: -moz-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    background: -webkit-linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+    background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f09433', endColorstr='#bc1888',GradientType=1 );
     overflow-x: hidden;
     transition: 0.5s;
-    padding-top: 60px;
     opacity: 0.7;
 }
-  
-.sidenav a {
-    padding: 8px 8px 8px 32px;
-    text-decoration: none;
-    font-size: 25px;
-    color: black;
-    display: block;
-    transition: 0.3s;
+
+ul{
+    padding: 0px;
 }
-  
-.sidenav a:hover {
-    color: #f1f1f1;
+
+a, li {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.2s;
 }
-  
-.sidenav .closebtn {
-    position: absolute;
-    top: 0;
-    right: 25px;
-    font-size: 36px;
-    margin-left: 50px;
+
+.sidenav a,li:hover {
+  color: #f1f1f1;
 }
-  
+
+.closebtn {
+  position: relative;
+  top: 0;
+  left: 0px;
+  font-size: 50px;
+
+}
+
+#menu{
+    z-index: 1;
+    position: relative;
+    padding-top: 0px;
+
+}
+
 @media screen and (max-height: 450px) {
-    .sidenav {padding-top: 15px;}
-    .sidenav a {font-size: 18px;}
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
 }

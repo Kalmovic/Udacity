@@ -9,7 +9,7 @@ var places = [
     {title: 'Cristo Redentor', location: {lat: -22.951580, lng: -43.210122}},
     {title: 'Mirante', location: {lat: -22.9412752, lng: -43.2840333}},
     {title: 'Praia da Reserva', location: {lat: -23.012947, lng: -43.391236}}
-    
+
 ];
 
 var styles = [
@@ -134,14 +134,14 @@ var createMarker = function(data){
     that.title = data.title;
 
     // Create Info Window
-    var largeInfowindow = new google.maps.InfoWindow();
-    
+    //var largeInfowindow = new google.maps.InfoWindow();
+
     var icon = {
         "url": "img/instagram.png",
         scaledSize: new google.maps.Size(20, 20), // scaled size
         origin: new google.maps.Point(0,0), // origin
         anchor: new google.maps.Point(0,0) // anchor
-    }    
+    }
     // Create a marker per location, and put into markers array.
     that.marker = new google.maps.Marker({
         map: map,
@@ -151,10 +151,13 @@ var createMarker = function(data){
         animation: google.maps.Animation.DROP
     });
     // Create an onclick event to open an infowindow at each marker.
-    
-    
-    
-    
+    that.marker.addListener('click', function(){
+        if (that.marker.getAnimation() !== null){
+            that.marker.setAnimation(null);
+        } else {
+            that.marker.setAnimation(google.maps.Animation.BOUNCE);
+        }
+    });
     /*that.marker.addListener('click', function(){
         setInfoWindow(that, largeInfowindow);
         map.setZoom(15);
@@ -175,28 +178,14 @@ var createMarker = function(data){
             that.marker.setAnimation(google.maps.Animation.BOUNCE);
         }
     });*/
-    
-    
+
+
 };
 
 
-var setInfoWindow = function (marker, infowindow){
+var setInfoWindow = function (marker){
     // Check to make sure the infowindow is not already
     // on this marker
-    if (infowindow.marker != marker){
-        // Clear the infowindow content to give the streetview time to load.
-        infowindow.setContent('');
-        infowindow.marker = marker;
-        
-        // Make sure the marker property is cleared if the infowindow is closed.
-        infowindow.addListener('closeclick', function(){
-            infowindow.setMarker = null;
-        });
-
-        infowindow.setContent('<div>' + marker.title + '</div>');
-        // Open the infowindow on the correct marker.
-        infowindow.open(map, marker);
-    }
 };
 
 var ViewModel = function(){
@@ -204,6 +193,7 @@ var ViewModel = function(){
     var self = this;
 
     this.markers = ko.observableArray();
+
     //Constructor creates a new map - only center and zoom are required
     map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: -22.971711, lng: -43.314694},
@@ -216,6 +206,15 @@ var ViewModel = function(){
         var addPlace = new createMarker(data);
         self.markers.push(addPlace);
     });
+    this.currentPlace = ko.observable(this.markers()[0]);
+    this.setMarker = function(selectedPlace){
+        self.currentPlace(selectedPlace);
+        if (this.currentPlace.getAnimation() !== null){
+            this.currentPlace.setAnimation(null);
+        } else {
+            this.currentPlace.setAnimation(google.maps.Animation.BOUNCE);
+        }
+    }
 };
 
 function initMap(){
