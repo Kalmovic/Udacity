@@ -158,6 +158,9 @@ var createMarker = function(data){
             that.marker.setAnimation(google.maps.Animation.BOUNCE);
         }
     });
+    that.setMarker = function(){
+        google.maps.event.trigger(that.marker, 'click');
+    };
     /*that.marker.addListener('click', function(){
         setInfoWindow(that, largeInfowindow);
         map.setZoom(15);
@@ -192,7 +195,7 @@ var ViewModel = function(){
     //Makes sure 'self' always refers to ViewModel
     var self = this;
 
-    this.markers = ko.observableArray();
+    self.markers = ko.observableArray();
 
     //Constructor creates a new map - only center and zoom are required
     map = new google.maps.Map(document.getElementById('map'), {
@@ -206,15 +209,8 @@ var ViewModel = function(){
         var addPlace = new createMarker(data);
         self.markers.push(addPlace);
     });
-    this.currentPlace = ko.observable(this.markers()[0]);
-    this.setMarker = function(selectedPlace){
-        self.currentPlace(selectedPlace);
-        if (this.currentPlace.getAnimation() !== null){
-            this.currentPlace.setAnimation(null);
-        } else {
-            this.currentPlace.setAnimation(google.maps.Animation.BOUNCE);
-        }
-    }
+
+
 };
 
 function initMap(){

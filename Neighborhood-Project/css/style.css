@@ -48,7 +48,8 @@ body {
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f09433', endColorstr='#bc1888',GradientType=1 );
     overflow-x: hidden;
     transition: 0.5s;
-    opacity: 0.7;
+    opacity: 0.9;
+
 }
 
 ul{
@@ -57,9 +58,9 @@ ul{
 
 a, li {
   padding: 8px 8px 8px 32px;
-  text-decoration: none;
-  font-size: 25px;
-  color: #818181;
+  color: rgba(255,255,255, 0.9);
+  font-size: 20px;
+  opacity: 1;
   display: block;
   transition: 0.2s;
 }
