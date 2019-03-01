@@ -129,12 +129,14 @@ var styles = [
 
 var map;
 
+var clickedMarker = new Boolean(false);
+
 var createMarker = function(data){
     var that = this;
     that.title = data.title;
 
     // Create Info Window
-    //var largeInfowindow = new google.maps.InfoWindow();
+    var largeInfowindow = new google.maps.InfoWindow();
 
     var icon = {
         "url": "img/instagram.png",
@@ -151,51 +153,66 @@ var createMarker = function(data){
         animation: google.maps.Animation.DROP
     });
     // Create an onclick event to open an infowindow at each marker.
-    that.marker.addListener('click', function(){
-        if (that.marker.getAnimation() !== null){
-            that.marker.setAnimation(null);
-        } else {
-            that.marker.setAnimation(google.maps.Animation.BOUNCE);
-        }
-    });
     that.setMarker = function(){
         google.maps.event.trigger(that.marker, 'click');
     };
-    /*that.marker.addListener('click', function(){
-        setInfoWindow(that, largeInfowindow);
-        map.setZoom(15);
-        map.setCenter(that.marker.getPosition());
-        var cityCircle = new google.maps.Circle({
-            strokeColor: '#bc1888',
-            strokeOpacity: 0.5,
-            strokeWeight: 2,
-            fillColor: '#bc1888',
-            fillOpacity: 0.001,
-            map: map,
-            center: that.marker.getPosition(),
-            radius: 1000 // 1km
-        });
-        if (that.marker.getAnimation() !== null){
-            that.marker.setAnimation(null);
+
+    that.marker.addListener('click', function(){
+        /*if (clickedMarker== false){
+            clickedMarker = true;
+            setInfoWindow(that, largeInfowindow);
+            map.setZoom(15);
+            map.setCenter(that.marker.getPosition());
+            var cityCircle = new google.maps.Circle({
+                strokeColor: '#bc1888',
+                strokeOpacity: 0.5,
+                strokeWeight: 2,
+                fillColor: '#bc1888',
+                fillOpacity: 0.001,
+                map: map,
+                center: that.marker.getPosition(),
+                radius: 1000 // 1km
+            });
+
+            if (that.marker.getAnimation() !== null){
+                that.marker.setAnimation(null);
+            } else {
+                that.marker.setAnimation(google.maps.Animation.BOUNCE);
+            }
         } else {
-            that.marker.setAnimation(google.maps.Animation.BOUNCE);
-        }
-    });*/
+            that.marker.removeListener('click');
+        }*/
+        that.marker.addListener('click', function(){
+            setInfoWindow(this, largeInfowindow);
+        });
+    });
 
 
 };
 
 
-var setInfoWindow = function (marker){
+var setInfoWindow = function (marker, infowindow){
     // Check to make sure the infowindow is not already
     // on this marker
-};
+    if (infowindow.marker != marker){
+        // Clear the infowindow content to give the streetview time to load.
+        infowindow.setContent('');
+        infowindow.marker = marker;
+
+        // Make sure the marker property is cleared if the infowindow is closed.
+        infowindow.addListener('closeclick', function(){
+            infowindow.setMarker = null;
+        });
+        infowindow.setContent('<div>' + marker.title + '</div>');
+        infowindow.open(map, marker);
+    };
+}
 
 var ViewModel = function(){
     //Makes sure 'self' always refers to ViewModel
     var self = this;
 
-    self.markers = ko.observableArray();
+    this.allMarkers = ko.observableArray();
 
     //Constructor creates a new map - only center and zoom are required
     map = new google.maps.Map(document.getElementById('map'), {
@@ -207,10 +224,18 @@ var ViewModel = function(){
 
     places.forEach(function(data){
         var addPlace = new createMarker(data);
-        self.markers.push(addPlace);
+        self.allMarkers.push(addPlace);
     });
 
+    self.query = ko.observable('');
 
+    this.filteredMarkers = ko.computed(function(){
+        return this.allMarkers().filter(function(addPlace){
+            var found = addPlace.title.toLowerCase().indexOf(this.query().toLowerCase()) > -1;
+            addPlace.marker.setVisible(found);
+            return found;
+        }, this);
+    }, this);
 };
 
 function initMap(){

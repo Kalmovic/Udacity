@@ -12,8 +12,8 @@
 
     <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names..">
-        <ul data-bind="foreach: markers" style="list-style-type:none;">
+        <input type="text" id="myInput" placeholder="Search" data-bind="textInput: query, valueUpdate: 'afterkeydown'" autocomplete="off">
+        <ul data-bind="foreach: filteredMarkers" style="list-style-type:none;">
             <li data-bind="text: $data.title, click: setMarker"></li>
         </ul>
     </div>
@@ -32,10 +32,8 @@
         }
     </script>
     <div id="map"></div>
+    <div id="sidebar"></div>
 
-
-
-    <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script type="text/javascript" src='js/jquery.slidereveal.min.js'></script>
     <script type='text/javascript' src='js/knockout-3.4.0.js'></script>
