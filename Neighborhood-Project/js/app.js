@@ -7,8 +7,9 @@ var places = [
     {title: 'Parque Lage', location: {lat: -22.9581535, lng: -43.2116429}},
     {title: 'Píer dos Pedalinhos', location: {lat: -22.975312, lng: -43.201407}},
     {title: 'Cristo Redentor', location: {lat: -22.951580, lng: -43.210122}},
-    {title: 'Mirante', location: {lat: -22.9412752, lng: -43.2840333}},
-    {title: 'Praia da Reserva', location: {lat: -23.012947, lng: -43.391236}}
+    {title: 'Pico Da Tijuca', location: {lat: -22.9417268, lng: -43.2852504}},
+    {title: 'Praia da Reserva', location: {lat: -23.012947, lng: -43.391236}},
+    {title: 'Mirante do Morro Dois Irmãos', location: {lat : -22.9833037, lng: -43.2519733}}
 
 ];
 
@@ -131,12 +132,17 @@ var map;
 
 var clickedMarker = new Boolean(false);
 
+var overlayShown = false;
+
+var CLIENT_ID = 'XX1DZGZ0SMRWCAKL1YXPGK40KE1UIA42VDCZQQ3CZ55KQGXW';
+var CLIENT_SECRET = 'WIO5ETGFN51FFUZOONSE2Z3LOT5NY0HIMZXFR4G3NYODFOX1';
+
 var createMarker = function(data){
     var that = this;
     that.title = data.title;
 
     // Create Info Window
-    var largeInfowindow = new google.maps.InfoWindow();
+    //var largeInfowindow = new google.maps.InfoWindow();
 
     var icon = {
         "url": "img/instagram.png",
@@ -156,6 +162,27 @@ var createMarker = function(data){
     that.setMarker = function(){
         google.maps.event.trigger(that.marker, 'click');
     };
+
+    $.ajax({
+        url: 'https://api.foursquare.com/v2/venues/search?ll='+data.location.lat +","+data.location.lng,
+        type: 'GET',
+        dataType: "json",
+        data: {
+            name: that.title,
+            client_id: CLIENT_ID,
+            client_secret: CLIENT_SECRET,
+            v: '20190301',
+            intent: 'match'
+        }
+        }).done(function(data){
+
+            that.venueId = data.response.venues[0].id;
+            console.log("Title: " + data.title + " | Venue ID: " + that.venueId);
+        });
+
+    //console.log("Title: " + data.title + " | Venue ID: " + that.venueId);
+
+    var imgUrl = '';
 
     that.marker.addListener('click', function(){
         /*if (clickedMarker== false){
@@ -183,7 +210,7 @@ var createMarker = function(data){
             that.marker.removeListener('click');
         }*/
         that.marker.addListener('click', function(){
-            setInfoWindow(this, largeInfowindow);
+            setInfoWindow(this);
         });
     });
 
@@ -191,21 +218,19 @@ var createMarker = function(data){
 };
 
 
-var setInfoWindow = function (marker, infowindow){
-    // Check to make sure the infowindow is not already
-    // on this marker
-    if (infowindow.marker != marker){
-        // Clear the infowindow content to give the streetview time to load.
-        infowindow.setContent('');
-        infowindow.marker = marker;
-
-        // Make sure the marker property is cleared if the infowindow is closed.
-        infowindow.addListener('closeclick', function(){
-            infowindow.setMarker = null;
-        });
-        infowindow.setContent('<div>' + marker.title + '</div>');
-        infowindow.open(map, marker);
-    };
+var setInfoWindow = function (marker){
+    google.maps.event.addListener(marker, "click", function() {
+        var overlay = document.getElementById("map-overlay");
+        if (!overlayShown) {
+            overlay.setAttribute("class", "map-overlay-show");
+            overlay.innerHTML = marker.title;
+            overlayShown = true;
+        } else {
+            overlay.setAttribute("class", "map-overlay-hidde");
+            overlay.innerHTML = "";
+            overlayShown = false;
+        }
+    });
 }
 
 var ViewModel = function(){
