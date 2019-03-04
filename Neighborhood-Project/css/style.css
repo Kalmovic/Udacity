@@ -83,25 +83,23 @@ a, li {
     padding-top: 0px;
 }
 
-#map-overlay {
-  position: absolute;
-  top: 0;
-  width: 0;
-  right: 0;
-  transition: 0.5s;
-  z-index: 2;
+.links_modals:hover{
+    cursor: pointer;
 }
 
-.map-overlay-show {
-  background-color: #fff;
-  width: 300px !important;
-  height: 100vh !important;
+.venueName{
+    text-align: center;
 }
-
-.map-overlay-hidde {
-  width: 0;
-  right: 0;
-  transition: 0.5s;
+#userImage{
+    position: relative;
+    border-radius: 50%;
+}
+#userName{
+    text-align: center;
+}
+#mainpic{
+    position: relative;
+    text-align: center;
 }
 
 @media screen and (max-height: 450px) {

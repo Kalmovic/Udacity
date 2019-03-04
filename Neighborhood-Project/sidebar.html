@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type='text/javascript' src='js/bootstrap.js'></script>
+    <style>
+        html{
+            background-color: white;
+            margin-left: 500px;
+            margin-right: 500px;
+        }
+        body{
+            background: -moz-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            background: -webkit-linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+            background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f09433', endColorstr='#bc1888',GradientType=1 );
+        }
+        .venueName{
+            text-align: center;
+        }
+
+        #userName{
+            text-align: center;
+        }
+        #venueImage{
+            border-radius: 50%;
+        }
+        .img-fluid{
+          max-width: 100%;
+          height: auto;
+        }
+        #mainpic{
+          border-radius: 3%;
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
+          width: 80%;
+        }
+
+    </style>
+    <div class="main">
+        <h3 class="venueName">Pedra da Gávea</h3>
+        <div class="row" id="user">
+            <img class="col-md-3" src="https://placekitten.com/50/50" id="venueImage">
+            <span id="userName" class="col-md-9">User</span>
+        </div>
+        <div class="cat">
+            <img class="img-fluid" id="mainpic" src="https://placekitten.com/400/400">
+        </div>
+    </div>
+
+
+</body>
+</html>

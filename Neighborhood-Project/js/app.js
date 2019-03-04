@@ -1,6 +1,5 @@
 var places = [
     {title: 'Pedra da Gávea', location: {lat: -22.9978723, lng: -43.2847223}},
-    {title: 'Secreto da Pedra Bonita', location: {lat: -22.9784277, lng: -43.2849961}},
     {title: 'Escadaria Selarón', location: {lat: -22.9153106, lng: -43.1792038}},
     {title: 'Vista Chinesa', location: {lat: -22.9732422, lng: -43.249444}},
     {title: 'Mirante do Leblon', location: {lat : -22.9899755, lng : -43.2273807}},
@@ -163,25 +162,6 @@ var createMarker = function(data){
         google.maps.event.trigger(that.marker, 'click');
     };
 
-    $.ajax({
-        url: 'https://api.foursquare.com/v2/venues/search?ll='+data.location.lat +","+data.location.lng,
-        type: 'GET',
-        dataType: "json",
-        data: {
-            name: that.title,
-            client_id: CLIENT_ID,
-            client_secret: CLIENT_SECRET,
-            v: '20190301',
-            intent: 'match'
-        }
-        }).done(function(data){
-
-            that.venueId = data.response.venues[0].id;
-            console.log("Title: " + data.title + " | Venue ID: " + that.venueId);
-        });
-
-    //console.log("Title: " + data.title + " | Venue ID: " + that.venueId);
-
     var imgUrl = '';
 
     that.marker.addListener('click', function(){
@@ -210,7 +190,7 @@ var createMarker = function(data){
             that.marker.removeListener('click');
         }*/
         that.marker.addListener('click', function(){
-            setInfoWindow(this);
+            setInfoWindow(this, data);
         });
     });
 
@@ -218,19 +198,76 @@ var createMarker = function(data){
 };
 
 
-var setInfoWindow = function (marker){
-    google.maps.event.addListener(marker, "click", function() {
-        var overlay = document.getElementById("map-overlay");
-        if (!overlayShown) {
-            overlay.setAttribute("class", "map-overlay-show");
-            overlay.innerHTML = marker.title;
-            overlayShown = true;
-        } else {
-            overlay.setAttribute("class", "map-overlay-hidde");
-            overlay.innerHTML = "";
-            overlayShown = false;
+var setInfoWindow = function (marker, place){
+    $.ajax({
+        url: 'https://api.foursquare.com/v2/venues/search?ll='+place.location.lat +","+place.location.lng,
+        type: 'GET',
+        dataType: "json",
+        data: {
+            name: place.title,
+            client_id: CLIENT_ID,
+            client_secret: CLIENT_SECRET,
+            v: '20190301',
+            intent: 'checkin',
+            radius: '4'
         }
-    });
+        }).done(function(data){
+            //console.log("Name and ID: "+data.response.venues[i].name+" "+i);
+            this.venueName = data.response.venues[0].name;
+            this.venueId = data.response.venues[0].id;
+            console.log("Title: " + this.venueName + " | Venue ID: " + this.venueId);
+            $.ajax({
+                url: 'https://api.foursquare.com/v2/venues/'+this.venueId+'/photos',
+                type: 'GET',
+                dataType: 'json',
+                group: 'venue',
+                data: {
+                    client_id: CLIENT_ID,
+                    client_secret: CLIENT_SECRET,
+                    v: '20190301'
+                }
+            }).done(function(data, venueName){
+                var items = data.response.photos.items[0];
+                this.fromName = items.source.name;
+                this.locationPrefix = items.prefix;
+                this.locationSuffix = items.suffix;
+                this.userFirstName = items.user.firstName;
+                this.userLastName = items.user.lastName;
+                this.userFullName = this.userFirstName+' '+this.userLastName;
+                this.locationImgSrc = this.locationPrefix + '50x50' + this.locationSuffix;
+                this.userPrefix = items.user.photo.prefix;
+                this.userSuffix = items.user.photo.suffix;
+                this.userImgSrc = this.userPrefix+'200x200'+this.userSuffix
+
+                console.log("From: " +this.fromName);
+                console.log("imgSrc: "+this.locationImgSrc);
+                console.log("User name: "+this.userFullName);
+                console.log("userSrc: "+this.userImgSrc);
+                var modal = document.getElementById("project");
+                modal.innerHTML = [
+                    '<div class="modal-header">'+
+                        '<h4 class="venueName modal-title">'+ place.title +'</h4>'+
+                    '</div>'+
+                    '<div class="modal-body">'+
+                        '<div class="row" id="user">'+
+                            '<img class="col-md-3" src='+this.userImgSrc+' id="userImage">'+
+                            '<span id="userName class="col-md-9">Photo by: '+this.userFullName+'</span>'+
+                        '</div>'+
+                        '<div class="row">'+
+                            '<img class="col-md-12" src='+this.locationImgSrc+' id="mainpic">'+
+                        '</div>'+
+                    '</div>'+
+                    '<div class="modal-footer">'+
+                        '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>'+
+                    '</div>'
+                ];
+                overlayShown = true;
+                
+            });
+        });
+
+
+
 }
 
 var ViewModel = function(){
