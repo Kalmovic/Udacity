@@ -216,24 +216,10 @@ var setInfoWindow = function (marker, place){
                 console.log("imgSrc: "+this.locationImgSrc);
                 console.log("User name: "+this.userFullName);
                 console.log("userSrc: "+this.userImgSrc);
-                var modal = document.getElementsByClassName("modal-content");
-                modal.innerHTML = [
-                    '<div class="modal-header">'+
-                        '<h4 class="venueName modal-title">'+ place.title +'</h4>'+
-                    '</div>'+
-                    '<div class="modal-body">'+
-                        '<div class="row" id="user">'+
-                            '<img class="col-md-3" src='+this.userImgSrc+' id="userImage">'+
-                            '<span id="userName class="col-md-9">Photo by: '+this.userFullName+'</span>'+
-                        '</div>'+
-                        '<div class="row">'+
-                            '<img class="col-md-12" src='+this.locationImgSrc+' id="mainpic">'+
-                        '</div>'+
-                    '</div>'+
-                    '<div class="modal-footer">'+
-                        '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>'+
-                    '</div>'
-                ];
+                $('modal-title').text(this.venueName);
+                $('imglocation').attr("src", this.locationImgSrc);
+                $('#project').modal('show');
+
             }).fail(function(data){
                 console.log(data);
                 this.resError = data.responseJSON.meta.errorDetail;
