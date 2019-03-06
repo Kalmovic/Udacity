@@ -12,6 +12,7 @@ var places = [
 
 ];
 
+// This array will style the map
 var styles = [
     {
         featureType: "water",
@@ -131,16 +132,19 @@ var map;
 
 var currentInfoWindow = null;
 
+// ------------ FOURSQUARE KEYS --------------
 var CLIENT_ID = 'XX1DZGZ0SMRWCAKL1YXPGK40KE1UIA42VDCZQQ3CZ55KQGXW';
 var CLIENT_SECRET = 'WIO5ETGFN51FFUZOONSE2Z3LOT5NY0HIMZXFR4G3NYODFOX1';
 
 var createMarker = function(data){
+    // Makes sure every that.var belongs to the function
     var that = this;
     that.title = data.title;
 
     // Create Info Window
     var largeInfowindow = new google.maps.InfoWindow();
 
+    // Creating icon model for each one
     var icon = {
         "url": "img/instagram.png",
         scaledSize: new google.maps.Size(20, 20), // scaled size
@@ -168,11 +172,11 @@ var createMarker = function(data){
             that.marker.setAnimation(google.maps.Animation.BOUNCE);
             setTimeout(function(){ that.marker.setAnimation(null); }, 1400);
         }
+        // If another InfoWindow is open, clode it and then open the other one
         closeLastOpenedInfoWindow()
         setInfoWindow(this, data, largeInfowindow);
     });
 };
-
 
 var setInfoWindow = function (marker, place, infowindow){
   // Check to make sure the infowindow is not already
@@ -186,6 +190,7 @@ var setInfoWindow = function (marker, place, infowindow){
       infowindow.addListener('closeclick', function(){
           infowindow.setMarker = null;
       });
+      // Starts retrieving data
       $.ajax({
           url: 'https://api.foursquare.com/v2/venues/search?ll='+place.location.lat +","+place.location.lng,
           type: 'GET',
@@ -199,10 +204,11 @@ var setInfoWindow = function (marker, place, infowindow){
               radius: '4'
           }
           }).done(function(data){
-              //console.log("Name and ID: "+data.response.venues[i].name+" "+i);
+              console.log("Name and ID: "+data.response.venues[i].name+" "+i);
               this.venueName = data.response.venues[0].name;
               this.venueId = data.response.venues[0].id;
               console.log("Title: " + this.venueName + " | Venue ID: " + this.venueId);
+              // A second request for images
               $.ajax({
                   url: 'https://api.foursquare.com/v2/venues/'+this.venueId+'/photos',
                   type: 'GET',
@@ -214,14 +220,20 @@ var setInfoWindow = function (marker, place, infowindow){
                       v: '20190301'
                   }
               }).done(function(data, venueName){
+                  // Retrieves:
+                  // User name
+                  // User image
+                  // Where the image was taken from
+                  // Location image
+
                   var items = data.response.photos.items[0];
                   this.fromName = items.source.name;
                   this.locationPrefix = items.prefix;
                   this.locationSuffix = items.suffix;
+                  this.locationImgSrc = this.locationPrefix + '300x300' + this.locationSuffix;
                   this.userFirstName = items.user.firstName;
                   this.userLastName = items.user.lastName;
                   this.userFullName = this.userFirstName+' '+this.userLastName;
-                  this.locationImgSrc = this.locationPrefix + '300x300' + this.locationSuffix;
                   this.userPrefix = items.user.photo.prefix;
                   this.userSuffix = items.user.photo.suffix;
                   this.userImgSrc = this.userPrefix+'50x50'+this.userSuffix
@@ -230,6 +242,8 @@ var setInfoWindow = function (marker, place, infowindow){
                   console.log("imgSrc: "+this.locationImgSrc);
                   console.log("User name: "+this.userFullName);
                   console.log("userSrc: "+this.userImgSrc);
+
+                  // Fills string with html content for InfoWindow
                   var contentString =
                   '<div class="main">'+
                       '<h3 class="venueName">'+place.title+'</h3>'+
@@ -249,6 +263,7 @@ var setInfoWindow = function (marker, place, infowindow){
 
                   infowindow.setContent(contentString);
                   infowindow.open(map, marker);
+                  // Sets currentInfoWindow as active
                   currentInfoWindow = infowindow;
 
               }).fail(function(data){
@@ -293,6 +308,8 @@ var ViewModel = function(){
 
     self.query = ko.observable('');
 
+    // Filters the list of location according to the search and
+    // displays the filterd list as well in the map
     this.filteredMarkers = ko.computed(function(){
         return this.allMarkers().filter(function(addPlace){
             var found = addPlace.title.toLowerCase().indexOf(this.query().toLowerCase()) > -1;
@@ -302,6 +319,7 @@ var ViewModel = function(){
     }, this);
 };
 
+// Go
 function initMap(){
     ko.applyBindings(new ViewModel());
 };
