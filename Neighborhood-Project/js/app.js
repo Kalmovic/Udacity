@@ -129,10 +129,6 @@ var styles = [
 
 var map;
 
-var clickedMarker = new Boolean(false);
-
-var overlayShown = false;
-
 var CLIENT_ID = 'XX1DZGZ0SMRWCAKL1YXPGK40KE1UIA42VDCZQQ3CZ55KQGXW';
 var CLIENT_SECRET = 'WIO5ETGFN51FFUZOONSE2Z3LOT5NY0HIMZXFR4G3NYODFOX1';
 
@@ -162,39 +158,16 @@ var createMarker = function(data){
         google.maps.event.trigger(that.marker, 'click');
     };
 
-    var imgUrl = '';
-
     that.marker.addListener('click', function(){
-        /*if (clickedMarker== false){
-            clickedMarker = true;
-            setInfoWindow(that, largeInfowindow);
-            map.setZoom(15);
-            map.setCenter(that.marker.getPosition());
-            var cityCircle = new google.maps.Circle({
-                strokeColor: '#bc1888',
-                strokeOpacity: 0.5,
-                strokeWeight: 2,
-                fillColor: '#bc1888',
-                fillOpacity: 0.001,
-                map: map,
-                center: that.marker.getPosition(),
-                radius: 1000 // 1km
-            });
-
-            if (that.marker.getAnimation() !== null){
-                that.marker.setAnimation(null);
-            } else {
-                that.marker.setAnimation(google.maps.Animation.BOUNCE);
-            }
+        map.setCenter(that.marker.getPosition());
+        if (that.marker.getAnimation() !== null){
+            that.marker.setAnimation(null);
         } else {
-            that.marker.removeListener('click');
-        }*/
-        that.marker.addListener('click', function(){
-            setInfoWindow(this, data);
-        });
+            that.marker.setAnimation(google.maps.Animation.BOUNCE);
+            setTimeout(function(){ that.marker.setAnimation(null); }, 1400);
+        }
+        setInfoWindow(this, data);
     });
-
-
 };
 
 
@@ -243,7 +216,7 @@ var setInfoWindow = function (marker, place){
                 console.log("imgSrc: "+this.locationImgSrc);
                 console.log("User name: "+this.userFullName);
                 console.log("userSrc: "+this.userImgSrc);
-                var modal = document.getElementById("project");
+                var modal = document.getElementsByClassName("modal-content");
                 modal.innerHTML = [
                     '<div class="modal-header">'+
                         '<h4 class="venueName modal-title">'+ place.title +'</h4>'+
@@ -261,13 +234,18 @@ var setInfoWindow = function (marker, place){
                         '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>'+
                     '</div>'
                 ];
-                overlayShown = true;
-                
+            }).fail(function(data){
+                console.log(data);
+                this.resError = data.responseJSON.meta.errorDetail;
+                console.log(this.resError);
+                alert("Error: "+this.resError);
             });
+        }).fail(function(data){
+            console.log(data);
+            this.resError = data.responseJSON.meta.errorDetail;
+            console.log(this.resError);
+            alert("Error: "+this.resError);
         });
-
-
-
 }
 
 var ViewModel = function(){
