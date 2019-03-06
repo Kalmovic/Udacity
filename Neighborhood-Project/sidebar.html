@@ -2,6 +2,7 @@
 <html>
 <head>
     <title></title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -9,8 +10,8 @@
     <style>
         html{
             background-color: white;
-            margin-left: 500px;
-            margin-right: 500px;
+            margin-left: 100px;
+            margin-right: 100px;
         }
         body{
             background: -moz-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
@@ -19,10 +20,6 @@
             filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f09433', endColorstr='#bc1888',GradientType=1 );
         }
         .venueName{
-            text-align: center;
-        }
-
-        #userName{
             text-align: center;
         }
         #venueImage{
@@ -41,12 +38,17 @@
         }
 
     </style>
-    <div class="main">
+    <div class="container">
         <h3 class="venueName">Pedra da Gávea</h3>
-        <div class="row" id="user">
-            <img class="col-md-3" src="https://placekitten.com/50/50" id="venueImage">
-            <span id="userName" class="col-md-9">User</span>
-        </div>
+        <header class="row" id="user">
+          <picture class="col-md-2 text-center">
+            <img src="https://placekitten.com/100/100" id="venueImage">
+          </picture>
+          <div class="col-md-10 text-left text-uppercase identity">
+              <h2 id="userName">User</span>
+              <h4>Instagram</h4>
+          </div>
+        </header>
         <div class="cat">
             <img class="img-fluid" id="mainpic" src="https://placekitten.com/400/400">
         </div>

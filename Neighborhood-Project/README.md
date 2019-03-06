@@ -19,6 +19,6 @@ This project has the objective of showing famous places in Rio where people can 
 
 ## Helpful links and inpirations:
 
-[Marker and Modal](https://jsfiddle.net/user2314737/pmh9s4s6/)
+[Auto Closing InfoWindows](https://groups.google.com/forum/#!topic/google-maps-js-api-v3/cA2VRg4TO1k)
 
 Student [RusPosevkin](https://github.com/RusPosevkin/)

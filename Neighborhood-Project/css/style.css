@@ -30,9 +30,9 @@ body {
     width: 340px;
 }
 
-#pano {
-    width: 200px;
-    height: 200px;
+#myInput{
+    display: relative;
+    margin-left: 32px;
 }
 
 .sidenav {
@@ -83,23 +83,29 @@ a, li {
     padding-top: 0px;
 }
 
-.links_modals:hover{
-    cursor: pointer;
+#user{
+    margin: 0px;
+}
+
+#mainpic{
+  border-radius: 3%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+}
+
+#userImage{
+    margin-right: 5px;
 }
 
 .venueName{
     text-align: center;
 }
+
 #userImage{
     position: relative;
     border-radius: 50%;
-}
-#userName{
-    text-align: center;
-}
-#mainpic{
-    position: relative;
-    text-align: center;
 }
 
 @media screen and (max-height: 450px) {

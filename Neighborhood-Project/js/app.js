@@ -129,6 +129,8 @@ var styles = [
 
 var map;
 
+var currentInfoWindow = null;
+
 var CLIENT_ID = 'XX1DZGZ0SMRWCAKL1YXPGK40KE1UIA42VDCZQQ3CZ55KQGXW';
 var CLIENT_SECRET = 'WIO5ETGFN51FFUZOONSE2Z3LOT5NY0HIMZXFR4G3NYODFOX1';
 
@@ -137,7 +139,7 @@ var createMarker = function(data){
     that.title = data.title;
 
     // Create Info Window
-    //var largeInfowindow = new google.maps.InfoWindow();
+    var largeInfowindow = new google.maps.InfoWindow();
 
     var icon = {
         "url": "img/instagram.png",
@@ -166,72 +168,108 @@ var createMarker = function(data){
             that.marker.setAnimation(google.maps.Animation.BOUNCE);
             setTimeout(function(){ that.marker.setAnimation(null); }, 1400);
         }
-        setInfoWindow(this, data);
+        closeLastOpenedInfoWindow()
+        setInfoWindow(this, data, largeInfowindow);
     });
 };
 
 
-var setInfoWindow = function (marker, place){
-    $.ajax({
-        url: 'https://api.foursquare.com/v2/venues/search?ll='+place.location.lat +","+place.location.lng,
-        type: 'GET',
-        dataType: "json",
-        data: {
-            name: place.title,
-            client_id: CLIENT_ID,
-            client_secret: CLIENT_SECRET,
-            v: '20190301',
-            intent: 'checkin',
-            radius: '4'
-        }
-        }).done(function(data){
-            //console.log("Name and ID: "+data.response.venues[i].name+" "+i);
-            this.venueName = data.response.venues[0].name;
-            this.venueId = data.response.venues[0].id;
-            console.log("Title: " + this.venueName + " | Venue ID: " + this.venueId);
-            $.ajax({
-                url: 'https://api.foursquare.com/v2/venues/'+this.venueId+'/photos',
-                type: 'GET',
-                dataType: 'json',
-                group: 'venue',
-                data: {
-                    client_id: CLIENT_ID,
-                    client_secret: CLIENT_SECRET,
-                    v: '20190301'
-                }
-            }).done(function(data, venueName){
-                var items = data.response.photos.items[0];
-                this.fromName = items.source.name;
-                this.locationPrefix = items.prefix;
-                this.locationSuffix = items.suffix;
-                this.userFirstName = items.user.firstName;
-                this.userLastName = items.user.lastName;
-                this.userFullName = this.userFirstName+' '+this.userLastName;
-                this.locationImgSrc = this.locationPrefix + '50x50' + this.locationSuffix;
-                this.userPrefix = items.user.photo.prefix;
-                this.userSuffix = items.user.photo.suffix;
-                this.userImgSrc = this.userPrefix+'200x200'+this.userSuffix
+var setInfoWindow = function (marker, place, infowindow){
+  // Check to make sure the infowindow is not already
+  // on this marker
+  if (infowindow.marker != marker){
+      // Clear the infowindow content to give the streetview time to load.
+      infowindow.setContent('');
+      infowindow.marker = marker;
 
-                console.log("From: " +this.fromName);
-                console.log("imgSrc: "+this.locationImgSrc);
-                console.log("User name: "+this.userFullName);
-                console.log("userSrc: "+this.userImgSrc);
-                $('modal-title').text(this.venueName);
-                $('imglocation').attr("src", this.locationImgSrc);
-                $('#project').modal('show');
+      // Make sure the marker property is cleared if the infowindow is closed.
+      infowindow.addListener('closeclick', function(){
+          infowindow.setMarker = null;
+      });
+      $.ajax({
+          url: 'https://api.foursquare.com/v2/venues/search?ll='+place.location.lat +","+place.location.lng,
+          type: 'GET',
+          dataType: "json",
+          data: {
+              name: place.title,
+              client_id: CLIENT_ID,
+              client_secret: CLIENT_SECRET,
+              v: '20190301',
+              intent: 'checkin',
+              radius: '4'
+          }
+          }).done(function(data){
+              //console.log("Name and ID: "+data.response.venues[i].name+" "+i);
+              this.venueName = data.response.venues[0].name;
+              this.venueId = data.response.venues[0].id;
+              console.log("Title: " + this.venueName + " | Venue ID: " + this.venueId);
+              $.ajax({
+                  url: 'https://api.foursquare.com/v2/venues/'+this.venueId+'/photos',
+                  type: 'GET',
+                  dataType: 'json',
+                  group: 'venue',
+                  data: {
+                      client_id: CLIENT_ID,
+                      client_secret: CLIENT_SECRET,
+                      v: '20190301'
+                  }
+              }).done(function(data, venueName){
+                  var items = data.response.photos.items[0];
+                  this.fromName = items.source.name;
+                  this.locationPrefix = items.prefix;
+                  this.locationSuffix = items.suffix;
+                  this.userFirstName = items.user.firstName;
+                  this.userLastName = items.user.lastName;
+                  this.userFullName = this.userFirstName+' '+this.userLastName;
+                  this.locationImgSrc = this.locationPrefix + '300x300' + this.locationSuffix;
+                  this.userPrefix = items.user.photo.prefix;
+                  this.userSuffix = items.user.photo.suffix;
+                  this.userImgSrc = this.userPrefix+'50x50'+this.userSuffix
 
-            }).fail(function(data){
-                console.log(data);
-                this.resError = data.responseJSON.meta.errorDetail;
-                console.log(this.resError);
-                alert("Error: "+this.resError);
-            });
-        }).fail(function(data){
-            console.log(data);
-            this.resError = data.responseJSON.meta.errorDetail;
-            console.log(this.resError);
-            alert("Error: "+this.resError);
-        });
+                  console.log("From: " +this.fromName);
+                  console.log("imgSrc: "+this.locationImgSrc);
+                  console.log("User name: "+this.userFullName);
+                  console.log("userSrc: "+this.userImgSrc);
+                  var contentString =
+                  '<div class="main">'+
+                      '<h3 class="venueName">'+place.title+'</h3>'+
+                      '<header class="row" id="user">'+
+                          '<picture class="col-md-2 text-left">'+
+                              '<img src="'+this.userImgSrc+'" id="userImage">'+
+                          '</picture>'+
+                          '<div class="col-md-10 text-left text-uppercase identity">'+
+                              '<h4 id="userName">'+this.userFullName+'</h4>'+
+                              '<h6>Retrieved on: '+this.fromName+'</h6>'+
+                          '</div>'+
+                      '</header>'+
+                      '<div class="cat">'+
+                          '<img class="img-fluid text-center" id="mainpic" src="'+this.locationImgSrc+'">'+
+                      '</div>'+
+                  '</div>';
+
+                  infowindow.setContent(contentString);
+                  infowindow.open(map, marker);
+                  currentInfoWindow = infowindow;
+
+              }).fail(function(data){
+                  console.log(data);
+                  this.resError = data.responseJSON.meta.errorDetail;
+                  console.log(this.resError);
+                  alert("Error: "+this.resError);
+              });
+          }).fail(function(data){
+              console.log(data);
+              this.resError = data.responseJSON.meta.errorDetail;
+              console.log(this.resError);
+              alert("Error: "+this.resError);
+          });
+      }
+}
+
+var closeLastOpenedInfoWindow = function() {
+    if (currentInfoWindow) {
+        currentInfoWindow.close();
+    }
 }
 
 var ViewModel = function(){
