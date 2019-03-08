@@ -3,7 +3,7 @@
 _______________________
 ## About
 
-This project has the objective of showing famous places in Rio where people can visit, take a picture and post it on Instagram.
+This project has the objective of showing famous places in Rio where people can visit, take a picture and post it on Instagram. It uses public images from the places taken by people and show them like an instagram publication. All info are public and available into JSON data requests.
 
 ## Image sample
 
