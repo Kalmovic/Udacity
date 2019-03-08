@@ -5,6 +5,10 @@ _______________________
 
 This project has the objective of showing famous places in Rio where people can visit, take a picture and post it on Instagram.
 
+## Image sample
+
+![upload-Neighborhood](https://raw.githubusercontent.com/Kalmovic/Udacity/master/Neighborhood-Project/img/sample.PNG)
+
 ### Prerequisites:
 - javascript
     - Use any code editor
