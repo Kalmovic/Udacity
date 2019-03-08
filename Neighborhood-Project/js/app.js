@@ -1,3 +1,11 @@
+onGMapsError = function() {
+  alert('There was an error with the Google Maps. Please try again later.');
+};
+
+window.gm_authFailure = () => {
+  alert('There was an error with the authentication. Please try again later.');
+};
+
 var places = [
     {title: 'Pedra da Gávea', location: {lat: -22.9978723, lng: -43.2847223}},
     {title: 'Escadaria Selarón', location: {lat: -22.9153106, lng: -43.1792038}},
@@ -7,9 +15,7 @@ var places = [
     {title: 'Píer dos Pedalinhos', location: {lat: -22.975312, lng: -43.201407}},
     {title: 'Cristo Redentor', location: {lat: -22.951580, lng: -43.210122}},
     {title: 'Pico Da Tijuca', location: {lat: -22.9417268, lng: -43.2852504}},
-    {title: 'Praia da Reserva', location: {lat: -23.012947, lng: -43.391236}},
-    {title: 'Mirante do Morro Dois Irmãos', location: {lat : -22.9833037, lng: -43.2519733}}
-
+    {title: 'Praia da Reserva', location: {lat: -23.012947, lng: -43.391236}}
 ];
 
 // This array will style the map
@@ -204,7 +210,7 @@ var setInfoWindow = function (marker, place, infowindow){
               radius: '4'
           }
           }).done(function(data){
-              console.log("Name and ID: "+data.response.venues[i].name+" "+i);
+              console.log("Name and ID: "+data.response.venues[0].name+" | "+data.response.venues[0].id);
               this.venueName = data.response.venues[0].name;
               this.venueId = data.response.venues[0].id;
               console.log("Title: " + this.venueName + " | Venue ID: " + this.venueId);
@@ -267,16 +273,16 @@ var setInfoWindow = function (marker, place, infowindow){
                   currentInfoWindow = infowindow;
 
               }).fail(function(data){
-                  console.log(data);
-                  this.resError = data.responseJSON.meta.errorDetail;
-                  console.log(this.resError);
-                  alert("Error: "+this.resError);
+                  //console.log(data);
+                  //this.resError = data.responseJSON.meta.errorDetail;
+                  //console.log(this.resError);
+                  alert("Error: There was an error with the connection with Foursquare API. Please try again later");
               });
           }).fail(function(data){
-              console.log(data);
-              this.resError = data.responseJSON.meta.errorDetail;
-              console.log(this.resError);
-              alert("Error: "+this.resError);
+            //console.log(data);
+            //this.resError = data.responseJSON.meta.errorDetail;
+            //console.log(this.resError);
+            alert("Error: There was an error with the connection with Foursquare API. Please try again later");
           });
       }
 }
