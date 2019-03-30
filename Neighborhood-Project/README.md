@@ -21,7 +21,7 @@ This project has the objective of showing famous places in Rio where people can 
 - Google Maps API
 - Foursquare API
 
-## Helpful links and inpirations:
+## Helpful links and inspirations:
 
 [Auto Closing InfoWindows](https://groups.google.com/forum/#!topic/google-maps-js-api-v3/cA2VRg4TO1k)
 
