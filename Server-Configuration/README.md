@@ -141,3 +141,6 @@ from catalog import app as application
 application.secret_key = 'super_secret_key'
 ```
 
+# Inspiration:
+
+[otsop110](https://github.com/otsop110/fullstack-nanodegree-linux-server-configuration)
