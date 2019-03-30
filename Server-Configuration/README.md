@@ -1,7 +1,15 @@
-# project
-project description
+# Project Item Catalog - Udacity
+### Full Stack Web Development ND
+_______________________
+## About
 
-# steps
+This project has the objective of configuring a server in AWS services, having in mind security, and uploading a project online.
+
+- Server: 3.80.85.4
+- SSH port: 2200
+- URL: http://3.80.85.4
+
+# Steps
 
 ### Obtaining Ubuntu Linux Server instance on Amazon Lightsail
 - Create AWS account
@@ -21,13 +29,13 @@ project description
 - connect
 - update and upgrade inside server
 
-### Mude a porta SSH de 22 para 2200
+### Change door SSH de 22 to 2200
 - Run $ sudo nano /etc/ssh/sshd_config to open up the configuration file
 - Change the port number from 22 to 2200 in this file
 - Save and exit the file
 - Restart SSH: $ sudo service ssh restart
 
-### Configure o Uncomplicated Firewall (UFW) para permitir apenas conexões de entrada para SSH (porta 2200), HTTP (porta 80) e NTP (porta 123).
+### Configure the Uncomplicated Firewall (UFW) to allow only incoming calls to SSH (porta 2200), HTTP (porta 80) e NTP (porta 123).
 - sudo ufw status (inativo)
 - sudo ufw default deny incoming
 - sudo ufw default allow outgoing
@@ -37,7 +45,7 @@ project description
 - sudo ufw deny 22
 - sudo ufw enable
 - sudo ufw status (ativo)
-- change in the Networking area server Delete default SSH port 22 and add port 80, 123, 2200 [image]
+- change in the Networking area server Delete default SSH port 22 and add port 80, 123, 2200
 
 ### Adding User Grader && SSH Key
 - sudo adduser grader
@@ -56,7 +64,7 @@ project description
     - chown grader:grader /home/grader/.ssh
     - disable passwd login for grader: sudo nano /etc/ssh/sshd_config
 
-### Chanin timezone to UTC
+### Changing timezone to UTC
 - sudo dpkg-reconfigure tzdata
 - select none
 - select UTC
@@ -66,12 +74,12 @@ project description
 - sudo apt-get install apache2
 - http://3.80.85.4/ will open Apache2 Ubuntu Default Page
 
-### Insttallin mod-wsgi
+### Installing mod-wsgi
 - sudo apt-get install libapache2-mod-wsgi python-dev
 - Por fim, reinicie o Apache com o comando sudo apache2ctl restart.
 - check python is ok with `python`
 
-### Instal Postgre SQL
+### Install Postgre SQL
 - sudo apt-get install postgresql
 - check if PostgreSQL does not allow remote connections [here](https://www.postgresql.org/docs/9.1/auth-pg-hba-conf.html)
 
@@ -113,8 +121,8 @@ RedirectMatch 404 /\.git
 ### Setup virtual host
 - `sudo touch /etc/apache2/sites-available/catalog.conf`
 - Helpul links:
-- [1](https://www.digitalocean.com/community/tutorials/como-configurar-apache-virtual-hosts-no-ubuntu-14-04-lts-pt)
-- [2](http://flask.pocoo.org/docs/0.12/deploying/mod_wsgi/)
+- [How to configure Apache](https://www.digitalocean.com/community/tutorials/como-configurar-apache-virtual-hosts-no-ubuntu-14-04-lts-pt)
+- [Deploy mod_wsgi](http://flask.pocoo.org/docs/0.12/deploying/mod_wsgi/)
 - Run:
     - `sudo a2ensite catalog` to enable the virtual host
     - `sudo service apache2 restart` to restart apache
